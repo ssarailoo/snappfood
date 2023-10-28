@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FoodCategory;
 use App\Http\Requests\StoreFoodCategoryRequest;
 use App\Http\Requests\UpdateFoodCategoryRequest;
+use App\Models\RestaurantCategory;
 
 class FoodCategoryController extends Controller
 {
@@ -13,7 +14,10 @@ class FoodCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('viewAny', FoodCategory::class);
+        return view('category.food.index', [
+            'categories' => FoodCategory::all()
+        ]);
     }
 
     /**
@@ -21,7 +25,8 @@ class FoodCategoryController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', FoodCategory::class);
+        return view('category.food.create');
     }
 
     /**
@@ -29,31 +34,20 @@ class FoodCategoryController extends Controller
      */
     public function store(StoreFoodCategoryRequest $request)
     {
-        //
+        $this->authorize('create', FoodCategory::class);
+        FoodCategory::query()->create($request->validated());
+        return redirect()->route('food-categories.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(FoodCategory $foodCategory)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(FoodCategory $foodCategory)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateFoodCategoryRequest $request, FoodCategory $foodCategory)
     {
-        //
+        $this->authorize('create', $foodCategory);
+        $foodCategory->update($request->validated());
+        return redirect()->route('food-categories.index');
     }
 
     /**
@@ -61,6 +55,8 @@ class FoodCategoryController extends Controller
      */
     public function destroy(FoodCategory $foodCategory)
     {
-        //
+        $this->authorize('create', $foodCategory);
+        $foodCategory->delete();
+        return redirect()->route('food-categories.index');
     }
 }

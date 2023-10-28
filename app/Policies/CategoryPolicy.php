@@ -6,14 +6,14 @@ use App\Models\RestaurantCategory;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class RestaurantCategoryPolicy
+class CategoryPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        //
+        return  $user->can('viewAny-categories');
     }
 
     /**
@@ -21,7 +21,7 @@ class RestaurantCategoryPolicy
      */
     public function view(User $user, RestaurantCategory $restaurantCategory): bool
     {
-        //
+        return  $user->can('view-category');
     }
 
     /**
@@ -29,7 +29,7 @@ class RestaurantCategoryPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return  $user->can('create-category');
     }
 
     /**
@@ -37,7 +37,7 @@ class RestaurantCategoryPolicy
      */
     public function update(User $user, RestaurantCategory $restaurantCategory): bool
     {
-        //
+        return  $user->can('update-category');
     }
 
     /**
@@ -45,7 +45,7 @@ class RestaurantCategoryPolicy
      */
     public function delete(User $user, RestaurantCategory $restaurantCategory): bool
     {
-        //
+        return  $user->can('delete-category');
     }
 
     /**

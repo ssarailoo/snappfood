@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\FoodCategory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateFoodCategoryRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateFoodCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,10 @@ class UpdateFoodCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            //
+            'name' => ['required', 'unique:' . FoodCategory::class]
         ];
+
     }
 }
