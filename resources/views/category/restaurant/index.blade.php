@@ -30,7 +30,7 @@
                         {{$category->name}}
                     </td>
                     <td class="px-6 py-4">
-                        <x-edit-r-modal  :category="$category"/>
+                        <x-edit-r-modal :category="$category"/>
                     </td>
 
 
@@ -59,13 +59,14 @@
                     #
                 </td>
                 <td class="px-6 py-4">
-                    <form action="{{route('rest-categories.create')}}">
 
+                    <a href="{{route('rest-categories.create')}}">
                         <x-primary-button
                             class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                             {{ __('Create') }}
                         </x-primary-button>
-                    </form>
+                    </a>
+
                 </td>
             </tr>
             </tbody>

@@ -57,4 +57,14 @@
             </x-primary-button>
         </div>
     </form>
+
+
+        <a href="{{route('my-restaurant.foods.index',$restaurant)}}">
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                {{ __('Food Section') }}
+            </x-primary-button>
+        </div>
+        </a>
+
 </x-guest-layout>

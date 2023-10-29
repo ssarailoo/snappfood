@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FoodCategoryController;
+use App\Http\Controllers\FoodController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantCategoryController;
 use App\Http\Controllers\RestaurantController;
@@ -51,7 +52,10 @@ Route::middleware('auth')->group(function () {
             ->group(function () {
                 Route::delete('/{restaurant}/force', 'forceDelete')->name('force')->withTrashed();
                 Route::patch('/{restaurant}/restore', 'restore')->name('restore')->withTrashed();
-
+            });
+        Route::prefix('/{restaurant}')->controller(FoodController::class)->name('my-restaurant.')
+            ->group(function () {
+                Route::get('/foods', 'index')->name('foods.index');
             });
 
 
