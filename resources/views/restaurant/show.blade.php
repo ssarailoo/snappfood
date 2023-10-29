@@ -39,12 +39,12 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($restaurants as $restaurant)
+
                 <tr class="bg-white dark:bg-white">
 
 
                     <th scope="row" class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                        <a href="{{route('restaurants.show',$restaurant)}}"> {{$restaurant->id}}</a>
+                        {{$restaurant->id}}
                     </th>
                     <td class="px-6 py-4">
                         {{$restaurant->name}}
@@ -83,6 +83,8 @@
                         <td class="px-6 py-4">
                             @if(! Restaurant::query()->where('user_id',$restaurant->user_id )->first())
 
+
+
                                 <form action="{{route('restaurants.restore',$restaurant)}}" method="post">
                                     @csrf
                                     @method("PATCH")
@@ -95,24 +97,27 @@
                             @else
                                 #
 
-                            @endif
+
+
+                        @endif
 
 
                         </td>
 
-                    @else
-                        <td class="px-6 py-4">
-                            #
-                        </td>
-                        <td class="px-6 py-4">
-                            #
-                        </td>
 
-                    @endif
+                        @else
+                            <td class="px-6 py-4">
+                                #
+                            </td>
+                            <td class="px-6 py-4">
+                                #
+                            </td>
+
+                        @endif
 
 
                 </tr>
-            @endforeach
+
             </tbody>
         </table>
 

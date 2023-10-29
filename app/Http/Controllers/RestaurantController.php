@@ -23,7 +23,9 @@ class RestaurantController extends Controller
     public function show(Restaurant $restaurant)
     {
         $this->authorize('view', $restaurant);
-        return view('restaurant.show');
+        return view('restaurant.show', [
+            'restaurant' => $restaurant
+        ]);
     }
 
     /**
