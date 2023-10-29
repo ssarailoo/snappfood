@@ -28,6 +28,6 @@ class RoleSeeder extends Seeder
             ],
         ]);
         Role::query()->first()->syncPermissions(Permission::all());
-        Role::query()->find(2)->syncPermissions([8, 9, 10, 11, 12]);
+        Role::query()->find(2)->syncPermissions([ 10, 11, 12,13,14,15,16]);
     }
 }

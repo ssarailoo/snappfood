@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
 use App\Models\Restaurant;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class RestaurantController extends Controller
 {
@@ -44,6 +46,8 @@ class RestaurantController extends Controller
     {
         $this->authorize('create', Restaurant::class);
         Restaurant::query()->create($request->validated());
+        //assign role of manager to the user
+        Auth::user()->assignRole(Role::query()->find(2));
         return redirect()->route('dashboard')->with('success', 'Your Restaurant Created Successfully');
 
     }
