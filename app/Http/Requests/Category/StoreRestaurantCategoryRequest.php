@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Category;
 
-use App\Models\FoodCategory;
+use App\Models\RestaurantCategory;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFoodCategoryRequest extends FormRequest
+class StoreRestaurantCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class StoreFoodCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:' . FoodCategory::class]
+            'name' => ['required', 'unique:' . RestaurantCategory::class]
         ];
     }
 }

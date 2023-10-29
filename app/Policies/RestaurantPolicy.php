@@ -13,7 +13,7 @@ class RestaurantPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->can('viewAny-restaurants');
     }
 
     /**
@@ -21,7 +21,7 @@ class RestaurantPolicy
      */
     public function view(User $user, Restaurant $restaurant): bool
     {
-        //
+        return $user->can('view-restaurant');
     }
 
     /**
@@ -29,7 +29,7 @@ class RestaurantPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return is_null($user->restaurant);
     }
 
     /**
@@ -37,7 +37,7 @@ class RestaurantPolicy
      */
     public function update(User $user, Restaurant $restaurant): bool
     {
-        //
+        return $user->id == $restaurant->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class RestaurantPolicy
      */
     public function delete(User $user, Restaurant $restaurant): bool
     {
-        //
+        return $user->id == $restaurant->user_id;
     }
 
     /**
@@ -53,7 +53,7 @@ class RestaurantPolicy
      */
     public function restore(User $user, Restaurant $restaurant): bool
     {
-        //
+        return $user->can('restore');
     }
 
     /**
@@ -61,6 +61,6 @@ class RestaurantPolicy
      */
     public function forceDelete(User $user, Restaurant $restaurant): bool
     {
-        //
+        return $user->can('force-delete');
     }
 }

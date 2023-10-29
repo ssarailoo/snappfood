@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreignId('restaurant_id')->constrained();
             $table->decimal('total', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

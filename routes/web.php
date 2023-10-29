@@ -4,6 +4,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FoodCategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantCategoryController;
+use App\Http\Controllers\RestaurantController;
+use App\Models\Restaurant;
 use App\Models\RestaurantCategory;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +37,7 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{restCategory}', 'update')->name('update');
                 Route::delete('/{restCategory}', 'destroy')->name('destroy');
             });
+//        Route::resource('/food-categories',FoodCategoryController::class);
         Route::prefix('/food-categories')->controller(FoodCategoryController::class)
             ->name('food-categories.')->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -43,6 +46,14 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{foodCategory}', 'update')->name('update');
                 Route::delete('/{foodCategory}', 'destroy')->name('destroy');
             });
+        Route::resource('/restaurants', RestaurantController::class);
+        Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
+            ->group(function () {
+                Route::delete('/{restaurant}/force', 'forceDelete')->name('force')->withTrashed();
+                Route::patch('/{restaurant}/restore', 'restore')->name('restore')->withTrashed();
+
+            });
+
 
     });
 

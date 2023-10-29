@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Restaurant extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -20,6 +21,10 @@ class Restaurant extends Model
         'telephone',
         'bank_account_number'
     ];
+ public function getRouteKeyName()
+{
+    return 'name';
+}
 
     public function user(): BelongsTo
     {
@@ -30,6 +35,7 @@ class Restaurant extends Model
     {
         return $this->belongsTo(RestaurantCategory::class);
     }
+
     public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);

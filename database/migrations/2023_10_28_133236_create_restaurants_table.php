@@ -15,9 +15,11 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained();
             $table->foreignId('restaurant_category_id')->constrained();
             $table->string('address');
+            $table->string('name');
             $table->string('telephone');
             $table->string('bank_account_number');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Category\StoreRestaurantCategoryRequest;
+use App\Http\Requests\Category\UpdateRestaurantCategoryRequest;
 use App\Models\RestaurantCategory;
-use App\Http\Requests\StoreResturantCategoryRequest;
-use App\Http\Requests\UpdateResturantCategoryRequest;
 
 class RestaurantCategoryController extends Controller
 {
@@ -31,7 +31,7 @@ class RestaurantCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreResturantCategoryRequest $request)
+    public function store(StoreRestaurantCategoryRequest $request)
     {
         $this->authorize('create',RestaurantCategory::class);
         RestaurantCategory::query()->create($request->validated());
@@ -41,7 +41,7 @@ class RestaurantCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateResturantCategoryRequest $request, RestaurantCategory $restCategory)
+    public function update(UpdateRestaurantCategoryRequest $request, RestaurantCategory $restCategory)
     {
         $this->authorize('update',$restCategory);
         $restCategory->update($request->validated());

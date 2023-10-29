@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->boolean('is_completed')->default(0);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
