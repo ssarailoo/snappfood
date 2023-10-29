@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('telephone');
             $table->string('bank_account_number');
+            $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

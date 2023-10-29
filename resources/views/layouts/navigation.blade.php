@@ -60,6 +60,12 @@
                                 {{ __('Food Categories') }}
                             </x-dropdown-link>
                         @endif
+                        @if(Auth::user()->can('viewAny-restaurants'))
+
+                            <x-dropdown-link :href="route('restaurants.index')">
+                                {{ __('All Restaurants') }}
+                            </x-dropdown-link>
+                        @endif
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

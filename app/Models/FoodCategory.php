@@ -18,4 +18,5 @@ class FoodCategory extends Model
     {
         return $this->hasMany(Food::class);
     }
+
 }

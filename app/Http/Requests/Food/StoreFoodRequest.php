@@ -11,7 +11,7 @@ class StoreFoodRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreFoodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required'],
+            'materials' => ['required'],
+            'price' => ['required'],
+            'food_category_id' => ['required'],
+            'restaurant_id' => ['required'],
+            'image' => ['sometimes', 'nullable',  'max:2048'],
         ];
     }
 }

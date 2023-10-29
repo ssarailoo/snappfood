@@ -19,6 +19,9 @@ class Food extends Model
         'name',
         'materials',
         'price',
+        'image',
+        'discount',
+        'status'
     ];
 
     public function restaurant(): BelongsTo
@@ -39,5 +42,14 @@ class Food extends Model
     {
         return $this->belongsToMany(Cart::class, 'cart_food');
     }
+
+//    public function setImageAttribute($image)
+//    {
+//        // Check if an image was provided
+//        if ($image) {
+//            $imagePath = $image->store('public/images');
+//            $this->attributes['image'] = $imagePath;
+//        }
+//    }
 
 }

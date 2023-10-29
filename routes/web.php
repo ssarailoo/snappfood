@@ -53,9 +53,14 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/{restaurant}/force', 'forceDelete')->name('force')->withTrashed();
                 Route::patch('/{restaurant}/restore', 'restore')->name('restore')->withTrashed();
             });
-        Route::prefix('/{restaurant}')->controller(FoodController::class)->name('my-restaurant.')
+        Route::prefix('/{restaurant}')->name('my-restaurant.')
             ->group(function () {
-                Route::get('/foods', 'index')->name('foods.index');
+//                Route::get('/foods', 'index')->name('foods.index');
+//                Route::get('/foods/create', 'create')->name('foods.create');
+//                Route::get('/foods/{food}', 'show')->name('foods.show');
+//                Route::get('/foods/{food}/edit', 'edit')->name('foods.edit');
+//                Route::get('/foods/{food}/edit', 'edit')->name('foods.edit');
+                Route::resource('/foods', FoodController::class);
             });
 
 
