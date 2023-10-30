@@ -44,7 +44,7 @@
 
 
                     <th scope="row" class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                        <a href="{{route('restaurants.show',$restaurant)}}"> {{$restaurant->id}}</a>
+                        <a href="{{route('restaurants.edit',$restaurant)}}"> {{$restaurant->id}}</a>
                     </th>
                     <td class="px-6 py-4">
                         {{$restaurant->name}}

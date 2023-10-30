@@ -21,7 +21,14 @@ class DatabaseSeeder extends Seeder
             'email' => 's@yahoo.com',
             'phone_number' => '09112729660',
             'password' => '123456789',
-            'is_completed' => 1,
+
+        ]);
+         User::query()->create([
+            'name' => 'ali',
+            'email' => 'a@yahoo.com',
+            'phone_number' => '09112727946',
+            'password' => '123456789',
+
         ]);
         $this->call([
             FoodCategorySeeder::class,

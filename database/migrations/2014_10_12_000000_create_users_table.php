@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('phone_number')->unique();
             $table->string('password');
-            $table->boolean('is_completed')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

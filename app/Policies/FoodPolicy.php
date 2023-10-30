@@ -14,7 +14,7 @@ class FoodPolicy
      */
     public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        return $user->can('viewAny-foods')&& $restaurant==$user->restaurant ;
+        return $user->can('viewAny-foods')&& $restaurant==$user->restaurant or  $user->can('edit-food');
     }
 
     /**
@@ -22,7 +22,7 @@ class FoodPolicy
      */
     public function view(User $user, Food $food,Restaurant $restaurant): bool
     {
-        return $user->can('view-food')&& $restaurant==$user->restaurant ;
+        return $user->can('view-food')&& $restaurant==$user->restaurant  or  $user->can('edit-food'); ;
     }
 
     /**
@@ -30,7 +30,7 @@ class FoodPolicy
      */
     public function create(User $user,Restaurant $restaurant): bool
     {
-        return $user->can('create-food')&& $restaurant==$user->restaurant ;
+        return $user->can('create-food')&& $restaurant==$user->restaurant   or  $user->can('edit-food');
     }
 
     /**
@@ -38,7 +38,7 @@ class FoodPolicy
      */
     public function update(User $user, Food $food,Restaurant $restaurant): bool
     {
-       return  $user->can('update-food')&& $restaurant==$user->restaurant;
+       return  $user->can('update-food')&& $restaurant==$user->restaurant or  $user->can('edit-food');
     }
 
     /**
@@ -46,22 +46,11 @@ class FoodPolicy
      */
     public function delete(User $user, Food $food,Restaurant $restaurant): bool
     {
-        return  $user->can('delete-food')&& $restaurant==$user->restaurant;
+        return  $user->can('delete-food')&& $restaurant==$user->restaurant  or  $user->can('edit-food');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Food $food): bool
-    {
-        //
-    }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Food $food): bool
-    {
-        //
-    }
 }

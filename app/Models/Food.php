@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\ImageCast;
+use App\Http\Requests\Food\StoreFoodRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +15,7 @@ class Food extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
+    protected $fillable = [
         'restaurant_id',
         'food_category_id',
         'name',
@@ -23,17 +25,22 @@ class Food extends Model
         'discount',
         'status'
     ];
+    protected $casts = [
+        'image' => ImageCast::class
+    ];
+
 
     public function restaurant(): BelongsTo
     {
         return $this->belongsTo(Restaurant::class);
     }
+
     public function foodCategory(): HasOne
     {
         return $this->hasOne(FoodCategory::class);
     }
 
-    public function cartFoods (): HasMany
+    public function cartFoods(): HasMany
     {
         return $this->hasMany(CartFood::class);
     }

@@ -1,5 +1,6 @@
-@php use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
+@php use App\Models\FoodCategory;use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
 <x-app-layout>
+
 
 
     <div class="relative overflow-x-auto">
@@ -13,29 +14,25 @@
                     Name
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Address
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Telephone
+                    Image
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Category
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Bank Account Number
+                    Materials
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Restaurant Manager ID
+                    Price
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Restaurant Manager Name
+                    Discount
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Action
+                    Status
                 </th>
-                <th scope="col" class="px-6 py-3">
-                    Action
-                </th>
+
+
             </tr>
             </thead>
             <tbody>
@@ -44,82 +41,38 @@
 
 
                     <th scope="row" class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                        {{$restaurant->id}}
+                        {{$food->id}}
                     </th>
                     <td class="px-6 py-4">
-                        {{$restaurant->name}}
+                        {{$food->name}}
                     </td>
                     <td class="px-6 py-4">
-                        {{$restaurant->address}}
+                        <img src="{{ asset('storage/'.$food->image)}}" width="150px" height="150px">
                     </td>
                     <td class="px-6 py-4">
-                        {{$restaurant->telephone}}
+                        {{FoodCategory::query()->find( $food->food_category_id)->name}}
                     </td>
                     <td class="px-6 py-4">
-                        {{RestaurantCategory::query()->find($restaurant->restaurant_category_id)->name}}
-                    </td>
-
-                    <td class="px-6 py-4">
-                        {{$restaurant->bank_account_number}}
+                        {{$food->materials}}
                     </td>
                     <td class="px-6 py-4">
-                        {{$restaurant->user_id}}
+                        {{$food->price}}
                     </td>
                     <td class="px-6 py-4">
-                        {{User::query()->find( $restaurant->user_id)->name}}
+                        {{$food->discount}}
                     </td>
-                    @if($restaurant->trashed())
-                        <td class="px-6 py-4">
-                            <form action="{{route('restaurants.force',$restaurant)}}" method="post">
-                                @csrf
-                                @method("DELETE")
-                                <x-primary-button
-                                    class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                    {{ __('Force Delete') }}
-                                </x-primary-button>
-
-                            </form>
-                        </td>
-                        <td class="px-6 py-4">
-                            @if(! Restaurant::query()->where('user_id',$restaurant->user_id )->first())
-
-
-
-                                <form action="{{route('restaurants.restore',$restaurant)}}" method="post">
-                                    @csrf
-                                    @method("PATCH")
-                                    <x-primary-button
-                                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                        {{ __('Restore') }}
-                                    </x-primary-button>
-
-                                </form>
-                            @else
-                                #
-
-
-
+                    <td class="px-6 py-4">
+                        @if(     $food->status==0)
+                            Not Available
                         @endif
-
-
-                        </td>
-
-
-                        @else
-                            <td class="px-6 py-4">
-                                #
-                            </td>
-                            <td class="px-6 py-4">
-                                #
-                            </td>
-
-                        @endif
-
+                        Available
+                    </td>
 
                 </tr>
 
             </tbody>
         </table>
+
 
     </div>
 

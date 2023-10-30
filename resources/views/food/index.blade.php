@@ -1,5 +1,11 @@
 @php use App\Models\FoodCategory;use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
 <x-app-layout>
+    @if(session('success'))
+        <div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4 mb-4" role="alert">
+            <p class="font-bold">Success!</p>
+            <p>{{ session('success') }}</p>
+        </div>
+    @endif
 
 
     <div class="relative overflow-x-auto">
@@ -23,6 +29,12 @@
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Price
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Discount
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Status
                 </th>
 
 
@@ -57,6 +69,16 @@
                     <td class="px-6 py-4">
                         {{$food->price}}
                     </td>
+                    <td class="px-6 py-4">
+                        {{$food->discount}}
+                    </td>
+                    <td class="px-6 py-4">
+                        @if(     $food->status==0)
+                           Not Available
+                        @endif
+                            Available
+                    </td>
+
 
                     <td class="px-6 py-4">
                         <form action="{{route('my-restaurant.foods.destroy',[$restaurant,$food])}}" method="post">

@@ -24,7 +24,7 @@ class StoreFoodRequest extends FormRequest
         return [
             'name' => ['required'],
             'materials' => ['required'],
-            'price' => ['required'],
+            'price' => ['required','numeric'],
             'food_category_id' => ['required'],
             'restaurant_id' => ['required'],
             'image' => ['sometimes', 'nullable',  'max:2048'],

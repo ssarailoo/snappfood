@@ -39,46 +39,56 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request, Restaurant $restaurant)
     {
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('/images');
-            $data = $request->validated();
-            $data['image'] = $path;
-        }
 
 
         $this->authorize('create', [Food::class, $restaurant]);
-        Food::query()->create($data);
+        Food::query()->create($request->validated());
+
+        return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', 'New Food added successfully');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Food $food, Restaurant $restaurant)
+    public function show(Restaurant $restaurant, Food $food)
     {
-        $this->authorize('view', [Food::class, $restaurant]);
+        $this->authorize('view', [$food, $restaurant]);
+        return view('food.show', [
+            'food' => $food
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Food $food, Restaurant $restaurant)
+    public function edit(Restaurant $restaurant, Food $food)
     {
-        $this->authorize('update', [Food::class, $restaurant]);
+
+        $this->authorize('update', [$food, $restaurant]);
+        return view('food.edit', [
+            'restaurant' => $restaurant,
+            'food' => $food
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFoodRequest $request, Food $food, Restaurant $restaurant)
+    public function update(UpdateFoodRequest $request, Restaurant $restaurant, Food $food)
     {
-        $this->authorize('update', [Food::class, $restaurant]);
+        $this->authorize('update', [$food, $restaurant]);
+        $food->update($request->validated());
+        return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Food $food, Restaurant $restaurant)
+    public function destroy(Restaurant $restaurant, Food $food,)
     {
-        $this->authorize('delete', [Food::class, $restaurant]);
+        $this->authorize('delete', [$food, $restaurant]);
+        $food->delete();
+        return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name deleted successfully ");
     }
 }
