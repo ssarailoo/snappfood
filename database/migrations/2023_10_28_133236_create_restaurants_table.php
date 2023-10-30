@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->string('telephone');
             $table->string('bank_account_number');
             $table->boolean('status')->default(1);
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
             $table->softDeletes();
         });
