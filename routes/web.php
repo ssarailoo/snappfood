@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/settings','showSetting')->name('showSetting');
                 Route::post('/settings','setting')->name('setting');
             });
-
+        Route::post('/foods/filter', [FoodController::class,'filter'])->name('food.filter');
 
     });
 

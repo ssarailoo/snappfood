@@ -1,6 +1,7 @@
 import './bootstrap';
-
+// import './filterFoods.js';
 import Alpine from 'alpinejs';
+
 
 window.Alpine = Alpine;
 

@@ -6,19 +6,37 @@ use App\Http\Requests\Food\StoreFoodRequest;
 use App\Http\Requests\Food\UpdateFoodRequest;
 use App\Models\Food;
 use App\Models\Restaurant;
+use Illuminate\Http\Request;
+
 
 class FoodController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Restaurant $restaurant)
+    public function index(Restaurant $restaurant, Request $request)
     {
         $this->authorize('viewAny', [Food::class, $restaurant]);
-
+        $foodsOfRestaurant = Food::query()->foodsOf($restaurant->id);
+        $sortMethod = $request->input('sort_by', 'default_sort');
+        $foods = Food::getSortedFoods($request, $foodsOfRestaurant);
         return view('food.index', [
             'restaurant' => $restaurant,
-            'foods' => Food::query()->where('restaurant_id', $restaurant->id)->get()
+            'foods' => $foods->paginate(3),
+            'sortMethod' => $sortMethod
+        ]);
+
+    }
+
+    public function filter(Request $request)
+    {
+        $foodCategoryId = $request->get('food_category_id');
+        $id = $request->get('restaurant_id');
+        $restaurant = Restaurant::query()->find($id);
+        $filteredFoods = Food::query()->foodsOf($id)->filterBy('food_category_id', $foodCategoryId);
+        return view('food.filtered', [
+            'restaurant' => $restaurant,
+            'foods' => $filteredFoods->get(),
         ]);
     }
 

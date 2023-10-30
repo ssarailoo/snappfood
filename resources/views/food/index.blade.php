@@ -7,9 +7,9 @@
         </div>
     @endif
 
-
     <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
+        {{ $foods->appends(['sort_by' => $sortMethod])->links() }}
+        <table id="foods-table" class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
             <thead class="text-xs text-pink-500 uppercase bg-white dark:bg-white dark:text-pink-500">
             <tr>
                 <th scope="col" class="px-6 py-3">
@@ -50,6 +50,8 @@
             </tr>
             </thead>
             <tbody>
+
+
             @foreach($foods as $food)
                 <tr class="bg-white dark:bg-white">
 
@@ -152,9 +154,72 @@
         </a>
 
     </div>
+        <!-- Filter Form by category -->
+    <form id="filterForm" onsubmit="filterFoods(); return false;">
+        @csrf
+        {{--        @push('scripts')--}}
+        {{--            <script>--}}
+        {{--                var csrfToken = '{{ csrf_token() }}';--}}
+        {{--            </script>--}}
+        {{--        @endpush--}}
+        <x-input-label for="food_category_id">Filter by Category:</x-input-label>
+        <select name="food_category_id" id="food_category_id">
+            <option value="">All Categories</option>
+            @foreach (FoodCategory::all() as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+        <input type="hidden" id="restaurant" value="{{$restaurant->id}}">
+        <x-primary-button
+            id="filterButton"
+            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+            {{ __('Apply Filter') }}
+        </x-primary-button>
+    </form>
+        <!-- Sort -->
+        <form id="sortForm" action="{{ route('my-restaurant.foods.index', $restaurant) }}" method="get">
+            <x-input-label for="sort_by">Sort By</x-input-label>
+            <select name="sort_by" id="sort_by">
+                <option value="name_asc">Name (Ascending)</option>
+                <option value="name_desc">Name (Descending)</option>
+                <option value="price_asc">Price (Ascending)</option>
+                <option value="price_desc">Price (Descending)</option>
+            </select>
+            <button type="submit" class="bg-pink-500 hover-bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                {{ __('Apply Filter') }}
+            </button>
+        </form>
+
 
 
 </x-app-layout>
+
+<script>
+    function filterFoods() {
+        let foodCategoryId = $('#food_category_id').val();
+        let restaurantId = $('#restaurant').val();
+
+        $.ajax({
+            url: '{{ route('food.filter') }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                food_category_id: foodCategoryId,
+                restaurant_id: restaurantId
+            },
+            success: function (data) {
+
+                $('#foods-table').html(data);
+            }
+        });
+    }
+</script>
+
+{{--<script>--}}
+{{--    var filterRoute = "{{ route('food.filter') }}";--}}
+{{--</script>--}}
+{{--<script src="{{ mix('js/app.js') }}"></script>--}}
+
 
 
 
