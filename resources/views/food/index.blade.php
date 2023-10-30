@@ -110,7 +110,7 @@
 
                     </td>
                     <td class="px-6 py-4">
-                        @if(!FoodParty::query()->find($food->id))
+                        @if(!FoodParty::query()->where('food_id',$food->id)->first())
                             <form action="{{route('food-party.store',[$restaurant,$food])}}" method="post">
                                 @csrf
 
