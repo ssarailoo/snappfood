@@ -24,22 +24,7 @@ class FoodParty extends Model
 
     public function restaurant()
     {
-        return $this->food->restaurant;
-    }
+        return $this->hasOneThrough(Restaurant::class,Food::class,'restaurant_id','id');
 
-    public function price()
-    {
-        return $this->food->price;
-    }
-
-    public function materials()
-    {
-        $this->food->materials;
-
-    }
-
-    public function image()
-    {
-        $this->food->image;
-    }
+}
 }

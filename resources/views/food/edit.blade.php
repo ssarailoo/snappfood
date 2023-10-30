@@ -1,8 +1,10 @@
 @php use App\Models\FoodCategory;use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
 <x-guest-layout>
-    <form method="POST" action="{{ route('my-restaurant.foods.update',[$restaurant,$food]) }}" enctype="multipart/form-data">
+    <!-- Update Food -->
+    <form method="POST" action="{{ route('my-restaurant.foods.update',[$restaurant,$food]) }}"
+          enctype="multipart/form-data">
         @csrf
-@method("PUT")
+        @method("PUT")
         <!-- Name -->
         <div>
             <x-input-label for="name" class="'block font-medium text-sm text-pink-700" :value="__('Name')"/>
@@ -62,9 +64,47 @@
 
         <div class="flex items-center justify-end mt-4">
             <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                {{ __('Update') }}
+                {{ __('Update Food') }}
             </x-primary-button>
         </div>
+    </form>
+    <!-- Update Food Party -->
+    <form action="{{route('food-party.update',[$restaurant,$food,$food->foodParties->first()])}}" method="post">
+        @csrf
+        @method("PUT")
+        <div>
+            <x-input-label class="block font-medium text-sm text-pink-700" :value="__('Discount')"/>
+            <x-text-input class="block mt-1 w-full" type="text" name="discount"
+                          value="{{$food->foodParties->first()->discount}}" placeholder="discount"/>
+            <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
+        </div>
+        <div>
+            <x-input-label class="block font-medium text-sm text-pink-700" :value="__('Quantity')"/>
+            <x-text-input class="block mt-1 w-full" type="text" name="quantity"
+                          value="{{$food->foodParties->first()->quantity}}" placeholder=" quantity"
+            />
+            <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
+        </div>
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button
+                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                {{ __('Update Food party') }}
+            </x-primary-button>
+        </div>
+    </form>
+    <!-- Delete Food Party -->
+    <form action="{{route('food-party.destroy',[$restaurant,$food,$food->foodParties->first()])}}" method="post">
+        @csrf
+        @method("DELETE")
+
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button
+                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                {{ __('Delete Food party') }}
+            </x-primary-button>
+        </div>
+
+
     </form>
 
 </x-guest-layout>

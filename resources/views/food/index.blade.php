@@ -1,4 +1,4 @@
-@php use App\Models\FoodCategory;use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
+@php use App\Models\FoodCategory;use App\Models\FoodParty;use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
 <x-app-layout>
     @if(session('success'))
         <div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4 mb-4" role="alert">
@@ -77,9 +77,10 @@
                     </td>
                     <td class="px-6 py-4">
                         @if(     $food->status==0)
-                           Not Available
-                        @endif
+                            Not Available
+                        @else
                             Available
+                        @endif
                     </td>
 
 
@@ -109,23 +110,30 @@
 
                     </td>
                     <td class="px-6 py-4">
-                        <form action="" method="post">
-                            @csrf
+                        @if(!FoodParty::query()->find($food->id))
+                            <form action="{{route('food-party.store',[$restaurant,$food])}}" method="post">
+                                @csrf
 
-                            <div>
+                                <div>
 
-                                <x-text-input class="block mt-1 w-full" type="text" name="discount" :value="old('discount')" placeholder="discount"/>
-                                <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
-                                <x-text-input  class="block mt-1 w-full" type="text" name="quantity" :value="old('quantity')" placeholder="quantity"/>
-                                <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
-                                <x-primary-button
-                                    class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                    {{ __('Add to Food party') }}
-                                </x-primary-button>
-                            </div>
+                                    <x-text-input class="block mt-1 w-full" type="text" name="discount"
+                                                  :value="old('discount')" placeholder="discount"/>
+                                    <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
+                                    <x-text-input class="block mt-1 w-full" type="text" name="quantity"
+                                                  :value="old('quantity')" placeholder="quantity"/>
+                                    <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
+                                    <input type="hidden" name="food_id" value="{{$food->id}}">
+                                    <x-primary-button
+                                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                        {{ __('Add to Food party') }}
+                                    </x-primary-button>
 
+                                </div>
 
-                        </form>
+                            </form>
+                        @else
+                            Allready in Food Party
+                        @endif
                     </td>
 
 

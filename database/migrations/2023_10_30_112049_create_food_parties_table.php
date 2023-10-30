@@ -10,9 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('food_party', function (Blueprint $table) {
+        Schema::create('food_parties', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('food_id')->constrained();
+            $table->foreignId('food_id')->constrained()->cascadeOnDelete();
             $table->decimal('quantity');
             $table->decimal('discount');
 
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('food_party');
+        Schema::dropIfExists('food_parties');
     }
 };

@@ -63,8 +63,8 @@ Route::middleware('auth')->group(function () {
             ->group(function () {
                 Route::get('/foods', 'index')->name('index');
                 Route::post('/{restaurant}/{food}', 'store')->name('store');
-                Route::put('/{restaurant}/{food}', 'update')->name('update');
-                Route::delete('/{restaurant}/{food}', 'update')->name('destroy');
+                Route::put('/{restaurant}/{food}/{foodParty}', 'update')->name('update');
+                Route::delete('/{restaurant}/{food}{foodParty}', 'destroy')->name('destroy');
             });
 
 

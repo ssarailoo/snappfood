@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Food extends Model
 {
     use HasFactory;
+    protected $with=['restaurant'];
 
     protected $fillable = [
         'restaurant_id',
