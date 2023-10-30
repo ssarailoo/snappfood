@@ -44,6 +44,9 @@
                 <th scope="col" class="px-6 py-3">
                     Action
                 </th>
+                <th scope="col" class="px-6 py-3">
+                    Food Party
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -104,6 +107,25 @@
                         </a>
 
 
+                    </td>
+                    <td class="px-6 py-4">
+                        <form action="" method="post">
+                            @csrf
+
+                            <div>
+
+                                <x-text-input class="block mt-1 w-full" type="text" name="discount" :value="old('discount')" placeholder="discount"/>
+                                <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
+                                <x-text-input  class="block mt-1 w-full" type="text" name="quantity" :value="old('quantity')" placeholder="quantity"/>
+                                <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
+                                <x-primary-button
+                                    class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('Add to Food party') }}
+                                </x-primary-button>
+                            </div>
+
+
+                        </form>
                     </td>
 
 

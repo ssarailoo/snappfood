@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FoodCategoryController;
 use App\Http\Controllers\FoodController;
+use App\Http\Controllers\FoodPartyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantCategoryController;
 use App\Http\Controllers\RestaurantController;
@@ -55,12 +56,15 @@ Route::middleware('auth')->group(function () {
             });
         Route::prefix('/{restaurant}')->name('my-restaurant.')
             ->group(function () {
-//                Route::get('/foods', 'index')->name('foods.index');
-//                Route::get('/foods/create', 'create')->name('foods.create');
-//                Route::get('/foods/{food}', 'show')->name('foods.show');
-//                Route::get('/foods/{food}/edit', 'edit')->name('foods.edit');
-//                Route::get('/foods/{food}/edit', 'edit')->name('foods.edit');
                 Route::resource('/foods', FoodController::class);
+            });
+
+        Route::prefix('food-party')->controller(FoodPartyController::class)->name('food-party.')
+            ->group(function () {
+                Route::get('/foods', 'index')->name('index');
+                Route::post('/{restaurant}/{food}', 'store')->name('store');
+                Route::put('/{restaurant}/{food}', 'update')->name('update');
+                Route::delete('/{restaurant}/{food}', 'update')->name('destroy');
             });
 
 

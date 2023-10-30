@@ -49,6 +49,10 @@ class Food extends Model
     {
         return $this->belongsToMany(Cart::class, 'cart_food');
     }
+    public function foodParties(): HasMany
+    {
+        return $this->hasMany(FoodParty::class, 'food_id');
+    }
 
 //    public function setImageAttribute($image)
 //    {
