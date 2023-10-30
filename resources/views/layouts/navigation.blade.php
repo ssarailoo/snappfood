@@ -66,6 +66,13 @@
                                 {{ __('All Restaurants') }}
                             </x-dropdown-link>
                         @endif
+
+                        @if(Auth::user()->can('edit-food'))
+
+                            <x-dropdown-link :href="route('food-party.showSetting')">
+                                {{ __('Food Party Settings') }}
+                            </x-dropdown-link>
+                        @endif
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

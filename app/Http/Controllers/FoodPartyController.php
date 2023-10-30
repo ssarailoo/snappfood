@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FoodParty\SetFoodPartyTimesRequest;
 use App\Http\Requests\FoodParty\StoreFoodPartyRequest;
 use App\Http\Requests\FoodParty\UpdateFoodPartyRequest;
 use App\Models\Food;
 use App\Models\FoodParty;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FoodPartyController extends Controller
 {
@@ -56,5 +58,18 @@ class FoodPartyController extends Controller
         with('success',
             "  $food->name deleted from Food Party ");
 
+    }
+
+    public function showSetting()
+    {
+        return view('party.showSetting');
+    }
+
+    public function setting(SetFoodPartyTimesRequest $request)
+    {
+
+        FoodParty::setTimes($request);
+
+        return redirect()->route('dashboard')->with('success', 'Times of food party has been updated');
     }
 }

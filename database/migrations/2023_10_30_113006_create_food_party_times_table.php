@@ -11,9 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('food_party_times', function (Blueprint $table) {
-
+            $table->id();
             $table->time('start_time');
             $table->time('end_time');
+
         });
     }
 
