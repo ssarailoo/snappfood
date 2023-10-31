@@ -26,11 +26,12 @@ class UpdateRestaurantRequest extends FormRequest
     {
 
         return [
-            'name'=>['required',Rule::unique('restaurants')->ignore($this->route('restaurant')->id),'string'],
-            'telephone'=>['required',Rule::unique('restaurants')->ignore($this->route('restaurant')->id),'size:8'],
-            'address'=>['required','string'],
-            'bank_account_number'=>['required','string','size:13'],
-            'restaurant_category_id'=>['required'],
+            'name' => ['required', Rule::unique('restaurants')->ignore($this->route('restaurant')->id), 'string'],
+            'telephone' => ['required', Rule::unique('restaurants')->ignore($this->route('restaurant')->id), 'size:8'],
+            'address' => ['required', 'string'],
+            'bank_account_number' => ['required', 'string', 'size:13'],
+            'restaurant_category_id' => ['required'],
+            'cost_of_sending_order' => ['required', 'numeric','between:1,50']
         ];
     }
 }

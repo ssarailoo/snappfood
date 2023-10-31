@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('bank_account_number');
             $table->decimal('latitude', 15, 12)->nullable()->default(null);
             $table->decimal('longitude', 15, 12)->nullable()->default(null);
+            $table->decimal('cost_of_sending_order', 10, 2)->nullable()->default(null);
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

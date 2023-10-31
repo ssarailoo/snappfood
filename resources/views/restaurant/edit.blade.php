@@ -35,6 +35,15 @@
                               value="{{$restaurant->bank_account_number}}"/>
                 <x-input-error :messages="$errors->get('bank_account_number')" class="mt-2"/>
             </div>
+            <!-- Cost Of Sending Order -->
+            <div>
+                <x-input-label for="cost_of_sending_order" class="'block font-medium text-sm text-pink-700"
+                               :value="__('Cost Of Sending Order')"/>
+                <x-text-input id="cost_of_sending_order" class="block mt-1 w-full" type="text"
+                              name="cost_of_sending_order"
+                              value="{{$restaurant->cost_of_sending_order ?? 0}}"/>
+                <x-input-error :messages="$errors->get('cost_of_sending_order')" class="mt-2"/>
+            </div>
             <!-- Location -->
             <div id="map" style="height: 400px;"></div>
             <x-input-label class="'block font-medium text-sm text-pink-700"
@@ -50,7 +59,8 @@
                 <x-input-label for="category" class="'block font-medium text-sm text-pink-700" :value="__('Category')"/>
                 <select id="category" class="block mt-1 w-full" type="text" name="restaurant_category_id">
                     @foreach(RestaurantCategory::all() as $category)
-                        <option value="{{$category->id}}" @if($restaurant->restaurantCategory == $category) selected @endif > {{$category->name}}</option>
+                        <option value="{{$category->id}}"
+                                @if($restaurant->restaurantCategory == $category) selected @endif > {{$category->name}}</option>
                     @endforeach
                 </select>
 

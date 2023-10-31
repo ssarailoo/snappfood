@@ -22,7 +22,8 @@ class Restaurant extends Model
         'telephone',
         'bank_account_number',
         'longitude',
-        'latitude'
+        'latitude',
+        'cost_of_sending_order'
     ];
 
     public function getRouteKeyName()
