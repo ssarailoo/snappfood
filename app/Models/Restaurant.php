@@ -19,12 +19,15 @@ class Restaurant extends Model
         'restaurant_category_id',
         'address',
         'telephone',
-        'bank_account_number'
+        'bank_account_number',
+        'longitude',
+        'latitude'
     ];
- public function getRouteKeyName()
-{
-    return 'name';
-}
+
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
 
     public function user(): BelongsTo
     {

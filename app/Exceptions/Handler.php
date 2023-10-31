@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof AuthorizationException)
             return response()->view('error.403', ['exception' => $e], 403);
-        
+
         return parent::render($request, $e);
     }
 }

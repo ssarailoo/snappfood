@@ -53,12 +53,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('/restaurants', RestaurantController::class);
         Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
             ->group(function () {
+                Route::post('/location','saveLocation')->name('location');
                 Route::delete('/{restaurant}/force', 'forceDelete')->name('force')->withTrashed();
                 Route::patch('/{restaurant}/restore', 'restore')->name('restore')->withTrashed();
             });
         Route::prefix('/{restaurant}')->name('my-restaurant.')
             ->group(function () {
                 Route::resource('/foods', FoodController::class);
+
             });
 
         Route::prefix('food-party')->controller(FoodPartyController::class)->name('food-party.')

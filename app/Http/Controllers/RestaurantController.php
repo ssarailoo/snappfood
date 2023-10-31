@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
 use App\Models\Restaurant;
+
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
@@ -20,8 +22,8 @@ class RestaurantController extends Controller
             $this->authorize('viewAny', Restaurant::class);
         } catch (AuthorizationException $e) {
 
-         return['customMessage'=>'You already have a restaurant'
-             ];  // Your custom message
+            return ['customMessage' => 'You already have a restaurant'
+            ];  // Your custom message
 
         }
         return view('restaurant.index', [
@@ -59,19 +61,19 @@ class RestaurantController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Restaurant $restaurant)
     {
+        $latitude = $restaurant->latitude ?? 0; // Provide a default value if null
+        $longitude = $restaurant->longitude ?? 0;
         $this->authorize('update', $restaurant);
         return view('restaurant.edit', [
-            'restaurant' => $restaurant
+            'restaurant' => $restaurant,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
         ]);
     }
 
@@ -96,14 +98,7 @@ class RestaurantController extends Controller
         return redirect()->route('dashboard')->with('success', 'Your Restaurant Deleted Successfully');
     }
 
-//    public function restore($id)
-//    {
-//        $restaurant = Restaurant::withTrashed()->where('id', $id)->first();
-//        $this->authorize('restore', $restaurant);
-//        $restaurant->restore();
-//        return redirect()->route('restaurants.index');
-//
-//    }
+
     public function restore(Restaurant $restaurant)
     {
         $this->authorize('restore', $restaurant);
@@ -118,15 +113,15 @@ class RestaurantController extends Controller
         $restaurant->forceDelete();
         return redirect()->route('restaurants.index');
 
-
     }
-//    public function forceDelete($id)
-//    {
-//        $restaurant = Restaurant::withTrashed()->where('id', $id)->first();
-//        $this->authorize('force-delete', $restaurant);
-//        $restaurant->forceDelete();
-//        return redirect()->route('restaurants.index');
-//
-//
-//    }
+
+    public function saveLocation(Request $request)
+    {
+        Restaurant::query()->find($request->post('restaurant_id'))->update([
+            'longitude' => $request->post('longitude'),
+            'latitude' => $request->post('latitude')
+        ]);
+        return redirect()->route('dashboard')->with('success', 'Your Restaurant Location updated Successfully');
+    }
+
 }

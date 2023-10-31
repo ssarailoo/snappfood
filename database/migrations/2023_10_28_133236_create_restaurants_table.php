@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('name');
             $table->string('telephone');
             $table->string('bank_account_number');
+            $table->decimal('latitude')->nullable()->default(null);
+            $table->decimal('longitude')->nullable()->default(null);
             $table->boolean('status')->default(1);
             $table->time('start_time')->nullable()->default(null);
             $table->time('end_time')->nullable()->default(null);
