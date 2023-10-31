@@ -27,7 +27,7 @@ class RoleSeeder extends Seeder
                 'updated_at' => now()
             ],
         ]);
-        Role::query()->first()->syncPermissions(Permission::all());
-        Role::query()->find(2)->syncPermissions([  12,13,14,15,16]);
+        Role::query()->first()->syncPermissions([1,2,3,4,5,6,7,8,9,10,11,12]);
+        Role::query()->find(2)->syncPermissions([  13,14,15,16,17,18,19,20,21,22]);
     }
 }

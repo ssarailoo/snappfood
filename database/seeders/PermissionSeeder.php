@@ -70,6 +70,11 @@ class PermissionSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
+            [
+                'name' => 'edit-schedule',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
 
             [
                 'name' => 'create-food',
@@ -93,6 +98,31 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'delete-food',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'create-schedule',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'viewAny-schedules',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'view-schedule',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'update-schedule',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'delete-schedule',
                 'created_at' => now(),
                 'updated_at' => now()
             ],

@@ -4,7 +4,7 @@
     <form method="POST" action="{{ route('restaurants.store') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- Name-->
         <div>
             <x-input-label for="name" class="'block font-medium text-sm text-pink-700" :value="__('Name')"/>
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"/>

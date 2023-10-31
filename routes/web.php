@@ -7,6 +7,8 @@ use App\Http\Controllers\FoodPartyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantCategoryController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\RestaurantScheduleController;
+use App\Http\Controllers\ScheduleController;
 use App\Models\Restaurant;
 use App\Models\RestaurantCategory;
 use Illuminate\Support\Facades\Route;
@@ -53,7 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/restaurants', RestaurantController::class);
         Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
             ->group(function () {
-                Route::patch('/{restaurant}/location','saveLocation')->name('location');
+                Route::patch('/{restaurant}/location', 'saveLocation')->name('location');
                 Route::delete('/{restaurant}/force', 'forceDelete')->name('force')->withTrashed();
                 Route::patch('/{restaurant}/restore', 'restore')->name('restore')->withTrashed();
             });
@@ -61,7 +63,9 @@ Route::middleware('auth')->group(function () {
             ->group(function () {
                 Route::resource('/foods', FoodController::class);
                 Route::post('/foods/filter', [FoodController::class, 'filter'])->name('foods.filter');
+                Route::resource('/schedules', ScheduleController::class);
             });
+
 
         Route::prefix('food-party')->controller(FoodPartyController::class)->name('food-party.')
             ->group(function () {

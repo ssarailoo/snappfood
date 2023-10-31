@@ -4,14 +4,14 @@ namespace App\Http\Requests\Schedule;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRestaurantScheduleRequest extends FormRequest
+class UpdateScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreRestaurantScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'day_id' => ['required','numeric','between:1,7'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i'],
         ];
     }
 }

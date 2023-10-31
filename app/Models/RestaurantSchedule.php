@@ -14,6 +14,7 @@ class RestaurantSchedule extends Model
         'restaurant_id',
         'schedule_id'
     ];
+    protected $table = 'restaurant_schedule';
 
 
     public function schedule(): BelongsTo

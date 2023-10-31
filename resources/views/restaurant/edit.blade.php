@@ -50,7 +50,7 @@
                 <x-input-label for="category" class="'block font-medium text-sm text-pink-700" :value="__('Category')"/>
                 <select id="category" class="block mt-1 w-full" type="text" name="restaurant_category_id">
                     @foreach(RestaurantCategory::all() as $category)
-                        <option value="{{$category->id}}"> {{$category->name}}</option>
+                        <option value="{{$category->id}}" @if($restaurant->restaurantCategory == $category) selected @endif > {{$category->name}}</option>
                     @endforeach
                 </select>
 
@@ -77,6 +77,13 @@
             <div class="flex items-center justify-end mt-4">
                 <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                     {{ __('Food Section') }}
+                </x-primary-button>
+            </div>
+        </a>
+        <a href="{{route('my-restaurant.schedules.index',$restaurant)}}">
+            <div class="flex items-center justify-end mt-4">
+                <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                    {{ __('Schedule Section') }}
                 </x-primary-button>
             </div>
         </a>

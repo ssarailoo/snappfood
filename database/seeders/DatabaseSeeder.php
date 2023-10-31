@@ -37,7 +37,8 @@ class DatabaseSeeder extends Seeder
             FoodCategorySeeder::class,
             ResturantCategorySeeder::class,
             PermissionSeeder::class,
-            RoleSeeder::class
+            RoleSeeder::class,
+            DaySeeder::class,
         ]);
 
         $admin->assignRole(Role::query()->first());
