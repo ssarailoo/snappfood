@@ -115,13 +115,13 @@ class RestaurantController extends Controller
 
     }
 
-    public function saveLocation(Request $request)
+    public function saveLocation(Request $request, Restaurant $restaurant)
     {
-        Restaurant::query()->find($request->post('restaurant_id'))->update([
+        $restaurant->update([
             'longitude' => $request->post('longitude'),
             'latitude' => $request->post('latitude')
         ]);
-        return redirect()->route('dashboard')->with('success', 'Your Restaurant Location updated Successfully');
+
     }
 
 }

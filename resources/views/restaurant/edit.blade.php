@@ -1,6 +1,6 @@
 @php use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
-    <div class="bg-white p-6">
+    <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <form method="POST" action="{{ route('restaurants.update',$restaurant) }}">
             @csrf
             @method("PUT")
@@ -37,11 +37,12 @@
             </div>
             <!-- Location -->
             <div id="map" style="height: 400px;"></div>
-            <x-input-label  class="'block font-medium text-sm text-pink-700"
+            <x-input-label class="'block font-medium text-sm text-pink-700"
                            :value="__('Choose Your Location ')"/>
-                <button type="button" id="saveLocationBtn" class="bg-pink-500 hover-bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                    {{ __('Save Location') }}
-                </button>
+            <button type="button" id="saveLocationBtn"
+                    class="bg-pink-500 hover-bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                {{ __('Save Location') }}
+            </button>
 
 
             <!-- Category -->
@@ -94,7 +95,7 @@
                 marker = L.marker([defaultLatitude, defaultLongitude]).addTo(map);
             } else {
                 // Set a default location if latitude and longitude are null
-                map = L.map("map").setView([51.5074, -0.1278], 13); // Default to London, UK
+                var map = L.map("map").setView([35.6895, 51.3906], 13); // Tehran, Iran
             }
             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 maxZoom: 19,
@@ -106,7 +107,7 @@
                 }
 
                 // Set marker to the selected location
-                marker = L.marker(e.latlng, { draggable: true, autoPan: true }).addTo(map);
+                marker = L.marker(e.latlng, {draggable: true, autoPan: true}).addTo(map);
                 marker.setOpacity(1);
 
                 // e.latlng contains the picked latitude and longitude
@@ -122,11 +123,10 @@
 
                 // Send an AJAX request to save the location
                 $.ajax({
-                    type: 'POST',
-                    url: '{{ route("restaurants.location") }}',
+                    type: 'PATCH',
+                    url: '{{ route("restaurants.location",$restaurant) }}',
                     data: {
                         _token: "{{ csrf_token() }}",
-                        restaurant_id: "{{ $restaurant->id }}",
                         latitude: latitude,
                         longitude: longitude
                     },
@@ -142,9 +142,6 @@
             });
         });
     </script>
-
-
-
 
 
 </x-app-layout>

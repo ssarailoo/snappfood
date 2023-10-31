@@ -6,7 +6,7 @@
             <p>{{ session('success') }}</p>
         </div>
     @endif
-    <div class="bg-white p-6">
+        <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
 
     <div class="relative overflow-x-auto">
         {{ $foods->appends(['sort_by' => $sortMethod])->links() }}
@@ -201,7 +201,7 @@
         let restaurantId = $('#restaurant').val();
 
         $.ajax({
-            url: '{{ route('food.filter') }}',
+            url: '{{ route('my-restaurant.foods.filter',$restaurant) }}',
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',

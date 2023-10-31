@@ -53,14 +53,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('/restaurants', RestaurantController::class);
         Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
             ->group(function () {
-                Route::post('/location','saveLocation')->name('location');
+                Route::patch('/{restaurant}/location','saveLocation')->name('location');
                 Route::delete('/{restaurant}/force', 'forceDelete')->name('force')->withTrashed();
                 Route::patch('/{restaurant}/restore', 'restore')->name('restore')->withTrashed();
             });
         Route::prefix('/{restaurant}')->name('my-restaurant.')
             ->group(function () {
                 Route::resource('/foods', FoodController::class);
-
+                Route::post('/foods/filter', [FoodController::class, 'filter'])->name('foods.filter');
             });
 
         Route::prefix('food-party')->controller(FoodPartyController::class)->name('food-party.')
@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/settings', 'showSetting')->name('showSetting');
                 Route::post('/settings', 'setting')->name('setting');
             });
-        Route::post('/foods/filter', [FoodController::class, 'filter'])->name('food.filter');
+
 
     });
 

@@ -1,6 +1,6 @@
 @php use App\Models\FoodCategory;use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
-    <div class="bg-white p-6">
+    <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
     <form method="POST" action="{{ route('my-restaurant.foods.store',$restaurant) }}" enctype="multipart/form-data">
         @csrf
 

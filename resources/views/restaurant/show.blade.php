@@ -1,6 +1,6 @@
 @php use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
 <x-app-layout>
-
+    <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
 
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
@@ -122,7 +122,7 @@
         </table>
 
     </div>
-
+    </div>
 
 </x-app-layout>
 
