@@ -61,7 +61,7 @@ class SchedulePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Restaurant $restaurant, Schedule $schedule): bool
+    public function delete(User $user, Schedule $schedule): bool
     {
         return (
                 $user->can('delete-schedule') &&
