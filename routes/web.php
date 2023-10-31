@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -65,10 +67,10 @@ Route::middleware('auth')->group(function () {
                 Route::post('/{restaurant}/{food}', 'store')->name('store');
                 Route::put('/{restaurant}/{food}/{foodParty}', 'update')->name('update');
                 Route::delete('/{restaurant}/{food}{foodParty}', 'destroy')->name('destroy');
-                Route::get('/settings','showSetting')->name('showSetting');
-                Route::post('/settings','setting')->name('setting');
+                Route::get('/settings', 'showSetting')->name('showSetting');
+                Route::post('/settings', 'setting')->name('setting');
             });
-        Route::post('/foods/filter', [FoodController::class,'filter'])->name('food.filter');
+        Route::post('/foods/filter', [FoodController::class, 'filter'])->name('food.filter');
 
     });
 

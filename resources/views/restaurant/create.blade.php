@@ -1,5 +1,6 @@
 @php use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
-<x-guest-layout>
+<x-app-layout>
+    <div class="bg-white p-6">
     <form method="POST" action="{{ route('restaurants.store') }}">
         @csrf
 
@@ -49,6 +50,7 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+    </div>
+</x-app-layout>
 
 

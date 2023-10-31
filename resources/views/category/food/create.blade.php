@@ -1,4 +1,5 @@
-<x-guest-layout>
+<x-app-layout>
+    <div class="bg-white p-6">
     <form method="POST" action="{{ route('food-categories.store') }}">
         @csrf
 
@@ -15,5 +16,6 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+        <div class="bg-white p-6">
+</x-app-layout>
 

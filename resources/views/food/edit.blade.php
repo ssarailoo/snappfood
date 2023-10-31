@@ -1,5 +1,6 @@
 @php use App\Models\FoodCategory;use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
-<x-guest-layout>
+<x-app-layout>
+    <div class="bg-white p-6">
     <!-- Update Food -->
     <form method="POST" action="{{ route('my-restaurant.foods.update',[$restaurant,$food]) }}"
           enctype="multipart/form-data">
@@ -106,7 +107,8 @@
 
 
     </form>
+        <div class="bg-white p-6">
 
-</x-guest-layout>
+</x-app-layout>
 
 

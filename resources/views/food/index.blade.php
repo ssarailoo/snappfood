@@ -6,6 +6,7 @@
             <p>{{ session('success') }}</p>
         </div>
     @endif
+    <div class="bg-white p-6">
 
     <div class="relative overflow-x-auto">
         {{ $foods->appends(['sort_by' => $sortMethod])->links() }}
@@ -190,7 +191,7 @@
             </button>
         </form>
 
-
+    </div>
 
 </x-app-layout>
 

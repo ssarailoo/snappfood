@@ -51,9 +51,8 @@ class Food extends Model
                     $foods->orderBy('price', 'desc');
                     break;
             }
-            return $foods;
-
         }
+        return $foods;
     }
 
 
