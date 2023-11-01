@@ -2,7 +2,9 @@
 <div id="food-cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
     @foreach($foods as $food)
         <div class="max-w-sm bg-gray-100 rounded overflow-hidden shadow-lg" id="food-card-{{ $food->id }}">
-            <img class="w-full" src="{{ asset('storage/' . $food->image) }}" alt="{{ $food->name }}">
+            <div style="display: flex; justify-content: center; align-items: center; height: 300px;">
+                <img style="max-width: 100%; max-height: 100%; object-fit: contain;" src="{{ asset('storage/' . $food->image) }}" alt="{{ $food->name }}">
+            </div>
             <div class="px-6 py-4">
                 <div class="font-bold text-xl mb-2">{{ $food->name }}</div>
                 <p class="text-gray-700 text-base">Materials: {{ $food->materials }}</p>
