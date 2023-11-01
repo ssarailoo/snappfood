@@ -1,41 +1,41 @@
-@php use App\Models\FoodCategory;use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
+@php use App\Models\Food\FoodCategory; @endphp
 <x-app-layout>
 
 
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
-    <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
-            <thead class="text-xs text-pink-500 uppercase bg-white dark:bg-white dark:text-pink-500">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    ID
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Image
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Category
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Materials
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Price
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Discount
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Status
-                </th>
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
+                <thead class="text-xs text-pink-500 uppercase bg-white dark:bg-white dark:text-pink-500">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        ID
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Image
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Category
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Materials
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Price
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Discount
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Status
+                    </th>
 
 
-            </tr>
-            </thead>
-            <tbody>
+                </tr>
+                </thead>
+                <tbody>
 
                 <tr class="bg-white dark:bg-white">
 
@@ -70,11 +70,11 @@
 
                 </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
 
 
-    </div>
+        </div>
     </div>
 
 </x-app-layout>

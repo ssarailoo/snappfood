@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Banner\StoreBannerRequest;
+use App\Http\Requests\Banner\UpdateBannerRequest;
 use App\Models\Banner;
-use App\Http\Requests\StoreBannerRequest;
-use App\Http\Requests\UpdateBannerRequest;
 
 class BannerController extends Controller
 {

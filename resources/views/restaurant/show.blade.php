@@ -1,44 +1,44 @@
-@php use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
+@php use App\Models\Restaurant\Restaurant;use App\Models\Restaurant\RestaurantCategory;use App\Models\User; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
 
-    <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
-            <thead class="text-xs text-pink-500 uppercase bg-white dark:bg-white dark:text-pink-500">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    ID
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Address
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Telephone
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Category
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Bank Account Number
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Restaurant Manager ID
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Restaurant Manager Name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Action
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Action
-                </th>
-            </tr>
-            </thead>
-            <tbody>
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
+                <thead class="text-xs text-pink-500 uppercase bg-white dark:bg-white dark:text-pink-500">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        ID
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Address
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Telephone
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Category
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Bank Account Number
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Restaurant Manager ID
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Restaurant Manager Name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Action
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
 
                 <tr class="bg-white dark:bg-white">
 
@@ -83,8 +83,6 @@
                         <td class="px-6 py-4">
                             @if(! Restaurant::query()->where('user_id',$restaurant->user_id )->first())
 
-
-
                                 <form action="{{route('restaurants.restore',$restaurant)}}" method="post">
                                     @csrf
                                     @method("PATCH")
@@ -97,31 +95,28 @@
                             @else
                                 #
 
-
-
-                        @endif
+                            @endif
 
 
                         </td>
 
+                    @else
+                        <td class="px-6 py-4">
+                            #
+                        </td>
+                        <td class="px-6 py-4">
+                            #
+                        </td>
 
-                        @else
-                            <td class="px-6 py-4">
-                                #
-                            </td>
-                            <td class="px-6 py-4">
-                                #
-                            </td>
-
-                        @endif
+                    @endif
 
 
                 </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
 
-    </div>
+        </div>
     </div>
 
 </x-app-layout>

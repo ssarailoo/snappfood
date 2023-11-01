@@ -2,11 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Restaurant;
-use App\Models\RestaurantSchedule;
-use App\Models\Schedule;
+use App\Models\Restaurant\Restaurant;
+use App\Models\Schedule\Schedule;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class SchedulePolicy
 {

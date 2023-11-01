@@ -1,4 +1,4 @@
-@php use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Models\Restaurant\RestaurantCategory; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <form method="POST" action="{{ route('restaurants.update',$restaurant) }}">

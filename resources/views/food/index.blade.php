@@ -1,4 +1,4 @@
-@php use App\Models\FoodCategory;use App\Models\FoodParty;use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
+@php use App\Models\Food\FoodCategory;use App\Models\Food\FoodParty; @endphp
 <x-app-layout>
     @if(session('success'))
         <div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4 mb-4" role="alert">
@@ -8,12 +8,13 @@
     @endif
     {{ $foods->appends(['sort_by' => $sortMethod])->links() }}
     <div class="sm:p-8  bg-white shadow sm:rounded-lg p-6">
-        <div id="food-cards-container" >
+        <div id="food-cards-container">
             <div class="grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
                 @foreach($foods as $food)
                     <div class="max-w-sm bg-gray-100 rounded overflow-hidden shadow-lg" id="food-card-{{ $food->id }}">
                         <div style="display: flex; justify-content: center; align-items: center; height: 300px;">
-                            <img style="max-width: 100%; max-height: 100%; object-fit: contain;" src="{{ asset('storage/' . $food->image) }}" alt="{{ $food->name }}">
+                            <img style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                                 src="{{ asset('storage/' . $food->image) }}" alt="{{ $food->name }}">
                         </div>
                         <div class="px-6 py-4">
                             <div class="font-bold text-xl mb-2">{{ $food->name }}</div>

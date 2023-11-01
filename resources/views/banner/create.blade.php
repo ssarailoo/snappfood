@@ -1,4 +1,4 @@
-@php use App\Enums\Color;use App\Models\Day;use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Enums\Color; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <form method="POST" action="{{ route('banners.store') }}">

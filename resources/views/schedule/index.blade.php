@@ -1,4 +1,4 @@
-@php use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
+@php @endphp
 <x-app-layout>
     @if(session('success'))
         <div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4 mb-4" role="alert">
@@ -53,42 +53,40 @@
                         </td>
 
 
-                            <td class="px-6 py-4">
-                                <form action="{{route('my-restaurant.schedules.destroy',[$restaurant,$schedule])}}" method="post">
-                                    @csrf
-                                    @method("DELETE")
-                                    <x-primary-button
-                                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                        {{ __('Delete') }}
-                                    </x-primary-button>
+                        <td class="px-6 py-4">
+                            <form action="{{route('my-restaurant.schedules.destroy',[$restaurant,$schedule])}}"
+                                  method="post">
+                                @csrf
+                                @method("DELETE")
+                                <x-primary-button
+                                    class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('Delete') }}
+                                </x-primary-button>
 
-                                </form>
-                            </td>
-                            <td class="px-6 py-4">
-
-
-                                <a href="{{route('my-restaurant.schedules.edit',[$restaurant,$schedule])}}">
-
-                                        <x-primary-button
-                                                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                            {{ __('Edit') }}
-                                        </x-primary-button>
-
-                                </a>
+                            </form>
+                        </td>
+                        <td class="px-6 py-4">
 
 
+                            <a href="{{route('my-restaurant.schedules.edit',[$restaurant,$schedule])}}">
 
-                            </td>
+                                <x-primary-button
+                                    class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('Edit') }}
+                                </x-primary-button>
+
+                            </a>
 
 
+                        </td>
 
 
                     </tr>
                 @endforeach
 
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
             <a href="{{route('my-restaurant.schedules.create',$restaurant)}}">
                 <x-primary-button
                     class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
@@ -96,7 +94,7 @@
                 </x-primary-button>
             </a>
 
-    </div>
+        </div>
     </div>
 
 </x-app-layout>

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Restaurant;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
-use App\Models\Restaurant;
-
-use Illuminate\Auth\Access\AuthorizationException;
+use App\Models\Restaurant\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
@@ -18,14 +17,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        try {
-            $this->authorize('viewAny', Restaurant::class);
-        } catch (AuthorizationException $e) {
-
-            return ['customMessage' => 'You already have a restaurant'
-            ];  // Your custom message
-
-        }
+        $this->authorize('viewAny', Restaurant::class);
         return view('restaurant.index', [
             'restaurants' => Restaurant::withTrashed()->get()
         ]);

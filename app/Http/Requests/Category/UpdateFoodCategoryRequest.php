@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Category;
 
-use App\Models\FoodCategory;
+use App\Models\Food\FoodCategory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateFoodCategoryRequest extends FormRequest

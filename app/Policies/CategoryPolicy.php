@@ -2,9 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\RestaurantCategory;
+use App\Models\Restaurant\RestaurantCategory;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class CategoryPolicy
 {

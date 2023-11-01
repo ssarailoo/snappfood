@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Restauarant;
 
-use App\Models\Restaurant;
+use App\Models\Restaurant\Restaurant;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRestaurantRequest extends FormRequest

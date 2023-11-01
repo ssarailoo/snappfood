@@ -1,4 +1,4 @@
-@php use App\Models\FoodCategory;use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Models\Food\FoodCategory; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <!-- Update Food -->
@@ -90,7 +90,7 @@
                 </div>
                 <div class="flex items-center justify-end mt-4">
                     <x-primary-button
-                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                         {{ __('Update Food party') }}
                     </x-primary-button>
                 </div>
@@ -103,7 +103,7 @@
 
                 <div class="flex items-center justify-end mt-4">
                     <x-primary-button
-                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                         {{ __('Delete Food party') }}
                     </x-primary-button>
                 </div>
@@ -111,7 +111,7 @@
 
             </form>
         @endif
-            <div class="bg-white p-6">
+        <div class="bg-white p-6">
 
 </x-app-layout>
 

@@ -2,17 +2,15 @@
 
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FoodCategoryController;
-use App\Http\Controllers\FoodController;
-use App\Http\Controllers\FoodPartyController;
+use App\Http\Controllers\Food\FoodCategoryController;
+use App\Http\Controllers\Food\FoodController;
+use App\Http\Controllers\Food\FoodPartyController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RestaurantCategoryController;
-use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\Restaurant\RestaurantCategoryController;
+use App\Http\Controllers\Restaurant\RestaurantController;
+use App\Http\Controllers\Restaurant\ScheduleController;
 use App\Http\Controllers\RestaurantScheduleController;
-use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\WelcomeController;
-use App\Models\Restaurant;
-use App\Models\RestaurantCategory;
 use Illuminate\Support\Facades\Route;
 
 /*

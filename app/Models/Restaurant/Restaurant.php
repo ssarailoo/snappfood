@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Restaurant;
 
+use App\Models\Cart\Cart;
+use App\Models\Schedule\RestaurantSchedule;
+use App\Models\Schedule\Schedule;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Restaurant extends Model

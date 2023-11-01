@@ -4,18 +4,17 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Banner;
-use App\Models\Food;
-use App\Models\FoodCategory;
-use App\Models\Restaurant;
-use App\Models\RestaurantCategory;
-use App\Models\Schedule;
+use App\Models\Food\Food;
+use App\Models\Food\FoodCategory;
+use App\Models\Restaurant\Restaurant;
+use App\Models\Restaurant\RestaurantCategory;
+use App\Models\Schedule\Schedule;
 use App\Policies\BannerPolicy;
-use App\Policies\FoodCategoryPolicy;
 use App\Policies\CategoryPolicy;
+use App\Policies\FoodCategoryPolicy;
 use App\Policies\FoodPolicy;
 use App\Policies\RestaurantPolicy;
 use App\Policies\SchedulePolicy;
-use Database\Seeders\FoodCategorySeeder;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider

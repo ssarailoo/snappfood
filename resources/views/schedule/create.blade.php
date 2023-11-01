@@ -1,4 +1,4 @@
-@php use App\Models\Day;use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Models\Schedule\Day; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <form method="POST" action="{{ route('my-restaurant.schedules.store',$restaurant) }}">
@@ -16,8 +16,10 @@
             </div>
             <!-- Start Time -->
             <div>
-                <x-input-label for="start_time" class="'block font-medium text-sm text-pink-700" :value="__('Start Time')"/>
-                <x-text-input id="start_time" class="block mt-1 w-full" type="time" name="start_time" :value="old('start_time')"/>
+                <x-input-label for="start_time" class="'block font-medium text-sm text-pink-700"
+                               :value="__('Start Time')"/>
+                <x-text-input id="start_time" class="block mt-1 w-full" type="time" name="start_time"
+                              :value="old('start_time')"/>
                 <x-input-error :messages="$errors->get('start_time')" class="mt-2"/>
             </div>
             <!-- End Time -->
@@ -28,7 +30,6 @@
                               :value="old('end_time')"/>
                 <x-input-error :messages="$errors->get('end_time')" class="mt-2"/>
             </div>
-
 
 
             <div class="flex items-center justify-end mt-4">

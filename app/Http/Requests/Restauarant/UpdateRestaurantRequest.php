@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Restauarant;
 
-use App\Models\Restaurant;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UpdateRestaurantRequest extends FormRequest

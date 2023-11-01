@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Day;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Schedule\Day;
 use Illuminate\Database\Seeder;
 
 class DaySeeder extends Seeder

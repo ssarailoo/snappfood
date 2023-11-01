@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Food;
-use App\Models\Restaurant;
+use App\Models\Food\Food;
+use App\Models\Restaurant\Restaurant;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class FoodPolicy
 {

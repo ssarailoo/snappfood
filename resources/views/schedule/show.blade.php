@@ -1,4 +1,4 @@
-@php use App\Models\Restaurant;use App\Models\RestaurantCategory;use App\Models\User; @endphp
+@php @endphp
 <x-app-layout>
 
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
@@ -24,40 +24,32 @@
                 <tbody>
 
 
-                        <tr class="bg-white dark:bg-white">
+                <tr class="bg-white dark:bg-white">
 
 
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                             1
-                            </th>
-                            <td class="px-6 py-4">
-                                {{$schedule->day->name}}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{$schedule->start_time}}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{$schedule->end_time}}
-                            </td>
+                    <th scope="row"
+                        class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
+                        1
+                    </th>
+                    <td class="px-6 py-4">
+                        {{$schedule->day->name}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{$schedule->start_time}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{$schedule->end_time}}
+                    </td>
 
 
-
-
-
-
-
-
-
-                        </tr>
-
+                </tr>
 
 
                 </tbody>
             </table>
             <a href="{{route('my-restaurant.schedules.index',$restaurant)}}">
                 <x-primary-button
-                    class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                     {{ __('Back') }}
                 </x-primary-button>
             </a>

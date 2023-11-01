@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Food;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Food\StoreFoodRequest;
 use App\Http\Requests\Food\UpdateFoodRequest;
-use App\Models\Food;
-use App\Models\Restaurant;
+use App\Models\Food\Food;
+use App\Models\Restaurant\Restaurant;
 use Illuminate\Http\Request;
 
 

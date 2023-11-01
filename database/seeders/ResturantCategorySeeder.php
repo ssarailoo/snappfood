@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\RestaurantCategory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Restaurant\RestaurantCategory;
 use Illuminate\Database\Seeder;
 
 class ResturantCategorySeeder extends Seeder

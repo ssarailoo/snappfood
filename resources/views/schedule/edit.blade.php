@@ -1,4 +1,4 @@
-@php use App\Models\Day;use App\Models\RestaurantCategory;use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Models\Schedule\Day; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <form method="POST" action="{{ route('my-restaurant.schedules.update',[$restaurant,$schedule]) }}">
@@ -10,7 +10,7 @@
                 <select id="day" name="day_id">
                     @foreach(Day::all() as $day)
                         <option
-                            value="{{$day->id}} @if($schedule->day == $day) selected  @endif ">{{$day->name}}</option>
+                                value="{{$day->id}} @if($schedule->day == $day) selected  @endif ">{{$day->name}}</option>
                     @endforeach
                 </select>
                 <x-input-error :messages="$errors->get('day')" class="mt-2"/>

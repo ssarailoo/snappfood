@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Food;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodParty\SetFoodPartyTimesRequest;
 use App\Http\Requests\FoodParty\StoreFoodPartyRequest;
 use App\Http\Requests\FoodParty\UpdateFoodPartyRequest;
-use App\Models\Food;
-use App\Models\FoodParty;
-use App\Models\Restaurant;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Food\Food;
+use App\Models\Food\FoodParty;
+use App\Models\Restaurant\Restaurant;
 
 class FoodPartyController extends Controller
 {

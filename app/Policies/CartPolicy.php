@@ -2,9 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Cart;
+use App\Models\Cart\Cart;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class CartPolicy
 {

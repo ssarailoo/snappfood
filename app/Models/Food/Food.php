@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Food;
 
 use App\Casts\ImageCast;
-use App\Http\Requests\Food\StoreFoodRequest;
+use App\Models\Cart\Cart;
+use App\Models\Cart\CartFood;
+use App\Models\Restaurant\Restaurant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
