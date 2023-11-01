@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Banner;
 use App\Models\Food;
 use App\Models\FoodCategory;
 use App\Models\Restaurant;
 use App\Models\RestaurantCategory;
 use App\Models\Schedule;
+use App\Policies\BannerPolicy;
 use App\Policies\FoodCategoryPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\FoodPolicy;
@@ -28,7 +30,8 @@ class AuthServiceProvider extends ServiceProvider
         FoodCategory::class => CategoryPolicy::class,
         Restaurant::class => RestaurantPolicy::class,
         Food::class => FoodPolicy::class,
-        Schedule::class => SchedulePolicy::class
+        Schedule::class => SchedulePolicy::class,
+        Banner::class => BannerPolicy::class
     ];
 
     /**

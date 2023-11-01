@@ -40,6 +40,31 @@ class PermissionSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'name' => 'create-banner',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'viewAny-banners',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'view-banner',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'update-banner',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'delete-banner',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
                 'name' => 'viewAny-restaurants',
                 'created_at' => now(),
                 'updated_at' => now()

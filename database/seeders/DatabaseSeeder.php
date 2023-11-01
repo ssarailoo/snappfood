@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Banner;
 use App\Models\FoodCategory;
 use App\Models\Restaurant;
 use App\Models\User;
@@ -28,6 +29,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'ali',
             'email' => 'a@yahoo.com',
             'phone_number' => '09112727946',
+            'password' => '123456789',
+
+        ]);
+        $user2 = User::query()->create([
+            'name' => 'hossein',
+            'email' => 'h@yahoo.com',
+            'phone_number' => '09112740324',
             'password' => '123456789',
 
         ]);
@@ -60,6 +68,12 @@ class DatabaseSeeder extends Seeder
             'restaurant_category_id' => '2',
             'user_id' => $user->id
         ]);
+        Banner::query()->create([
+            'title' => 'Summer Sale',
+            'content' => 'Buy 1 Pizza get 2 !',
+            'color' => 'violet'
+        ]);
+
         $user->assignRole(Role::query()->find(2));
     }
 }

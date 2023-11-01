@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FoodCategoryController;
 use App\Http\Controllers\FoodController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\RestaurantCategoryController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\RestaurantScheduleController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\WelcomeController;
 use App\Models\Restaurant;
 use App\Models\RestaurantCategory;
 use Illuminate\Support\Facades\Route;
@@ -23,10 +25,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/', WelcomeController::class);
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/settings', 'showSetting')->name('showSetting');
                 Route::post('/settings', 'setting')->name('setting');
             });
-
+        Route::resource('banners', BannerController::class);
 
     });
 

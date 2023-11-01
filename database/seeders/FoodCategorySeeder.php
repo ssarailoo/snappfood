@@ -15,22 +15,42 @@ class FoodCategorySeeder extends Seeder
     {
         FoodCategory::query()->insert([
                 [
-                    'name' => 'خورشتی',
+                    'name' => 'Main Dish',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'name' => 'فست-فود',
+                    'name' => 'Side Dish',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'name' => 'کباب',
+                    'name' => 'Kebab',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'name' => 'سوخاری',
+                    'name' => 'Fried Chicken',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => 'Pizza',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => 'Dessert',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => 'Appetizer',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => 'Drinks',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],

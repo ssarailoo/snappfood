@@ -15,25 +15,46 @@ class ResturantCategorySeeder extends Seeder
     {
         RestaurantCategory::query()->insert([
                 [
-                    'name' => 'ایرانی',
+                    'name' => 'Restaurant',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'name' => 'فست-فود',
+                    'name' => 'Fast Food',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'name' => 'کبابی',
+                    'name' => 'Cafe',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'name' => 'ساندویچی',
+                    'name' => 'Fast Causal',
                     'created_at' => now(),
                     'updated_at' => now(),
-                ]
+                ],
+                [
+                    'name' => 'Food Truck',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => 'Buffet',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => 'Italian Cuisine',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => 'Bistro',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+
             ]
 
         );

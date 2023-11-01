@@ -73,6 +73,13 @@
                                 {{ __('Food Party Settings') }}
                             </x-dropdown-link>
                         @endif
+
+                        @if(Auth::user()->can('viewAny-banners'))
+
+                            <x-dropdown-link :href="route('banners.index')">
+                                {{ __('Banners') }}
+                            </x-dropdown-link>
+                        @endif
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
