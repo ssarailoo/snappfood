@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('food', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('restaurant_id')->constrained();
-            $table->foreignId('food_category_id')->constrained();
+            $table->foreignId('restaurant_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('food_category_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('materials');
             $table->string('image')->nullable()->default('null');
