@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
 use App\Models\Restaurant\Restaurant;
+use App\Models\Restaurant\RestaurantCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
@@ -15,11 +16,16 @@ class RestaurantController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Restaurant::class);
+        $categoryFilter = $request->get('restaurant_category_id');
         return view('restaurant.index', [
-            'restaurants' => Restaurant::withTrashed()->get()
+            'restaurants' => Restaurant::withTrashed()
+                ->when($categoryFilter, function ($query) use ($categoryFilter) {
+                    return $query->where('restaurant_category_id', $categoryFilter);
+                })
+                ->get(),
         ]);
     }
 
