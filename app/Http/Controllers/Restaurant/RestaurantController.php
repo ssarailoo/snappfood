@@ -83,7 +83,7 @@ class RestaurantController extends Controller
         $this->authorize('update', $restaurant);
 
         $restaurant->update($request->validated());
-        return redirect()->route('dashboard')->with('success', 'Your Restaurant Updated Successfully');
+        return redirect()->route('restaurants.edit',$restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");
     }
 
     /**

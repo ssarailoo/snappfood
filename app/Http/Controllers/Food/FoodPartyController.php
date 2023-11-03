@@ -26,7 +26,7 @@ class FoodPartyController extends Controller
      */
     public function store(StoreFoodPartyRequest $request, Restaurant $restaurant, Food $food)
     {
-        $this->authorize('update', [$food, $restaurant]);
+        $this->authorize('create',[Food::class, $restaurant]);
         FoodParty::query()->create($request->validated());
         return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
         with('success',
@@ -39,7 +39,7 @@ class FoodPartyController extends Controller
      */
     public function update(UpdateFoodPartyRequest $request, Restaurant $restaurant, Food $food, FoodParty $foodParty)
     {
-        $this->authorize('update', [$food, $restaurant]);
+        $this->authorize('update', [Food::class, $restaurant]);
         $foodParty->update($request->validated());
         return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
         with('success',
@@ -51,7 +51,7 @@ class FoodPartyController extends Controller
      */
     public function destroy(Restaurant $restaurant, Food $food, FoodParty $foodParty)
     {
-        $this->authorize('delete', [$food, $restaurant]);
+        $this->authorize('delete', [Food::class, $restaurant]);
         $foodParty->delete();
         return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
         with('success',

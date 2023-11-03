@@ -13,39 +13,39 @@ class FoodPolicy
      */
     public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        return $user->can('viewAny-foods')&& $restaurant==$user->restaurant or  $user->can('edit-food');
+        return ($user->can('viewAny-foods') and $restaurant == $user->restaurant) or $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Food $food,Restaurant $restaurant): bool
+    public function view(User $user, Restaurant $restaurant): bool
     {
-        return $user->can('view-food')&& $restaurant==$user->restaurant  or  $user->can('edit-food'); ;
+        return $user->can('view-food') && $restaurant == $user->restaurant or $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user,Restaurant $restaurant): bool
+    public function create(User $user, Restaurant $restaurant): bool
     {
-        return $user->can('create-food')&& $restaurant==$user->restaurant   or  $user->can('edit-food');
+        return $user->can('create-food') && $restaurant == $user->restaurant  or $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Food $food,Restaurant $restaurant): bool
+    public function update(User $user, Restaurant $restaurant): bool
     {
-       return  $user->can('update-food')&& $restaurant==$user->restaurant or  $user->can('edit-food');
+        return $user->can('update-food') && $restaurant == $user->restaurant or $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Food $food,Restaurant $restaurant): bool
+    public function delete(User $user, Restaurant $restaurant): bool
     {
-        return  $user->can('delete-food')&& $restaurant==$user->restaurant  or  $user->can('edit-food');
+        return( $user->can('delete-food') && $restaurant == $user->restaurant ) or $user->hasRole('admin');
     }
 
     /**

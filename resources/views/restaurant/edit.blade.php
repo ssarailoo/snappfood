@@ -1,5 +1,11 @@
 @php use App\Models\Restaurant\RestaurantCategory; @endphp
 <x-app-layout>
+    @if(session('success'))
+        <div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4 mb-4" role="alert">
+            <p class="font-bold">Success!</p>
+            <p>{{ session('success') }}</p>
+        </div>
+    @endif
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <form method="POST" action="{{ route('restaurants.update',$restaurant) }}">
             @csrf

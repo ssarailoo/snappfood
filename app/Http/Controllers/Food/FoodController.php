@@ -84,7 +84,7 @@ class FoodController extends Controller
     public function edit(Restaurant $restaurant, Food $food)
     {
 
-        $this->authorize('update', [$food, $restaurant]);
+        $this->authorize('update', [Food::class, $restaurant]);
         return view('food.edit', [
             'restaurant' => $restaurant,
             'food' => $food
@@ -96,7 +96,7 @@ class FoodController extends Controller
      */
     public function update(UpdateFoodRequest $request, Restaurant $restaurant, Food $food)
     {
-        $this->authorize('update', [$food, $restaurant]);
+        $this->authorize('update', [Food::class, $restaurant]);
         $food->update($request->validated());
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");
     }
@@ -106,7 +106,7 @@ class FoodController extends Controller
      */
     public function destroy(Restaurant $restaurant, Food $food,)
     {
-        $this->authorize('delete', [$food, $restaurant]);
+        $this->authorize('delete', [Food::class, $restaurant]);
         $food->delete();
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name deleted successfully ");
     }

@@ -42,16 +42,22 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-                        @if(Auth::user()->restaurant)
+                        @if(Auth::user()->restaurant==!null)
                             <x-dropdown-link :href="route('restaurants.edit',Auth::user()->restaurant)">
                                 {{ __('My Restaurant') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('my-restaurant.foods.index',Auth::user()->restaurant)">
+                                {{ __('My Foods') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('my-restaurant.schedules.index',Auth::user()->restaurant)">
+                                {{ __('My Schedules') }}
                             </x-dropdown-link>
                         @else
                             <x-dropdown-link :href="route('restaurants.create')">
                                 {{ __('Create Restaurant') }}
                             </x-dropdown-link>
                         @endif
-                        @if(Auth::user()->can('viewAny-categories'))
+                        @if(Auth::user()->hasRole('admin'))
                             <x-dropdown-link :href="route('rest-categories.index')">
                                 {{ __('Restaurant Categories') }}
                             </x-dropdown-link>
@@ -59,27 +65,17 @@
                             <x-dropdown-link :href="route('food-categories.index')">
                                 {{ __('Food Categories') }}
                             </x-dropdown-link>
-                        @endif
-                        @if(Auth::user()->can('viewAny-restaurants'))
-
                             <x-dropdown-link :href="route('restaurants.index')">
                                 {{ __('All Restaurants') }}
                             </x-dropdown-link>
-                        @endif
-
-                        @if(Auth::user()->can('edit-food'))
-
                             <x-dropdown-link :href="route('food-party.showSetting')">
                                 {{ __('Food Party Settings') }}
                             </x-dropdown-link>
-                        @endif
-
-                        @if(Auth::user()->can('viewAny-banners'))
-
                             <x-dropdown-link :href="route('banners.index')">
                                 {{ __('Banners') }}
                             </x-dropdown-link>
                         @endif
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

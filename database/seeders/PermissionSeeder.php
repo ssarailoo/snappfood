@@ -85,21 +85,7 @@ class PermissionSeeder extends Seeder
                 'updated_at' => now()
             ],
 
-            [
-                'name' => 'edit-restaurant',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'edit-food',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'edit-schedule',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
+
 
             [
                 'name' => 'create-food',

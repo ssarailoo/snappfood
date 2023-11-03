@@ -13,11 +13,8 @@ class SchedulePolicy
      */
     public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        return (
-                $user->can('viewAny-schedules')
-                && $user->restaurant == $restaurant
-            )
-            || $user->can('edit-schedule');
+        return ($user->can('viewAny-schedules') and $user->restaurant == $restaurant)
+            or $user->hasRole('admin');
     }
 
     /**
@@ -25,48 +22,40 @@ class SchedulePolicy
      */
     public function view(User $user, Schedule $schedule): bool
     {
-        return (
-                $user->can('view-schedule') &&
-
-                $user->restaurant->schedules->find($schedule->id) == !null
-            )
-            || $user->can('edit-schedule');
+        return ($user->can('view-schedule') and $user->restaurant->schedules->find($schedule->id) == !null)
+            or $user->hasRole('admin');
     }
+  
 
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user, Restaurant $restaurant): bool
     {
-        return ($user->can('create-schedule') &&
-                $user->restaurant == $restaurant)
-            || $user->can('edit-schedule');
+        return ($user->can('create-schedule') and $user->restaurant == $restaurant)
+            or $user->hasRole('admin');
     }
+
 
     /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Schedule $schedule): bool
     {
-        return (
-                $user->can('update-schedule') &&
-
-                $user->restaurant->schedules->find($schedule->id) == !null
-            )
-            || $user->can('edit-schedule');
+        return ($user->can('update-schedule') and $user->restaurant->schedules->find($schedule->id) == !null)
+            or $user->hasRole('admin');
     }
+
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Schedule $schedule): bool
     {
-        return (
-                $user->can('delete-schedule') &&
-                $user->restaurant->schedules->find($schedule->id) == !null
-            )
-            || $user->can('edit-schedule');
+        return ($user->can('delete-schedule') and $user->restaurant->schedules->find($schedule->id) == !null)
+            or $user->hasRole('admin');
     }
+
 
 
 }

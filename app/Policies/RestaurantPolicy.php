@@ -36,7 +36,7 @@ class RestaurantPolicy
      */
     public function update(User $user, Restaurant $restaurant): bool
     {
-        return $user->id == $restaurant->user_id || $user->can('edit-restaurant');
+        return $user->id == $restaurant->user_id or $user->hasRole('admin');
     }
 
     /**
@@ -44,13 +44,13 @@ class RestaurantPolicy
      */
     public function delete(User $user, Restaurant $restaurant): bool
     {
-        return $user->id == $restaurant->user_id || $user->can('edit-restaurant');
+        return $user->id == $restaurant->user_id or $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Restaurant $restaurant): bool
+    public function restore(User $user): bool
     {
         return $user->can('restore');
     }
@@ -58,7 +58,7 @@ class RestaurantPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Restaurant $restaurant): bool
+    public function forceDelete(User $user): bool
     {
         return $user->can('force-delete');
     }

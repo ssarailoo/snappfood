@@ -63,9 +63,9 @@ class Food extends Model
         return $this->belongsTo(Restaurant::class);
     }
 
-    public function foodCategory(): HasOne
+    public function foodCategory(): BelongsTo
     {
-        return $this->hasOne(FoodCategory::class);
+        return $this->belongsTo(FoodCategory::class);
     }
 
     public function cartFoods(): HasMany
