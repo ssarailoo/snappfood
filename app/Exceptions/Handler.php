@@ -29,11 +29,11 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, \Throwable $e)
-    {
-        if ($e instanceof AuthorizationException)
-            return response()->view('error.403', ['exception' => $e], 403);
-
-        return parent::render($request, $e);
-    }
+//    public function render($request, \Throwable $e)
+//    {
+//        if ($e instanceof AuthorizationException)
+//            return response()->view('error.403', ['exception' => $e], 403);
+//
+//        return parent::render($request, $e);
+//    }
 }

@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Cart\Cart;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'email',
         'phone_number',
         'password',
+        'current_address'
     ];
 
 
@@ -50,4 +52,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Cart::class);
     }
+    public function addressUsers(): HasMany
+    {
+        return $this->hasMany(AddressUser::class,'user_id','id');
+    }
+
+    public function addresses(): BelongsToMany
+    {
+    return    $this->belongsToMany(Address::class);
+    }
+
 }
