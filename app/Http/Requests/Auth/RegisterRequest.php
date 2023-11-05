@@ -31,4 +31,23 @@ class RegisterRequest extends FormRequest
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => [
+                'description' => 'The name of the user.',
+                'example' => 'Saeed',
+            ],
+            'email' => [
+                'description' => 'The email of the user.',
+                'example' => 'saeed@example.com',
+            ],
+
+            'password' => [
+                'description' => 'The user\'s password.',
+                'example'=>'ss123456'
+            ],
+
+        ];
+    }
 }

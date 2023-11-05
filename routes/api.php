@@ -15,21 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/hello',function (){
-        return'hello';
-    });
-    Route::prefix('addresses')->controller(AddressController::class)->name('addresses.')->group(function () {
-        Route::get('/', 'index')->name('.index');
-        Route::get('/{address}', 'show')->name('.show');
-        Route::post('/', 'store')->name('.store');
-        Route::put('/{address}/', 'update')->name('.update');
-        Route::delete('/{address}/', 'destroy')->name('.destroy');
-        Route::patch('/{address}', 'updateUserAddress');
-
-
-    });
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+        Route::prefix('addresses')->controller(AddressController::class)->name('addresses.')
+            ->group(function () {
+            Route::get('/', 'index')->name('.index');
+            Route::get('/{address}', 'show')->name('.show');
+            Route::post('/', 'store')->name('.store');
+            Route::put('/{address}/', 'update')->name('.update');
+            Route::delete('/{address}/', 'destroy')->name('.destroy');
+            Route::patch('/{address}', 'updateUserAddress')->name('update.user');
+        });
 });

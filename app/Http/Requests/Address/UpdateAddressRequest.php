@@ -28,4 +28,26 @@ class UpdateAddressRequest extends FormRequest
             'latitude' => ['required', 'numeric', 'between:-90.000000000000,90.000000000000'],
         ];
     }
+
+    public function bodyParameters()
+    {
+        return [
+            'title' => [
+                'description' => 'Title of the address.',
+                'example'=>'home'
+            ],
+            'address' => [
+                'description' => 'Address details.',
+                'example'=>'Tehran , Sattar Khan st'
+            ],
+            'longitude' => [
+                'description' => 'Longitude of the address coordinates.',
+                'example'=>'50.0214'
+            ],
+            'latitude' => [
+                'description' => 'Latitude of the address coordinates.',
+                'example'=>'52.36'
+            ],
+        ];
+    }
 }

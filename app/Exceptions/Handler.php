@@ -29,11 +29,18 @@ class Handler extends ExceptionHandler
         });
     }
 
-//    public function render($request, \Throwable $e)
-//    {
-//        if ($e instanceof AuthorizationException)
-//            return response()->view('error.403', ['exception' => $e], 403);
-//
-//        return parent::render($request, $e);
-//    }
+    public function render($request, \Throwable $e)
+    {
+        if ($e instanceof AuthorizationException) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'responseMessage' => 'You do not have the required authorization.',
+                    'responseStatus'  => 403,
+                ], 403);
+            } else {
+                return response()->view('error.403', ['exception' => $e], 403);
+            }
+        }
+        return parent::render($request, $e);
+    }
 }

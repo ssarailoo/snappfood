@@ -22,5 +22,12 @@ class IranianRuleNumber implements Rule
     {
         return 'The :attribute is not a valid Iranian phone number.';
     }
+    public static function docs(): array
+    {
+        return [
+            'description' => 'The data must be a valid Iranian phone number',
+            'example' => '09122222222', // Only used if no other supported rules are present
+        ];
+    }
 
 }

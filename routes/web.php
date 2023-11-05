@@ -12,6 +12,7 @@ use App\Http\Controllers\Restaurant\ScheduleController;
 use App\Http\Controllers\RestaurantScheduleController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+use Knuckles\Scribe\ScribeServiceProvider;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', WelcomeController::class);
+
 Route::middleware('auth')->group(function () {
+    Route::view('/docs', 'scribe/index')->middleware('role:admin');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
