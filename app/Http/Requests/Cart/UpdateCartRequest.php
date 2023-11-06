@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Cart;
 
+use App\Models\Food\Food;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCartRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateCartRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,9 @@ class UpdateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'food_id' => ['required', 'numeric',"in:".implode(',',Food::query()->pluck('id')->toArray())],
+            'food_count' => ['required', 'numeric', 'between:1,100'],
         ];
     }
+
 }

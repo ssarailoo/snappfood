@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Food;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -14,6 +14,7 @@ class FoodResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
 
             'id' => $this->id,
@@ -22,10 +23,10 @@ class FoodResource extends JsonResource
             'materials' => $this->materials,
             'image' => $this->image,
             'off' => [
-                'label' => $this->discount."%",
-                'factor' => $this->price*(100-$this->discount)/100
+                'label' => $this->discount . "%",
+                'factor' => $this->price * (100 - $this->discount) / 100
             ],
-            ];
+        ];
 
 
     }

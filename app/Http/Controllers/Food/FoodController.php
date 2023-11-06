@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Food\FilterFoodRequest;
 use App\Http\Requests\Food\StoreFoodRequest;
 use App\Http\Requests\Food\UpdateFoodRequest;
-use App\Http\Resources\FoodCategoryCollection;
-use App\Http\Resources\FoodCategoryResource;
-use App\Http\Resources\FoodResource;
+use App\Http\Resources\Food\FoodCategoryCollection;
 use App\Models\Food\Food;
 use App\Models\Food\FoodCategory;
 use App\Models\Restaurant\Restaurant;
@@ -20,7 +18,7 @@ class FoodController extends Controller
     /**
      *  Display a listing of the resource.
      * @group Food
-     * @apiResourceCollection App\Http\Resources\FoodCategoryCollection
+     * @apiResourceCollection App\Http\Resources\Food\FoodCategoryCollection
      * @apiResourceModel App\Models\Food\FoodCategory
      */
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Food\FoodController;
 use App\Http\Controllers\Restaurant\RestaurantController;
 use Illuminate\Support\Facades\Route;
@@ -37,4 +38,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
             Route::get('/{restaurant}', 'show')->name('show');
         });
     Route::get('/restaurants/{restaurant}/foods', [FoodController::class, 'index'])->name('foods.index');
+    Route::prefix('/carts')->controller(CartController::class)->name('carts.')->group(function (){
+       Route::get('/','index')->name('index');
+       Route::get('/{cart}','show')->name('show');
+       Route::post('/','store')->name('store');
+       Route::patch('/{cart}','update')->name('update');
+       Route::delete('/{cart}','destroy')->name('destroy');
+       Route::post('/{cart}/pay','pay')->name('pay');
+    });
 });
