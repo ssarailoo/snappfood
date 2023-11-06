@@ -94,7 +94,6 @@ class AddressController extends Controller
 
     /**
      *  Delete an address if the user has the necessary permission (address must belong to the user's addresses).
-     *
      * @response 204
      * @response 403 {
      *      "message": "You are not authorized to delete this address"
@@ -115,9 +114,6 @@ class AddressController extends Controller
     /**
      * Update the current address for the authenticated user.
      * Update the user's current address if they have the necessary permission (address must belong to the user's addresses).
-     *
-     * @urlParam address required The ID of the address to set as the current address.
-     *
      * @response 200 {
      *     "message": "Current address updated successfully"
      * }

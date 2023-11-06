@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Restaurant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
+use App\Http\Requests\Restaurant\RestaurantFilterRequest;
+use App\Http\Resources\RestaurantResource;
 use App\Models\Restaurant\Restaurant;
 use App\Models\Restaurant\RestaurantCategory;
 use Illuminate\Http\Request;
@@ -13,28 +15,52 @@ use Spatie\Permission\Models\Role;
 
 class RestaurantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+    /** @group Restaurant
+     * Display a listing of the Restaurant resource.
+     * @apiResourceCollection App\Http\Resources\RestaurantResource
+     * @apiResourceModel App\Models\Restaurant\Restaurant
+     * @queryParam type string The type (restaurant category name) to filter by Example:Fast Food
+     * @queryParam is_open boolean Filter by open status (true or false).
+     * @queryParam sort string The sorting order (e.g., 'score' ,'name'). Default: 'score' (descending)
+     *
      */
-    public function index(Request $request)
+    public function index(RestaurantFilterRequest $request)
     {
-        $this->authorize('viewAny', Restaurant::class);
-        $categoryFilter = $request->get('restaurant_category_id');
-        return view('restaurant.index', [
-            'restaurants' => Restaurant::withTrashed()
-                ->when($categoryFilter, function ($query) use ($categoryFilter) {
-                    return $query->where('restaurant_category_id', $categoryFilter);
-                })
-                ->get(),
-        ]);
+        $query = Restaurant::filterApi($request);
+        if ($request->wantsJson()) {
+            return response(RestaurantResource::collection($query->get()), 200);
+        } else {
+            $this->authorize('viewAny', Restaurant::class);
+            $categoryFilter = $request->get('restaurant_category_id');
+            return view('restaurant.index', [
+                'restaurants' => Restaurant::withTrashed()
+                    ->when($categoryFilter, function ($query) use ($categoryFilter) {
+                        return $query->where('restaurant_category_id', $categoryFilter);
+                    })
+                    ->get(),
+            ]);
+        }
     }
 
-    public function show(Restaurant $restaurant)
+    /**
+     * Display a specific Restaurant
+     * @group Restaurant
+     * @apiResource App\Http\Resources\RestaurantResource
+     * @apiResourceModel App\Models\Restaurant\Restaurant
+     * @urlParam name required The name of the restaurant Example:neshat
+     *
+     */
+
+    public function show(Restaurant $restaurant, Request $request)
     {
-        $this->authorize('view', $restaurant);
-        return view('restaurant.show', [
-            'restaurant' => $restaurant
-        ]);
+        if ($request->wantsJson()) {
+            return response(new RestaurantResource($restaurant), 200);
+        } else {
+            $this->authorize('view', $restaurant);
+            return view('restaurant.show', [
+                'restaurant' => $restaurant
+            ]);
+        }
     }
 
     /**
@@ -83,7 +109,7 @@ class RestaurantController extends Controller
         $this->authorize('update', $restaurant);
 
         $restaurant->update($request->validated());
-        return redirect()->route('restaurants.edit',$restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");
+        return redirect()->route('restaurants.edit', $restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");
     }
 
     /**

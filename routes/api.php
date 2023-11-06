@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Restaurant\RestaurantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +21,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
-        Route::prefix('addresses')->controller(AddressController::class)->name('addresses.')
+        Route::prefix('/addresses')->controller(AddressController::class)->name('addresses.')
             ->group(function () {
             Route::get('/', 'index')->name('.index');
             Route::get('/{address}', 'show')->name('.show');
@@ -29,4 +30,9 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
             Route::delete('/{address}/', 'destroy')->name('.destroy');
             Route::patch('/{address}', 'updateUserAddress')->name('update.user');
         });
+        Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
+            ->group(function (){
+               Route::get('/','index')->name('index');
+               Route::get('/{restaurant}','show')->name('show');
+            });
 });

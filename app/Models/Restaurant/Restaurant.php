@@ -2,6 +2,7 @@
 
 namespace App\Models\Restaurant;
 
+use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Models\Cart\Cart;
 use App\Models\Schedule\RestaurantSchedule;
 use App\Models\Schedule\Schedule;
@@ -28,6 +29,25 @@ class Restaurant extends Model
         'latitude',
         'cost_of_sending_order'
     ];
+
+    public static function filterApi(RestaurantFilterRequest $request)
+    {
+        $query = Restaurant::query();
+        $typeFilter = $request->input('type');
+        $is_openFilter = $request->input('is_open');
+        $sort = $request->input('sort', 'score');
+        $restaurantCategoryId = RestaurantCategory::query()->where('name', 'like', '%' . $typeFilter . '%')->first()->id;
+        if ($typeFilter) {
+            return $query->where('restaurant_category_id', $restaurantCategoryId);
+        } elseif ($is_openFilter !== null) {
+            return $query->where('status', $is_openFilter ? 1 : 0);
+        } elseif
+        ($sort) {
+            return $query->orderBy($sort, 'desc');
+        }
+        return $query;
+    }
+
 
     public function getRouteKeyName()
     {
