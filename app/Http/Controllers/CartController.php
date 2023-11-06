@@ -10,14 +10,16 @@ use App\Http\Resources\Cart\CartResource;
 use App\Models\Cart\Cart;
 use App\Models\Cart\CartFood;
 use App\Models\Food\Food;
+use App\Services\CartPayService;
+use App\Services\CartTotalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+
 /**
  * @group Cart
  *
  */
-
 class CartController extends Controller
 {
     /**
@@ -33,12 +35,10 @@ class CartController extends Controller
     }
 
 
-
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCartRequest $request)
+    public function store(StoreCartRequest $request, CartTotalService $cartTotalService)
     {
         $cart = Cart::query()->create([
             'user_id' => Auth::user()->id,
@@ -49,12 +49,13 @@ class CartController extends Controller
             'cart_id' => $cart->id,
             'food_count' => $request->food_count
         ]);
-        Cart::updateTotal($request, $cart,);
+
+        $cartTotalService->updateTotal($request, $cart);
+
         return response([
-            'msg' => 'Cart Created  successfully',
+            'msg' => 'Cart Created successfully',
             'cart_id' => $cart->id
         ], 201);
-
     }
 
     /**
@@ -64,7 +65,7 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        $this->authorize('isCartBelongingToUser',$cart);
+        $this->authorize('isCartBelongingToUser', $cart);
         return response(new CartResource($cart), 200);
     }
 
@@ -72,15 +73,15 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCartRequest $request, Cart $cart)
+    public function update(UpdateCartRequest $request, Cart $cart, CartTotalService $cartTotalService)
     {
-        $this->authorize('isCartBelongingToUser',$cart);
+        $this->authorize('isCartBelongingToUser', $cart);
         CartFood::query()->create([
             'food_id' => $request->food_id,
             'cart_id' => $cart->id,
             'food_count' => $request->food_count
         ]);
-        Cart::updateTotal($request, $cart);
+        $cartTotalService->updateTotal($request, $cart);
         return response([
             'msg' => 'your cart updated successfully',
 
@@ -92,12 +93,23 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        $this->authorize('isCartBelongingToUser',$cart);
+        $this->authorize('isCartBelongingToUser', $cart);
         $cart->delete();
-        Log::error('12');
         return response()->json([
             'message' => 'Your cart was deleted successfully.'
         ], 204);
 
+    }
+
+    public function pay(Cart $cart, CartPayService $cartService)
+    {
+        $this->authorize('isCartBelongingToUser', $cart);
+        $response = $cartService->payCart($cart, Auth::user());
+
+        if (isset($response['msg'])) {
+            return response($response, 400);
+        }
+
+        return response($response, 200);
     }
 }

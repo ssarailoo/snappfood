@@ -30,7 +30,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
             Route::post('/', 'store')->name('.store');
             Route::put('/{address}/', 'update')->name('.update');
             Route::delete('/{address}/', 'destroy')->name('.destroy');
-            Route::patch('/{address}', 'updateUserAddress')->name('update.user');
+            Route::patch('/current/{address}', 'updateUserAddress')->name('update.user');
         });
     Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
         ->group(function () {
@@ -44,6 +44,6 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
        Route::post('/','store')->name('store');
        Route::patch('/{cart}','update')->name('update');
        Route::delete('/{cart}','destroy')->name('destroy');
-       Route::post('/{cart}/pay','pay')->name('pay');
+       Route::patch('/{cart}/pay','pay')->name('pay');
     });
 });
