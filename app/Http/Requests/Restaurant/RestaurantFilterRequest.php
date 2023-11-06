@@ -31,4 +31,22 @@ class RestaurantFilterRequest extends FormRequest
             ]
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'type' => [
+                'description' => 'The type of restaurant (string).',
+                'example' => 'Fast Food',
+            ],
+            'is_open' => [
+                'description' => 'Flag to filter open/closed restaurants (boolean).',
+                'example' => true,
+            ],
+            'sort' => [
+                'description' => 'Desc Sorting option (string).',
+                'example' => 'score',
+            ],
+        ];
+    }
 }

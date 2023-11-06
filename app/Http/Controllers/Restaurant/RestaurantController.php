@@ -19,9 +19,6 @@ class RestaurantController extends Controller
      * Display a listing of the Restaurant resource.
      * @apiResourceCollection App\Http\Resources\RestaurantResource
      * @apiResourceModel App\Models\Restaurant\Restaurant
-     * @queryParam type string The type (restaurant category name) to filter by Example:Fast Food
-     * @queryParam is_open boolean Filter by open status (true or false).
-     * @queryParam sort string The sorting order (e.g., 'score' ,'name'). Default: 'score' (descending)
      *
      */
     public function index(RestaurantFilterRequest $request)

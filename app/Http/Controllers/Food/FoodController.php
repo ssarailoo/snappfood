@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Food;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Food\FilterFoodRequest;
 use App\Http\Requests\Food\StoreFoodRequest;
 use App\Http\Requests\Food\UpdateFoodRequest;
+use App\Http\Resources\FoodCategoryCollection;
+use App\Http\Resources\FoodCategoryResource;
+use App\Http\Resources\FoodResource;
 use App\Models\Food\Food;
+use App\Models\Food\FoodCategory;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Http\Request;
 
@@ -13,19 +18,30 @@ use Illuminate\Http\Request;
 class FoodController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     *  Display a listing of the resource.
+     * @group Food
+     * @apiResourceCollection App\Http\Resources\FoodCategoryCollection
+     * @apiResourceModel App\Models\Food\FoodCategory
      */
-    public function index(Restaurant $restaurant, Request $request)
+
+
+    public function index(Restaurant $restaurant, FilterFoodRequest $request)
     {
-        $this->authorize('viewAny', [Food::class, $restaurant]);
-        $foodsOfRestaurant = Food::query()->foodsOf($restaurant->id);
-        $sortMethod = $request->input('sort_by', 'default_sort');
-        $foods = Food::getSortedFoods($request, $foodsOfRestaurant);
-        return view('food.index', [
-            'restaurant' => $restaurant,
-            'foods' => $foods->paginate(3),
-            'sortMethod' => $sortMethod
-        ]);
+        if ($request->wantsJson()) {
+            $foods = $restaurant->foods;
+            $categoryIds = $foods->map(fn($food) => $food->food_category_id)->unique();
+            return response(new FoodCategoryCollection(FoodCategory::query()->whereIn('id', $categoryIds)->get()), 200);
+        } else {
+            $this->authorize('viewAny', [Food::class, $restaurant]);
+            $foodsOfRestaurant = Food::query()->foodsOf($restaurant->id);
+            $sortMethod = $request->input('sort_by', 'default_sort');
+            $foods = Food::getSortedFoods($request, $foodsOfRestaurant);
+            return view('food.index', [
+                'restaurant' => $restaurant,
+                'foods' => $foods->paginate(3),
+                'sortMethod' => $sortMethod
+            ]);
+        }
 
     }
 

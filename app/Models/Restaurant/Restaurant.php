@@ -4,6 +4,7 @@ namespace App\Models\Restaurant;
 
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Models\Cart\Cart;
+use App\Models\Food\Food;
 use App\Models\Schedule\RestaurantSchedule;
 use App\Models\Schedule\Schedule;
 use App\Models\User;
@@ -52,6 +53,11 @@ class Restaurant extends Model
     public function getRouteKeyName()
     {
         return 'name';
+    }
+
+    public function foods(): HasMany
+    {
+     return $this->hasMany(Food::class);
     }
 
     public function user(): BelongsTo
