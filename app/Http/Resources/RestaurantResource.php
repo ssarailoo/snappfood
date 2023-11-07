@@ -14,17 +14,22 @@ class RestaurantResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+
         return [
             'id' => $this->id,
             'title' => $this->name,
-            'type'=>$this->restaurantCategory->name,
+            'type' => $this->restaurantCategory->name,
             'address' => [
                 'address' => $this->address,
                 'longitude' => $this->longitude,
                 'latitude' => $this->latitude,
             ],
-            'is_open' => $this->status === 1 ,
-            'score' => $this->score,
+            'is_open' => $this->status === 1,
+            'score' =>$this->score ??'no score registered yet.',
+            'comments_count' => count($this->comments),
+            'schedules' => ScheduleResourece::collection($this->schedules)
+
 
         ];
     }

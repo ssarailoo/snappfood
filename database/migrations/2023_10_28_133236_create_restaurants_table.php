@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->decimal('longitude', 15, 12)->nullable()->default(null);
             $table->decimal('cost_of_sending_order', 10, 2)->nullable()->default(null);
             $table->boolean('status')->default(1);
+            $table->decimal('score')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });

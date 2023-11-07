@@ -30,7 +30,8 @@ class Restaurant extends Model
         'bank_account_number',
         'longitude',
         'latitude',
-        'cost_of_sending_order'
+        'cost_of_sending_order',
+        'score'
     ];
 
     public static function filterApi(RestaurantFilterRequest $request)
@@ -38,7 +39,7 @@ class Restaurant extends Model
         $query = Restaurant::query();
         $typeFilter = $request->input('type');
         $is_openFilter = $request->input('is_open');
-        $sort = $request->input('sort', 'score');
+        $sort = $request->input('sort');
         $restaurantCategoryId = RestaurantCategory::query()->where('name', 'like', '%' . $typeFilter . '%')->first()->id;
         if ($typeFilter) {
             return $query->where('restaurant_category_id', $restaurantCategoryId);

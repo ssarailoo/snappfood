@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Http\Resources\AddressResource;
+use App\Models\Address\Address;
+use App\Models\Address\AddressUser;
 use App\Models\Banner;
 use App\Models\Restaurant\Restaurant;
 use App\Models\User;
@@ -52,27 +55,48 @@ class DatabaseSeeder extends Seeder
 
         Restaurant::query()->create([
             'name' => 'neshat',
-            'address' => '123',
+            'address' => 'Tehran , Sattarkhan',
             'telephone' => '12345678',
             'bank_account_number' => '1234567891234',
             'restaurant_category_id' => '1',
+            'latitude' => 35.70,
+            'longitude' => 51.300,
             'user_id' => $admin->id
         ]);
 
+
         Restaurant::query()->create([
             'name' => 'neshat2',
-            'address' => '1232',
+            'address' => 'Tehran , Sattarkhan',
             'telephone' => '12345672',
             'bank_account_number' => '1234567891232',
             'restaurant_category_id' => '2',
+            'latitude' => 34.70,
+            'longitude' => 50.300,
             'user_id' => $user->id
+        ]);
+        $this->call([
+            FoodSeeder::class
         ]);
         Banner::query()->create([
             'title' => 'Summer Sale',
             'content' => 'Buy 1 Pizza get 2 !',
             'color' => 'violet'
         ]);
+        $address = Address::query()->create([
+            'title' => 'home',
+            'address' => 'tehran sattar khan',
+            'latitude' => 33.70,
+            'longitude' => 53.300,
+        ]);
+        AddressUser::query()->create([
+            'user_id' => $user2->id,
 
+            'address_id' => $address->id
+        ]);
+        $user2->update([
+            'current_address' => 1
+        ]);
         $user->assignRole(Role::query()->find(2));
     }
 }
