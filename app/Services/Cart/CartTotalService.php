@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Cart;
 
 use App\Models\Cart\Cart;
-use App\Models\Food\Food;
 use Illuminate\Http\Request;
 
 class CartTotalService

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Cart;
 
 use App\Models\Cart\Cart;
 use App\Models\User;
@@ -15,7 +15,7 @@ class CartPayService
             return ['msg' => 'Bad Request: Already paid'];
         } else {
             $cart->update(['is_paid' => 1]);
-            return ['msg' => 'Your cart has been paid successfully'];
+            return ['success' => true, 'msg' => 'Your cart has been paid successfully'];
         }
     }
 }

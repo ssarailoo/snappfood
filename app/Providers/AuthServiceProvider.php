@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-use App\Models\Address;
+use App\Models\Address\Address;
 use App\Models\Banner;
 use App\Models\Cart\Cart;
+use App\Models\Comment;
 use App\Models\Food\Food;
 use App\Models\Food\FoodCategory;
 use App\Models\Restaurant\Restaurant;
@@ -15,6 +16,7 @@ use App\Policies\AddressPolicy;
 use App\Policies\BannerPolicy;
 use App\Policies\CartPolicy;
 use App\Policies\CategoryPolicy;
+use App\Policies\CommentPolicy;
 use App\Policies\FoodCategoryPolicy;
 use App\Policies\FoodPolicy;
 use App\Policies\RestaurantPolicy;
@@ -36,7 +38,8 @@ class AuthServiceProvider extends ServiceProvider
         Schedule::class => SchedulePolicy::class,
         Banner::class => BannerPolicy::class,
         Address::class=>AddressPolicy::class,
-        Cart::class=>CartPolicy::class
+        Cart::class=>CartPolicy::class,
+        Comment::class=>CommentPolicy::class
     ];
 
     /**

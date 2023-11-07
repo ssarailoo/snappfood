@@ -25,7 +25,7 @@ class RestaurantFilterRequest extends FormRequest
         return [
             'type' => ['string'],
             'is_open' => ['boolean'],
-            'sort' => ['in:score,name'], // Adjust to include other sorting options if needed
+            'sort' => ['in:score,name'],
             'restaurant_category_id' => [
                 'in:' . implode(',', RestaurantCategory::query()->pluck('id')->toArray())
             ]

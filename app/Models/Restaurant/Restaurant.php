@@ -4,6 +4,7 @@ namespace App\Models\Restaurant;
 
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Models\Cart\Cart;
+use App\Models\Comment;
 use App\Models\Food\Food;
 use App\Models\Schedule\RestaurantSchedule;
 use App\Models\Schedule\Schedule;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Restaurant extends Model
@@ -84,5 +86,9 @@ class Restaurant extends Model
     public function schedules(): BelongsToMany
     {
         return $this->belongsToMany(Schedule::class);
+    }
+    public function comments(): HasManyThrough
+    {
+        return $this->hasManyThrough(Comment::class, Cart::class, 'restaurant_id', 'cart_id');
     }
 }

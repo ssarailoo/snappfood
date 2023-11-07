@@ -3,8 +3,10 @@
 namespace App\Models\Cart;
 
 use App\Http\Requests\Cart\StoreCartRequest;
+use App\Models\Comment;
 use App\Models\Food\Food;
 use App\Models\Restaurant\Restaurant;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,5 +44,15 @@ class Cart extends Model
     public function restaurant(): BelongsTo
     {
         return $this->belongsTo(Restaurant::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }

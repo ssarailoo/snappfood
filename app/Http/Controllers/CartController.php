@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Cart\StoreCartRequest;
 use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Http\Resources\Cart\CartCollection;
@@ -10,11 +9,11 @@ use App\Http\Resources\Cart\CartResource;
 use App\Models\Cart\Cart;
 use App\Models\Cart\CartFood;
 use App\Models\Food\Food;
-use App\Services\CartPayService;
-use App\Services\CartTotalService;
+use App\Services\Cart\CartDestroyService;
+use App\Services\Cart\CartPayService;
+use App\Services\Cart\CartTotalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 /**
  * @group Cart
@@ -26,6 +25,24 @@ class CartController extends Controller
      * Display a listing of the resource.
      * @apiResourceCollection App\Http\Resources\Cart\CartCollection
      * @apiResourceModel App\Models\Cart\Cart
+     * @response {
+     *      "data": [
+     *          {
+     *              "id": 1,
+     *              "restaurant": {
+     *                  "title": "Restaurant Name"
+     *              },
+     *              "foods": [
+     *                  {
+     *                      "food_id": 2,
+     *                      "food_count": 3
+     *                  }
+     *              ],
+     *              "created_at": "2023-11-01T12:34:56Z",
+     *              "updated_at": "2023-11-01T12:34:56Z"
+     *          }
+     *      ]
+     *  }
      */
     public function index(Request $request)
     {
@@ -36,7 +53,13 @@ class CartController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * *
+     *  Store a newly created resource in storage.
+     *
+     * @response 201 {
+     *      "msg": "Cart Created successfully",
+     *      "cart_id": 1
+     *  }
      */
     public function store(StoreCartRequest $request, CartTotalService $cartTotalService)
     {
@@ -62,6 +85,9 @@ class CartController extends Controller
      * Display the specified resource.
      * @apiResource App\Http\Resources\Cart\CartResource
      * @apiResourceModel App\Models\Cart\Cart
+     * @response App\Http\Resources\Cart\CartResource
+     *
+     * @param Cart $cart
      */
     public function show(Cart $cart)
     {
@@ -72,6 +98,9 @@ class CartController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @response 200 {
+     *      "msg": "Your cart updated successfully"
+     *  }
      */
     public function update(UpdateCartRequest $request, Cart $cart, CartTotalService $cartTotalService)
     {
@@ -90,26 +119,45 @@ class CartController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @response 204
      */
-    public function destroy(Cart $cart)
+    public function destroy(Cart $cart, CartDestroyService $cartDestroyService)
     {
         $this->authorize('isCartBelongingToUser', $cart);
-        $cart->delete();
-        return response()->json([
-            'message' => 'Your cart was deleted successfully.'
-        ], 204);
-
+        $response = $cartDestroyService->destroyCart($cart);
+        if (isset($response['success'])) {
+            $cart->delete();
+            return response($response, 200);
+        }
+        return response($response, 400);
     }
 
-    public function pay(Cart $cart, CartPayService $cartService)
+    /**
+     * Pay for the specified cart.
+     *
+     * @response 200 {
+     *     "msg": "Your cart has been paid successfully"
+     * }
+     *
+     * @response 400 {
+     *     "msg": "Bad Request: First choose your current address"
+     * }
+     *
+     * @response 400 {
+     *     "msg": "Bad Request: Already paid"
+     * }
+     *
+     *
+     */
+    public function pay(Cart $cart, CartPayService $cartPayService)
     {
         $this->authorize('isCartBelongingToUser', $cart);
-        $response = $cartService->payCart($cart, Auth::user());
+        $response = $cartPayService->payCart($cart, Auth::user());
 
-        if (isset($response['msg'])) {
+        if (isset($response['success'])) {
+            return response($response, 200);
+        } else {
             return response($response, 400);
         }
-
-        return response($response, 200);
     }
 }

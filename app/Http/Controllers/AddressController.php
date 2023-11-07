@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Address\StoreAddressRequest;
 use App\Http\Requests\Address\UpdateAddressRequest;
 use App\Http\Resources\AddressResource;
-use App\Models\Address;
-use App\Models\AddressUser;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Models\Address\Address;
+use App\Models\Address\AddressUser;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * @group User Management Addresses
