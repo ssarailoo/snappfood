@@ -42,20 +42,20 @@ class RestaurantCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRestaurantCategoryRequest $request, RestaurantCategory $restCategory)
+    public function update(UpdateRestaurantCategoryRequest $request, RestaurantCategory $restaurantCategory)
     {
-        $this->authorize('update',$restCategory);
-        $restCategory->update($request->validated());
+        $this->authorize('update',$restaurantCategory);
+        $restaurantCategory->update($request->validated());
         return redirect()->route('rest-categories.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RestaurantCategory $restCategory)
+    public function destroy(RestaurantCategory $restaurantCategory)
     {
-        $this->authorize('delete',$restCategory);
-        $restCategory->delete();
+        $this->authorize('delete',$restaurantCategory);
+        $restaurantCategory->delete();
         return redirect()->route('rest-categories.index');
     }
 }

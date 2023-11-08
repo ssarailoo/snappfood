@@ -2,6 +2,7 @@
 
 namespace App\Models\Restaurant;
 
+use App\Casts\NameCast;
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Models\Cart\Cart;
 use App\Models\Comment;
@@ -33,7 +34,9 @@ class Restaurant extends Model
         'cost_of_sending_order',
         'score'
     ];
-
+protected $casts=[
+    'cast'=>NameCast::class
+];
     public static function filterApi(RestaurantFilterRequest $request)
     {
         $query = Restaurant::query();

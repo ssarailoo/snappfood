@@ -24,7 +24,7 @@ class UpdateRestaurantRequest extends FormRequest
     {
 
         return [
-            'name' => ['required', Rule::unique('restaurants')->ignore($this->route('restaurant')->id), 'string'],
+            'name' => ['required', Rule::unique('restaurants')->ignore($this->route('restaurant')->id), 'string', 'regex:/^[A-Za-z\s]+$/'],
             'telephone' => ['required', Rule::unique('restaurants')->ignore($this->route('restaurant')->id), 'size:8'],
             'address' => ['required', 'string'],
             'bank_account_number' => ['required', 'string', 'size:13'],

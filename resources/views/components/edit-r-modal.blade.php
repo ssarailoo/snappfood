@@ -5,7 +5,7 @@
     </button>
 
     <!-- Modal -->
-    <div x-show="isOpen" @click.away="isOpen = false" class="fixed  flex items-center justify-center z-50">
+    <div x-show="isOpen" @click.away="isOpen = false"  class="absolute inset-y-5/4 left-10 transform -translate-y-1/2 flex items-center justify-center z-50 w-full">
         <div class="bg-white p-4  max-w-2xl" >
             <!-- Edit form -->
             <!-- Include your edit form here, and set the action to your edit route -->
