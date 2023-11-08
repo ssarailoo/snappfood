@@ -15,19 +15,16 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('roles')->insert([
-            [
-                'name' => 'admin',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'restaurant-manager',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
-        Role::query()->first()->syncPermissions([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
-        Role::query()->find(2)->syncPermissions([15,16,17,18, 19, 20, 21, 22, 23, 24]);
+
+     Role::create([
+         'name'=>'admin'
+     ]);
+     Role::create([
+         'name'=>'restaurant-manager'
+     ]);
+            Role::findByName('admin')->syncPermissions([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+
+            Role::findByName('restaurant-manager')->syncPermissions([15, 16, 17, 18, 19, 20, 21, 22, 23, 24]);
+
     }
 }

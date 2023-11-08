@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
             DaySeeder::class,
         ]);
 
-        $admin->assignRole(Role::query()->first());
+        $admin->assignRole(Role::findByName('admin'));
 
         Restaurant::query()->create([
             'name' => 'neshat',
@@ -97,6 +97,6 @@ class DatabaseSeeder extends Seeder
         $user2->update([
             'current_address' => 1
         ]);
-        $user->assignRole(Role::query()->find(2));
+        $user->assignRole(Role::findByName('restaurant-manager'));
     }
 }
