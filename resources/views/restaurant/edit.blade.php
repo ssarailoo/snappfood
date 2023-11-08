@@ -66,7 +66,7 @@
                 <select id="category" class="block mt-1 w-full" type="text" name="restaurant_category_id">
                     @foreach(RestaurantCategory::all() as $category)
                         <option value="{{$category->id}}"
-                                @if($restaurant->restaurantCategory == $category) selected @endif > {{$category->name}}</option>
+                                @if($restaurant->restaurant_category_id === $category->id) selected @endif > {{$category->name}}</option>
                     @endforeach
                 </select>
 

@@ -27,6 +27,7 @@ class UpdateFoodRequest extends FormRequest
             'price' => ['required','numeric'],
             'food_category_id' => ['required'],
             'discount'=>['required','between:0,100','numeric'],
+            'status'=>['required','in:1,0'],
             'image' => ['sometimes', 'nullable',  'max:2048'],
         ];
     }

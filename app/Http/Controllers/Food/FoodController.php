@@ -110,6 +110,7 @@ class FoodController extends Controller
      */
     public function update(UpdateFoodRequest $request, Restaurant $restaurant, Food $food)
     {
+
         $this->authorize('update', [Food::class, $restaurant]);
         $food->update($request->validated());
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");

@@ -10,7 +10,7 @@
                 <select id="day" name="day_id">
                     @foreach(Day::all() as $day)
                         <option
-                                value="{{$day->id}} @if($schedule->day == $day) selected  @endif ">{{$day->name}}</option>
+                                value="{{$day->id}} @if($schedule->day->id == $day->id) selected  @endif ">{{$day->name}}</option>
                     @endforeach
                 </select>
                 <x-input-error :messages="$errors->get('day')" class="mt-2"/>

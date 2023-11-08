@@ -41,10 +41,10 @@
             <!--Status  -->
             <div>
                 <x-input-label for="status" class="'block font-medium text-sm text-pink-700" :value="__('Status')"/>
-                <select id="category" class="block mt-1 w-full" name="food_category_id">
+                <select id="category" class="block mt-1 w-full" name="status">
 
-                    <option value="0" @if($food->status == 0) selected @endif>Not Available</option>
-                    <option value="1" @if($food->status == 1) selected @endif>Available</option>
+                    <option value="0" @if($food->status === 0) selected @endif>Not Available</option>
+                    <option value="1" @if($food->status === 1) selected @endif>Available</option>
 
                 </select>
                 <x-input-error :messages="$errors->get('status')" class="mt-2"/>
@@ -57,7 +57,7 @@
                 <select id="category" class="block mt-1 w-full" name="food_category_id">
                     @foreach(FoodCategory::all() as $category)
                         <option value="{{$category->id}}"
-                                @if($food->food_category_id == $category->id) selected @endif>{{$category->name}}</option>
+                                @if($food->food_category_id === $category->id) selected @endif>{{$category->name}}</option>
                     @endforeach
                 </select>
 
