@@ -13,7 +13,7 @@ class FoodPolicy
      */
     public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        return ($user->can('viewAny-foods') and $restaurant == $user->restaurant) or $user->hasRole('admin');
+        return $user->can('viewAny-foods') and $restaurant->id === $user->restaurant->id or $user->hasRole('admin');
     }
 
     /**
@@ -21,7 +21,7 @@ class FoodPolicy
      */
     public function view(User $user, Restaurant $restaurant): bool
     {
-        return $user->can('view-food') && $restaurant == $user->restaurant or $user->hasRole('admin');
+        return $user->can('view-food') &&  $restaurant->id === $user->restaurant->id or $user->hasRole('admin');
     }
 
     /**
@@ -29,7 +29,7 @@ class FoodPolicy
      */
     public function create(User $user, Restaurant $restaurant): bool
     {
-        return $user->can('create-food') && $restaurant == $user->restaurant  or $user->hasRole('admin');
+        return $user->can('create-food') &&  $restaurant->id === $user->restaurant->id  or $user->hasRole('admin');
     }
 
     /**
@@ -37,7 +37,7 @@ class FoodPolicy
      */
     public function update(User $user, Restaurant $restaurant): bool
     {
-        return $user->can('update-food') && $restaurant == $user->restaurant or $user->hasRole('admin');
+        return $user->can('update-food') &&  $restaurant->id === $user->restaurant->id or $user->hasRole('admin');
     }
 
     /**
@@ -45,7 +45,7 @@ class FoodPolicy
      */
     public function delete(User $user, Restaurant $restaurant): bool
     {
-        return( $user->can('delete-food') && $restaurant == $user->restaurant ) or $user->hasRole('admin');
+        return $user->can('delete-food') &&  $restaurant->id === $user->restaurant->id or $user->hasRole('admin');
     }
 
     /**

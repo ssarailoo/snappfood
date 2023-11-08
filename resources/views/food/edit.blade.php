@@ -26,13 +26,17 @@
                 <x-text-input id="price" class="block mt-1 w-full" type="text" name="price"
                               value="{{$food->price}}"/>
                 <x-input-error :messages="$errors->get('price')" class="mt-2"/>
+                <span class="text-sm text-pink-700">The currency is dollar</span>
+
             </div>
             <!--Discount  -->
             <div>
                 <x-input-label for="discount" class="'block font-medium text-sm text-pink-700" :value="__('Discount')"/>
                 <x-text-input id="discount" class="block mt-1 w-full" type="text" name="discount"
-                              value="{{$food->discount}}"/>
+                              value="{{$food->discount}} "/>
                 <x-input-error :messages="$errors->get('discount')" class="mt-2"/>
+                <span class="text-sm text-pink-700">The discount unit is percentage</span>
+
             </div>
             <!--Status  -->
             <div>
@@ -90,7 +94,7 @@
                 </div>
                 <div class="flex items-center justify-end mt-4">
                     <x-primary-button
-                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                         {{ __('Update Food party') }}
                     </x-primary-button>
                 </div>
@@ -103,7 +107,7 @@
 
                 <div class="flex items-center justify-end mt-4">
                     <x-primary-button
-                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                         {{ __('Delete Food party') }}
                     </x-primary-button>
                 </div>

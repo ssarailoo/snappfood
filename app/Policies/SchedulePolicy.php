@@ -13,7 +13,7 @@ class SchedulePolicy
      */
     public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        return ($user->can('viewAny-schedules') and $user->restaurant == $restaurant)
+        return ($user->can('viewAny-schedules') and $user->restaurant->id == $restaurant->id)
             or $user->hasRole('admin');
     }
 
@@ -25,14 +25,14 @@ class SchedulePolicy
         return ($user->can('view-schedule') and $user->restaurant->schedules->find($schedule->id) == !null)
             or $user->hasRole('admin');
     }
-  
+
 
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user, Restaurant $restaurant): bool
     {
-        return ($user->can('create-schedule') and $user->restaurant == $restaurant)
+        return ($user->can('create-schedule') and $user->restaurant->id === $restaurant->id)
             or $user->hasRole('admin');
     }
 

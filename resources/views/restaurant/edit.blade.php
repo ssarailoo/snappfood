@@ -47,7 +47,7 @@
                                :value="__('Cost Of Sending Order')"/>
                 <x-text-input id="cost_of_sending_order" class="block mt-1 w-full" type="text"
                               name="cost_of_sending_order"
-                              value="{{$restaurant->cost_of_sending_order ?? 0}}"/>
+                              value="{{$restaurant->cost_of_sending_order ?? 0}} $"/>
                 <x-input-error :messages="$errors->get('cost_of_sending_order')" class="mt-2"/>
             </div>
             <!-- Location -->
