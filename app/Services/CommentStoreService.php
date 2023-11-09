@@ -20,7 +20,7 @@ class CommentStoreService
         Comment::query()->create($request->validated());
         $restaurant = Cart::query()->find(1)->restaurant;
         $count = count($restaurant->carts);
-        $scores = $restaurant->carts->map(fn($cart) => $cart->comments->first()->score)->sum();
+        $scores = $restaurant->carts->map(fn($cart) => $cart->comments->first()->score ?? 0)->sum();
         $restaurant->update([
             'score' => $scores / $count
         ]);

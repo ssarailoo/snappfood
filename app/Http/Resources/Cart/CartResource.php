@@ -17,7 +17,8 @@ class CartResource extends JsonResource
         return [
             'id' => $this->id,
             'restaurant' => [
-                'title' => $this->restaurant->name
+                'title' => $this->restaurant->name,
+                'image'=>asset('storage/'.$this->restaurant->image->url)
             ],
             'foods' => CartFoodResource::collection($this->cartFoods),
             'created_at' => $this->created_at,

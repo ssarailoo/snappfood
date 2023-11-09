@@ -25,7 +25,7 @@ class RestaurantResource extends JsonResource
                 'latitude' => $this->latitude,
             ],
             'is_open' => $this->status === 1,
-            'image'=>$this->image,
+            'image'=> asset('storage/'. $this->image->url),
             'score' => $this->score ?? 'no score registered yet.',
             'comments_count' => $this->when($request->route()->hasParameter('restaurant'), count($this->comments)),
             'schedules' => $this->when($request->route()->hasParameter('restaurant'), ScheduleResourece::collection($this->schedules))
@@ -34,3 +34,4 @@ class RestaurantResource extends JsonResource
         ];
     }
 }
+
