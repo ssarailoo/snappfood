@@ -7,6 +7,7 @@ use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Http\Resources\RestaurantResource;
+use App\Models\Image;
 use App\Models\Restaurant\Restaurant;
 use App\Models\Restaurant\RestaurantCategory;
 use Illuminate\Http\Request;
@@ -75,7 +76,12 @@ class RestaurantController extends Controller
     public function store(StoreRestaurantRequest $request)
     {
         $this->authorize('create', Restaurant::class);
-        Restaurant::query()->create($request->validated());
+        $restaurant = Restaurant::query()->create($request->validated());
+        Image::query()->create([
+            'url' => 'images/default-restaurant.png',
+            'imageable_id' => $restaurant->id,
+            'imageable_type' => Restaurant::class
+        ]);
         //assign role of manager to the user
         Auth::user()->assignRole(Role::query()->find(2));
         return redirect()->route('dashboard')->with('success', 'Your Restaurant Created Successfully');
@@ -106,6 +112,9 @@ class RestaurantController extends Controller
         $this->authorize('update', $restaurant);
 
         $restaurant->update($request->validated());
+        $restaurant->image->update([
+            'url' => $request->file('url') ?? 'images/default-restaurant.png',
+        ]);
         return redirect()->route('restaurants.edit', $restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");
     }
 

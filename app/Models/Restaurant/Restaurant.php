@@ -7,6 +7,7 @@ use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Models\Cart\Cart;
 use App\Models\Comment;
 use App\Models\Food\Food;
+use App\Models\Image;
 use App\Models\Schedule\RestaurantSchedule;
 use App\Models\Schedule\Schedule;
 use App\Models\User;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Restaurant extends Model
@@ -37,6 +39,10 @@ class Restaurant extends Model
 protected $casts=[
     'cast'=>NameCast::class
 ];
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
     public static function filterApi(RestaurantFilterRequest $request)
     {
         $query = Restaurant::query();

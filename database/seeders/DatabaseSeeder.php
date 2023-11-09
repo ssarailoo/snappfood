@@ -7,6 +7,7 @@ use App\Http\Resources\AddressResource;
 use App\Models\Address\Address;
 use App\Models\Address\AddressUser;
 use App\Models\Banner;
+use App\Models\Image;
 use App\Models\Restaurant\Restaurant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -53,7 +54,7 @@ class DatabaseSeeder extends Seeder
 
         $admin->assignRole(Role::findByName('admin'));
 
-        Restaurant::query()->create([
+      $restaurant= Restaurant::query()->create([
             'name' => 'neshat',
             'address' => 'Tehran , Sattarkhan',
             'telephone' => '12345678',
@@ -63,9 +64,14 @@ class DatabaseSeeder extends Seeder
             'longitude' => 51.300,
             'user_id' => $admin->id
         ]);
+        Image::query()->create([
+            'url' => 'images/default-restaurant.png',
+            'imageable_id' => $restaurant->id,
+            'imageable_type' => Restaurant::class
+        ]);
 
 
-        Restaurant::query()->create([
+   $secondRestaurant=     Restaurant::query()->create([
             'name' => 'neshat2',
             'address' => 'Tehran , Sattarkhan',
             'telephone' => '12345672',
@@ -74,6 +80,11 @@ class DatabaseSeeder extends Seeder
             'latitude' => 34.70,
             'longitude' => 50.300,
             'user_id' => $user->id
+        ]);
+        Image::query()->create([
+            'url' => 'images/default-restaurant.png',
+            'imageable_id' => $secondRestaurant->id,
+            'imageable_type' => Restaurant::class
         ]);
         $this->call([
             FoodSeeder::class

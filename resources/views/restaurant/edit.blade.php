@@ -7,7 +7,7 @@
         </div>
     @endif
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
-        <form method="POST" action="{{ route('restaurants.update',$restaurant) }}">
+        <form method="POST" action="{{ route('restaurants.update',$restaurant) }}" enctype="multipart/form-data">
             @csrf
             @method("PUT")
 
@@ -47,8 +47,9 @@
                                :value="__('Cost Of Sending Order')"/>
                 <x-text-input id="cost_of_sending_order" class="block mt-1 w-full" type="text"
                               name="cost_of_sending_order"
-                              value="{{$restaurant->cost_of_sending_order ?? 0}} $"/>
+                              value="{{$restaurant->cost_of_sending_order ?? 0}} "/>
                 <x-input-error :messages="$errors->get('cost_of_sending_order')" class="mt-2"/>
+                <span class="text-sm text-pink-700">The currency is dollar</span>
             </div>
             <!-- Location -->
             <div id="map" style="height: 400px;"></div>
@@ -69,6 +70,15 @@
                                 @if($restaurant->restaurant_category_id === $category->id) selected @endif > {{$category->name}}</option>
                     @endforeach
                 </select>
+                <!-- Image -->
+            </div>
+            <x-input-label for="image" class="'block font-medium text-sm text-pink-700" :value="__('Image')"/>
+            <input type="file" id="image" name="url">
+            <x-input-error :messages=" $errors->get('url')" class="mt-2"/>
+            <img style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                 src="{{ asset('storage/' . $restaurant->image->url) }}" alt="{{ $restaurant->name }}">
+
+            <div class="flex items-center justify-end mt-4">
 
                 <x-input-error :messages=" $errors->get('restaurant_category_id')" class="mt-2"/>
             </div>
@@ -87,6 +97,7 @@
                 </x-primary-button>
             </div>
         </form>
+
 
 
         <a href="{{route('my-restaurant.foods.index',$restaurant)}}">

@@ -10,6 +10,9 @@
                         ID
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Image
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Name
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -47,6 +50,10 @@
                             class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
                             <a href="{{route('restaurants.edit',$restaurant)}}"> {{$restaurant->id}}</a>
                         </th>
+                        <td class="px-6 py-4">
+                            <img style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                                 src="{{ asset('storage/' . $restaurant->image->url) }}" alt="{{ $restaurant->name }}">
+                        </td>
                         <td class="px-6 py-4">
                             {{$restaurant->name}}
                         </td>
@@ -119,17 +126,17 @@
 
         </div>
         <form action="">
-        <div class="mt-4">
+            <div class="mt-4">
 
-            <x-input-label for="category" class="'block font-medium text-sm text-pink-700" :value="__('Category')"/>
-            <select id="category" class="block mt-1 w-full" type="text" name="restaurant_category_id">
-                @foreach(RestaurantCategory::all() as $category)
-                    <option value="{{$category->id}}"> {{$category->name}}</option>
-                @endforeach
-            </select>
-            <div class="flex items-center justify-end mt-4">
-                <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                    {{ __('filter') }}
+                <x-input-label for="category" class="'block font-medium text-sm text-pink-700" :value="__('Category')"/>
+                <select id="category" class="block mt-1 w-full" type="text" name="restaurant_category_id">
+                    @foreach(RestaurantCategory::all() as $category)
+                        <option value="{{$category->id}}"> {{$category->name}}</option>
+                    @endforeach
+                </select>
+                <div class="flex items-center justify-end mt-4">
+                    <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                        {{ __('filter') }}
                 </x-primary-button>
             </div>
         </div>
