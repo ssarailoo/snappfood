@@ -27,7 +27,7 @@ class StoreFoodRequest extends FormRequest
             'price' => ['required','numeric'],
             'food_category_id' => ['required'],
             'restaurant_id' => ['required'],
-            'image' => ['sometimes', 'nullable',  'max:2048'],
+            'url' => ['sometimes', 'nullable',  'max:2048'],
         ];
     }
 }

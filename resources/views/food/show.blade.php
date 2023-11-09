@@ -47,7 +47,7 @@
                         {{$food->name}}
                     </td>
                     <td class="px-6 py-4">
-                        <img src="{{ asset('storage/'.$food->image)}}" width="150px" height="150px">
+                        <img src="{{ asset('storage/'.$food->image->url)}}" width="150px" height="150px">
                     </td>
                     <td class="px-6 py-4">
                         {{FoodCategory::query()->find( $food->food_category_id)->name}}

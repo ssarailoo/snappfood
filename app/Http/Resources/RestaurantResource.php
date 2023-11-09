@@ -15,7 +15,6 @@ class RestaurantResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-
         return [
             'id' => $this->id,
             'title' => $this->name,
@@ -26,9 +25,10 @@ class RestaurantResource extends JsonResource
                 'latitude' => $this->latitude,
             ],
             'is_open' => $this->status === 1,
-            'score' =>$this->score ??'no score registered yet.',
-            'comments_count' => count($this->comments),
-            'schedules' => ScheduleResourece::collection($this->schedules)
+            'image'=>$this->image,
+            'score' => $this->score ?? 'no score registered yet.',
+            'comments_count' => $this->when($request->route()->hasParameter('restaurant'), count($this->comments)),
+            'schedules' => $this->when($request->route()->hasParameter('restaurant'), ScheduleResourece::collection($this->schedules))
 
 
         ];

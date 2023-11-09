@@ -5,6 +5,7 @@ namespace App\Models\Food;
 use App\Casts\ImageCast;
 use App\Models\Cart\Cart;
 use App\Models\Cart\CartFood;
+use App\Models\Image;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Http\Request;
 
 class Food extends Model
@@ -27,13 +29,10 @@ class Food extends Model
         'name',
         'materials',
         'price',
-        'image',
         'discount',
         'status'
     ];
-    protected $casts = [
-        'image' => ImageCast::class
-    ];
+
 
     public static function getSortedFoods(Request $request, $foods)
     {
@@ -57,7 +56,10 @@ class Food extends Model
         return $foods;
     }
 
-
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
     public function restaurant(): BelongsTo
     {
         return $this->belongsTo(Restaurant::class);

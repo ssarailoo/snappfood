@@ -39,8 +39,8 @@
                 <x-input-error :messages=" $errors->get('food_category_id')" class="mt-2"/>
             </div>
             <x-input-label for="image" class="'block font-medium text-sm text-pink-700" :value="__('Image')"/>
-            <input type="file" id="image" name="image">
-            <x-input-error :messages=" $errors->get('image')" class="mt-2"/>
+            <input type="file" id="image" name="url">
+            <x-input-error :messages=" $errors->get('url')" class="mt-2"/>
             <input type="hidden" name="restaurant_id" value="{{$restaurant->id}}">
 
             <div class="flex items-center justify-end mt-4">

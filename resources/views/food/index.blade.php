@@ -6,6 +6,7 @@
             <p>{{ session('success') }}</p>
         </div>
     @endif
+
     {{ $foods->appends(['sort_by' => $sortMethod])->links() }}
     <div class="sm:p-8  bg-white shadow sm:rounded-lg p-6">
         <div id="food-cards-container">
@@ -14,7 +15,7 @@
                     <div class="max-w-sm bg-gray-100 rounded overflow-hidden shadow-lg" id="food-card-{{ $food->id }}">
                         <div style="display: flex; justify-content: center; align-items: center; height: 300px;">
                             <img style="max-width: 100%; max-height: 100%; object-fit: contain;"
-                                 src="{{ asset('storage/' . $food->image) }}" alt="{{ $food->name }}">
+                                 src="{{ asset('storage/' . $food->image->url) }}" alt="{{ $food->name }}">
                         </div>
                         <div class="px-6 py-4">
                             <div class="font-bold text-xl mb-2">{{ $food->name }}</div>

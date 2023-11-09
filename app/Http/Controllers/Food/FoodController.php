@@ -9,6 +9,7 @@ use App\Http\Requests\Food\UpdateFoodRequest;
 use App\Http\Resources\Food\FoodCategoryCollection;
 use App\Models\Food\Food;
 use App\Models\Food\FoodCategory;
+use App\Models\Image;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Http\Request;
 
@@ -75,7 +76,12 @@ class FoodController extends Controller
 
 
         $this->authorize('create', [Food::class, $restaurant]);
-        Food::query()->create($request->validated());
+        $food = Food::query()->create($request->validated());
+        Image::query()->create([
+            'url' => $request->file('image') ?? 'images/default-food.jpeg',
+            'imageable_id' => $food->id,
+            'imageable_type' => Food::class
+        ]);
 
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', 'New Food added successfully');
 
@@ -113,6 +119,9 @@ class FoodController extends Controller
 
         $this->authorize('update', [Food::class, $restaurant]);
         $food->update($request->validated());
+        $food->image->update([
+            'url' => $request->file('url') ?? 'images/default-food.jpeg',
+        ]);
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");
     }
 

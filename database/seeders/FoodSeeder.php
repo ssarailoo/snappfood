@@ -19,7 +19,7 @@ class FoodSeeder extends Seeder
            'name'=>'pizza',
             'materials'=>'meat',
             'price'=>100,
-            'image'=>'images/sMB2QN5aIz7eSWBeTNcvCpFuBzUbr1f6GNHRtlP4.jpg'
+//            'image'=>'images/sMB2QN5aIz7eSWBeTNcvCpFuBzUbr1f6GNHRtlP4.jpg'
         ]);
         Food::query()->create([
             'restaurant_id' => 2,
@@ -27,7 +27,7 @@ class FoodSeeder extends Seeder
             'name'=>'fried chicken',
             'materials'=>'chicken',
             'price'=>80,
-            'image'=>'images/hNmeJyyfDE9bKfCY5wZ9gI4PXCiAw77KJLDSMAYw.jpg'
+//            'image'=>'images/hNmeJyyfDE9bKfCY5wZ9gI4PXCiAw77KJLDSMAYw.jpg'
         ]);
         Food::query()->create([
             'restaurant_id' => 2,
@@ -35,7 +35,7 @@ class FoodSeeder extends Seeder
             'name'=>'donner kebab',
             'materials'=>'meat',
             'price'=>120,
-            'image'=>'images/0NAIdqkoiZebKcJGfWslbgdBesyzwr0rqABpWs9u.jpg'
+//            'image'=>'images/0NAIdqkoiZebKcJGfWslbgdBesyzwr0rqABpWs9u.jpg'
         ]);
     }
 }

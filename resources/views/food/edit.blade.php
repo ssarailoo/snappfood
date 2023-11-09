@@ -64,9 +64,9 @@
                 <x-input-error :messages=" $errors->get('food_category_id')" class="mt-2"/>
             </div>
             <x-input-label for="image" class="'block font-medium text-sm text-pink-700" :value="__('Image')"/>
-            <input type="file" id="image" name="image">
-            <x-input-error :messages=" $errors->get('image')" class="mt-2"/>
-            <img src="{{ asset('storage/'.$food->image)}}" alt="">
+            <input type="file" id="image" name="url">
+            <x-input-error :messages=" $errors->get('url')" class="mt-2"/>
+            <img src="{{ asset('storage/'.$food->image->url)}}" alt="">
 
             <div class="flex items-center justify-end mt-4">
                 <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
