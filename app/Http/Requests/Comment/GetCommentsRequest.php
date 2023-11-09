@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Comment;
 
+use App\Models\Food\Food;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,8 +24,10 @@ class GetCommentsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'restaurant_id' => ['required', 'numeric', 'in:' . implode(',', Restaurant::query()->pluck('id')->toArray())]
+            'restaurant_id' => [ 'numeric', 'in:' . implode(',', Restaurant::query()->pluck('id')->toArray())],
+                'food_id' => [ 'numeric', 'in:' . implode(',', Food::query()->pluck('id')->toArray())]
         ];
+
     }
 
 }

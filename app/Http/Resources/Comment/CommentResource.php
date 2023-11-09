@@ -18,32 +18,21 @@ class CommentResource extends JsonResource
     {
         $answer = Comment::query()->where('parent_id', $this->id)->first();
 
-        $array = [
-                'author' => [
-                    'name' => $this->cart->user->name,
-                ],
-                'foods' => [
-                    $this->cart->foods->map(fn($food) => $food->name)
-                ],
-                'created_at' => $this->created_at,
-                'score' => $this->score,
-                'content' => $this->content,
-                'answer' => $answer->content ?? null
+        return [
+            'author' => [
+                'name' => $this->cart->user->name,
+            ],
 
-            ];
-     if (is_null($array['answer'])){
-         unset($array['answer']);
-     }
+            'foods' => $this->when($request->has('restaurant_id'), [
+                $this->cart->foods->map(fn($food) => $food->name)
+            ]),
+            'restaurant' => $this->when($request->has('food_id'), $this->cart->restaurant->name),
+            'created_at' => $this->created_at,
+            'score' => $this->score,
+            'content' => $this->content,
+            'answer' =>$this->whennotNull( $answer->content ??null)
 
-
-    return $array;
-
-
-
-
-
-
-
+        ];
 
 
     }

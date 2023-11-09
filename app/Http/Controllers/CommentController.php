@@ -6,10 +6,10 @@ use App\Http\Requests\Comment\GetCommentsRequest;
 use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Http\Resources\Comment\CommentCollection;
-use App\Models\Cart\Cart;
 use App\Models\Comment;
 use App\Models\Restaurant\Restaurant;
-use App\Services\CommentStoreService;
+use App\Services\Comment\CommentBearerService;
+use App\Services\Comment\CommentStoreService;
 
 /*
  * @group comment
@@ -24,12 +24,11 @@ class CommentController extends Controller
      * @queryParam restaurant_id integer required
      *
      */
-    public function index(GetCommentsRequest $request)
+    public function index(GetCommentsRequest $request, CommentBearerService $service)
     {
         if ($request->wantsJson()) {
-            return response(new CommentCollection(Restaurant::query()->find($request->get('restaurant_id'))->comments->filter(function ($comment) {
-                return $comment->parent_id === null;
-            })), 200);
+            $response = $service->getComments($request);
+            return  isset($response['msg']) ? response($response, 400) : response($response, 200);
         }
     }
 

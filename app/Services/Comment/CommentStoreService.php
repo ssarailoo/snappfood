@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Comment;
 
 use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Models\Cart\Cart;
