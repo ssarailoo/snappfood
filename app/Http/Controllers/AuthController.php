@@ -78,4 +78,12 @@ class AuthController extends Controller
             'message' => 'there is no user with this email and password'
         ], 401);
     }
+
+    public function logout()
+    {
+        Auth::user()->tokens()->delete();
+        return response([
+            'msg' => 'logged out!'
+        ], 200);
+    }
 }
