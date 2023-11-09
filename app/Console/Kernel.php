@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('food-party:delete-expired')->everyMinute();
+        $schedule->command('carts:delete-expired')->everyMinute();
     }
 
     /**
