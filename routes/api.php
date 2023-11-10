@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\AddressController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\Food\FoodController;
-use App\Http\Controllers\Restaurant\RestaurantController;
+use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\FoodController;
+use App\Http\Controllers\Api\RestaurantController;
+
 use Illuminate\Support\Facades\Route;
 
 /*

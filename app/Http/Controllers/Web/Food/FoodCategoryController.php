@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Food;
+namespace App\Http\Controllers\Web\Food;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Web\Controller;
 use App\Http\Requests\Category\StoreFoodCategoryRequest;
 use App\Http\Requests\Category\UpdateFoodCategoryRequest;
 use App\Models\Food\FoodCategory;

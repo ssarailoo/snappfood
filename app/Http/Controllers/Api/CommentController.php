@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Web\Controller;
 use App\Http\Requests\Comment\GetCommentsRequest;
 use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentRequest;
-use App\Http\Resources\Comment\CommentCollection;
 use App\Models\Comment;
-use App\Models\Restaurant\Restaurant;
 use App\Services\Comment\CommentBearerService;
 use App\Services\Comment\CommentStoreService;
 

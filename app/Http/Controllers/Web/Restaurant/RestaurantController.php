@@ -1,33 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Restaurant;
+namespace App\Http\Controllers\Web\Restaurant;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Web\Controller;
 use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
-use App\Http\Resources\RestaurantResource;
 use App\Models\Image;
 use App\Models\Restaurant\Restaurant;
-use App\Models\Restaurant\RestaurantCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
 class RestaurantController extends Controller
 {
-    /** @group Restaurant
-     * Display a listing of the Restaurant resource.
-     * @apiResourceCollection App\Http\Resources\RestaurantResource
-     * @apiResourceModel App\Models\Restaurant\Restaurant
-     *
-     */
+
     public function index(RestaurantFilterRequest $request)
     {
-        $query = Restaurant::filterApi($request);
-        if ($request->wantsJson()) {
-            return response(RestaurantResource::collection($query->get()), 200);
-        } else {
+
             $this->authorize('viewAny', Restaurant::class);
             $categoryFilter = $request->get('restaurant_category_id');
             return view('restaurant.index', [
@@ -37,28 +27,20 @@ class RestaurantController extends Controller
                     })
                     ->get(),
             ]);
-        }
+
     }
 
-    /**
-     * Display a specific Restaurant
-     * @group Restaurant
-     * @apiResource App\Http\Resources\RestaurantResource
-     * @apiResourceModel App\Models\Restaurant\Restaurant
-     * @urlParam name required The name of the restaurant Example:neshat
-     *
-     */
+
 
     public function show(Restaurant $restaurant, Request $request)
     {
-        if ($request->wantsJson()) {
-            return response(new RestaurantResource($restaurant), 200);
-        } else {
+
+
             $this->authorize('view', $restaurant);
             return view('restaurant.show', [
                 'restaurant' => $restaurant
             ]);
-        }
+
     }
 
     /**

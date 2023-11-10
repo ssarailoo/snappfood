@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use App\Models\Banner;
-use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {

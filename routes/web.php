@@ -1,18 +1,17 @@
 <?php
 
-use App\Http\Controllers\BannerController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Food\FoodCategoryController;
-use App\Http\Controllers\Food\FoodController;
-use App\Http\Controllers\Food\FoodPartyController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Restaurant\RestaurantCategoryController;
-use App\Http\Controllers\Restaurant\RestaurantController;
-use App\Http\Controllers\Restaurant\ScheduleController;
 use App\Http\Controllers\RestaurantScheduleController;
-use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\Web\BannerController;
+use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\Food\FoodCategoryController;
+use App\Http\Controllers\Web\Food\FoodController;
+use App\Http\Controllers\Web\Food\FoodPartyController;
+use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\Restaurant\RestaurantCategoryController;
+use App\Http\Controllers\Web\Restaurant\RestaurantController;
+use App\Http\Controllers\Web\Restaurant\ScheduleController;
+use App\Http\Controllers\Web\WelcomeController;
 use Illuminate\Support\Facades\Route;
-use Knuckles\Scribe\ScribeServiceProvider;
 
 /*
 |--------------------------------------------------------------------------

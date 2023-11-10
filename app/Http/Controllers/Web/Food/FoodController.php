@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Food;
+namespace App\Http\Controllers\Web\Food;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Web\Controller;
 use App\Http\Requests\Food\FilterFoodRequest;
 use App\Http\Requests\Food\StoreFoodRequest;
 use App\Http\Requests\Food\UpdateFoodRequest;
-use App\Http\Resources\Food\FoodCategoryCollection;
 use App\Models\Food\Food;
-use App\Models\Food\FoodCategory;
 use App\Models\Image;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Http\Request;
@@ -26,11 +24,7 @@ class FoodController extends Controller
 
     public function index(Restaurant $restaurant, FilterFoodRequest $request)
     {
-        if ($request->wantsJson()) {
-            $foods = $restaurant->foods;
-            $categoryIds = $foods->map(fn($food) => $food->food_category_id)->unique();
-            return response(new FoodCategoryCollection(FoodCategory::query()->whereIn('id', $categoryIds)->get()), 200);
-        } else {
+
             $this->authorize('viewAny', [Food::class, $restaurant]);
             $foodsOfRestaurant = Food::query()->foodsOf($restaurant->id);
             $sortMethod = $request->input('sort_by', 'default_sort');
@@ -40,7 +34,7 @@ class FoodController extends Controller
                 'foods' => $foods->paginate(3),
                 'sortMethod' => $sortMethod
             ]);
-        }
+
 
     }
 
