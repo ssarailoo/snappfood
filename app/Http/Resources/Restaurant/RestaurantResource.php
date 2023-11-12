@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Restaurant;
 
+use App\Http\Resources\ScheduleResourece;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,8 +27,8 @@ class RestaurantResource extends JsonResource
             'is_open' => $this->status === 1,
             'image' => asset('storage/' . $this->image->url),
             'score' => $this->score ?? 'no score registered yet.',
-            'comments_count' => $this->when($request->route()->hasParameter('restaurant'), count($this->comments->filter(fn($comment) => $comment->score == !null))),
-            'schedules' => $this->when($request->route()->hasParameter('restaurant'), ScheduleResourece::collection($this->schedules))
+            'comments_count' => count($this->comments->filter(fn($comment) => $comment->score == !null)),
+            'schedules' => ScheduleResourece::collection($this->schedules)
 
 
         ];

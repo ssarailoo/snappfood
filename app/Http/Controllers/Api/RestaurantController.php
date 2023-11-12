@@ -6,7 +6,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
-use App\Http\Resources\RestaurantResource;
+use App\Http\Resources\Restaurant\RestaurantCollection;
+use App\Http\Resources\Restaurant\RestaurantResource;
 use App\Models\Restaurant\Restaurant;
 
 
@@ -25,7 +26,7 @@ class RestaurantController extends Controller
     public function index(RestaurantFilterRequest $request)
     {
         $query = Restaurant::filterApi($request);
-        return response(RestaurantResource::collection($query->get()), 200);
+        return response()->json(new RestaurantCollection($query->get()), 200);
 
     }
 
@@ -41,7 +42,7 @@ class RestaurantController extends Controller
     public function show(Restaurant $restaurant)
     {
 
-        return response(new RestaurantResource($restaurant), 200);
+        return response()->json(new RestaurantResource($restaurant), 200);
 
     }
 
