@@ -22,6 +22,7 @@ class Food extends Model
     use HasFactory;
 
     protected $with = ['restaurant'];
+    protected $table='foods';
 
     protected $fillable = [
         'restaurant_id',

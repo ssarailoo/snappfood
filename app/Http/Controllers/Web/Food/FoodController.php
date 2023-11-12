@@ -111,8 +111,9 @@ class FoodController extends Controller
 
         $this->authorize('update', [Food::class, $restaurant]);
         $food->update($request->validated());
+       if ( $request->hasFile('url'))
         $food->image->update([
-            'url' => $request->file('url') ?? 'images/default-food.jpeg',
+            'url' => $request->file('url'),
         ]);
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");
     }

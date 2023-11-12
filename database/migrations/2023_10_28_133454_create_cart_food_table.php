@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('cart_food', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('food_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('food_id')->constrained('foods')->cascadeOnDelete();
             $table->foreignId('cart_id')->constrained()->cascadeOnDelete();
             $table->decimal('food_count');
             $table->timestamps();

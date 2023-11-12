@@ -92,8 +92,9 @@ class RestaurantController extends Controller
         $this->authorize('update', $restaurant);
 
         $restaurant->update($request->validated());
+        if ($request->hasFile('url'))
         $restaurant->image->update([
-            'url' => $request->file('url') ?? 'images/default-restaurant.png',
+            'url' => $request->file('url') ,
         ]);
         return redirect()->route('restaurants.edit', $restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");
     }

@@ -29,7 +29,7 @@ class UpdateRestaurantRequest extends FormRequest
             'address' => ['required', 'string'],
             'bank_account_number' => ['required', 'string', 'size:13'],
             'restaurant_category_id' => ['required'],
-            'cost_of_sending_order' => ['required', 'numeric','between:1,50'],
+            'cost_of_sending_order' => ['required', 'numeric','between:0,50'],
             'url' => ['sometimes', 'nullable',  'max:2048'],
         ];
     }

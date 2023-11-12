@@ -34,7 +34,6 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('/dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
-//        Route::resource('/rest-categories', RestaurantCategoryController::class);
         Route::prefix('/restaurant/categories')->controller(RestaurantCategoryController::class)
             ->name('rest-categories.')->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -43,7 +42,6 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{restaurantCategory}', 'update')->name('update');
                 Route::delete('/{restaurantCategory}', 'destroy')->name('destroy');
             });
-//        Route::resource('/food-categories',FoodCategoryController::class);
         Route::prefix('/food/categories')->controller(FoodCategoryController::class)
             ->name('food-categories.')->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -67,7 +65,7 @@ Route::middleware('auth')->group(function () {
             });
 
 
-        Route::prefix('food-party')->controller(FoodPartyController::class)->name('food-party.')
+        Route::prefix('/party')->controller(FoodPartyController::class)->name('food-party.')
             ->group(function () {
                 Route::get('/foods', 'index')->name('index');
                 Route::post('/{restaurant}/{food}', 'store')->name('store');

@@ -43,10 +43,7 @@ class ScheduleController extends Controller
     {
         $this->authorize('create', [Schedule::class, $restaurant]);
         $schedule = Schedule::query()->create($request->validated());
-        RestaurantSchedule::query()->create([
-            'schedule_id' => $schedule->id,
-            'restaurant_id' => $restaurant->id
-        ]);
+        $restaurant->schedules()->attach($schedule);
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule was made from {$schedule->start_time} to {$schedule->end_time}  on {$schedule->day->name}"
         );
