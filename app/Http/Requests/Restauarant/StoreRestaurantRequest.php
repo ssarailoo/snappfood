@@ -23,7 +23,7 @@ class StoreRestaurantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:' . Restaurant::class, 'string', 'regex:/^[A-Za-z\s]+$/'],
+            'name' => ['required', 'unique:' . Restaurant::class, 'string', 'regex:/^[A-Za-z0-9\s]+$/'],
             'telephone' => ['required', 'unique:' . Restaurant::class, 'size:8'],
             'address' => ['required', 'string'],
             'bank_account_number' => ['required', 'string', 'size:13'],

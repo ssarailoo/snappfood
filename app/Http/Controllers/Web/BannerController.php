@@ -9,12 +9,16 @@ use App\Models\Banner;
 
 class BannerController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Banner::class,'banner');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $this->authorize('viewAny', Banner::class);
+
         return view('banner.index', [
             'banners' => Banner::all()
         ]);
@@ -25,7 +29,7 @@ class BannerController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Banner::class);
+;
         return view('banner.create');
     }
 
@@ -34,7 +38,7 @@ class BannerController extends Controller
      */
     public function store(StoreBannerRequest $request)
     {
-        $this->authorize('create', Banner::class);
+
         Banner::query()->create($request->validated());
         return redirect()->route('banners.index')->with('success', 'Banner created successfully');
     }
@@ -44,7 +48,7 @@ class BannerController extends Controller
      */
     public function show(Banner $banner)
     {
-        $this->authorize('view', $banner);
+
         return view('banner.show', [
             'banner' => $banner
         ]);
@@ -55,7 +59,7 @@ class BannerController extends Controller
      */
     public function edit(Banner $banner)
     {
-        $this->authorize('update', $banner);
+
         return view('banner.edit', [
             'banner' => $banner
         ]);
@@ -66,7 +70,7 @@ class BannerController extends Controller
      */
     public function update(UpdateBannerRequest $request, Banner $banner)
     {
-        $this->authorize('update', $banner);
+
         $banner->update($request->validated());
         return redirect()->route('banners.index')->with('success', 'Banner updated successfully');
     }
@@ -76,7 +80,7 @@ class BannerController extends Controller
      */
     public function destroy(Banner $banner)
     {
-        $this->authorize('delete', $banner);
+
         $banner->delete();
         return redirect()->route('banners.index')->with('success', 'Banner deleted successfully');
     }

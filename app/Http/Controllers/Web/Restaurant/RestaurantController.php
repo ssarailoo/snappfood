@@ -14,11 +14,14 @@ use Spatie\Permission\Models\Role;
 
 class RestaurantController extends Controller
 {
+public function __construct()
+{
+    $this->authorizeResource(Restaurant::class,'restaurant');
+}
 
     public function index(RestaurantFilterRequest $request)
     {
 
-            $this->authorize('viewAny', Restaurant::class);
             $categoryFilter = $request->get('restaurant_category_id');
             return view('restaurant.index', [
                 'restaurants' => Restaurant::withTrashed()
@@ -35,8 +38,6 @@ class RestaurantController extends Controller
     public function show(Restaurant $restaurant, Request $request)
     {
 
-
-            $this->authorize('view', $restaurant);
             return view('restaurant.show', [
                 'restaurant' => $restaurant
             ]);
@@ -48,7 +49,6 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Restaurant::class);
         return view('restaurant.create');
     }
 
@@ -57,7 +57,7 @@ class RestaurantController extends Controller
      */
     public function store(StoreRestaurantRequest $request)
     {
-        $this->authorize('create', Restaurant::class);
+
         $restaurant = Restaurant::query()->create($request->validated());
         $restaurant->image()->create([
             'url' => 'images/default-restaurant.png',
@@ -76,7 +76,6 @@ class RestaurantController extends Controller
     {
         $latitude = $restaurant->latitude ?? 0; // Provide a default value if null
         $longitude = $restaurant->longitude ?? 0;
-        $this->authorize('update', $restaurant);
         return view('restaurant.edit', [
             'restaurant' => $restaurant,
             'latitude' => $latitude,
@@ -89,11 +88,10 @@ class RestaurantController extends Controller
      */
     public function update(UpdateRestaurantRequest $request, Restaurant $restaurant)
     {
-        $this->authorize('update', $restaurant);
 
         $restaurant->update($request->validated());
         if ($request->hasFile('url'))
-        $restaurant->image->update([
+        $restaurant->image()->update([
             'url' => $request->file('url') ,
         ]);
         return redirect()->route('restaurants.edit', $restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");
@@ -104,7 +102,7 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
-        $this->authorize('delete', $restaurant);
+
         $restaurant->delete();
         return redirect()->route('dashboard')->with('success', 'Your Restaurant Deleted Successfully');
     }
@@ -112,7 +110,7 @@ class RestaurantController extends Controller
 
     public function restore(Restaurant $restaurant)
     {
-        $this->authorize('restore', $restaurant);
+
         $restaurant->restore();
         return redirect()->route('restaurants.index');
 
@@ -120,7 +118,7 @@ class RestaurantController extends Controller
 
     public function forceDelete(Restaurant $restaurant)
     {
-        $this->authorize('force-delete', $restaurant);
+
         $restaurant->forceDelete();
         return redirect()->route('restaurants.index');
 

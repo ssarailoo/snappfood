@@ -9,12 +9,17 @@ use App\Models\Food\FoodCategory;
 
 class FoodCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(FoodCategory::class,'foodCategory');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $this->authorize('viewAny', FoodCategory::class);
+
         return view('category.food.index', [
             'categories' => FoodCategory::all()
         ]);
@@ -25,7 +30,7 @@ class FoodCategoryController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', FoodCategory::class);
+
         return view('category.food.create');
     }
 
@@ -34,7 +39,7 @@ class FoodCategoryController extends Controller
      */
     public function store(StoreFoodCategoryRequest $request)
     {
-        $this->authorize('create', FoodCategory::class);
+
         FoodCategory::query()->create($request->validated());
         return redirect()->route('food-categories.index');
     }
@@ -45,7 +50,7 @@ class FoodCategoryController extends Controller
      */
     public function update(UpdateFoodCategoryRequest $request, FoodCategory $foodCategory)
     {
-        $this->authorize('create', $foodCategory);
+
         $foodCategory->update($request->validated());
         return redirect()->route('food-categories.index');
     }
@@ -55,7 +60,7 @@ class FoodCategoryController extends Controller
      */
     public function destroy(FoodCategory $foodCategory)
     {
-        $this->authorize('create', $foodCategory);
+//
         $foodCategory->delete();
         return redirect()->route('food-categories.index');
     }

@@ -9,12 +9,17 @@ use App\Models\Restaurant\RestaurantCategory;
 
 class RestaurantCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(RestaurantCategory::class,'restaurantCategory');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $this->authorize('viewAny',RestaurantCategory::class);
+
         return view('category.restaurant.index', [
             'categories' => RestaurantCategory::all()
         ]);
@@ -25,7 +30,7 @@ class RestaurantCategoryController extends Controller
      */
     public function create()
     {
-        $this->authorize('create',RestaurantCategory::class);
+
         return view('category.restaurant.create');
     }
 
@@ -34,7 +39,7 @@ class RestaurantCategoryController extends Controller
      */
     public function store(StoreRestaurantCategoryRequest $request)
     {
-        $this->authorize('create',RestaurantCategory::class);
+
         RestaurantCategory::query()->create($request->validated());
         return redirect()->route('rest-categories.index');
     }
@@ -44,7 +49,7 @@ class RestaurantCategoryController extends Controller
      */
     public function update(UpdateRestaurantCategoryRequest $request, RestaurantCategory $restaurantCategory)
     {
-        $this->authorize('update',$restaurantCategory);
+
         $restaurantCategory->update($request->validated());
         return redirect()->route('rest-categories.index');
     }
@@ -54,7 +59,7 @@ class RestaurantCategoryController extends Controller
      */
     public function destroy(RestaurantCategory $restaurantCategory)
     {
-        $this->authorize('delete',$restaurantCategory);
+
         $restaurantCategory->delete();
         return redirect()->route('rest-categories.index');
     }

@@ -51,5 +51,9 @@ class FoodPolicy
     /**
      * Determine whether the user can restore the model.
      */
+    public function foodParty(User $user): bool
+    {
+        return $user->hasRole('admin');
+    }
 
 }

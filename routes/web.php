@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/foods', 'index')->name('index');
                 Route::post('/{restaurant}/{food}', 'store')->name('store');
                 Route::put('/{restaurant}/{food}/{foodParty}', 'update')->name('update');
-                Route::delete('/{restaurant}/{food}{foodParty}', 'destroy')->name('destroy');
+                Route::delete('/{restaurant}/{food}/{foodParty}', 'destroy')->name('destroy');
                 Route::get('/settings', 'showSetting')->name('showSetting');
                 Route::post('/settings', 'setting')->name('setting');
             });

@@ -61,11 +61,13 @@ class FoodPartyController extends Controller
 
     public function showSetting()
     {
+        $this->authorize('foodParty',Food::class);
         return view('party.showSetting');
     }
 
     public function setting(SetFoodPartyTimesRequest $request)
     {
+        $this->authorize('foodParty',Food::class);
 
         FoodParty::setTimes($request);
 
