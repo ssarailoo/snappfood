@@ -21,10 +21,8 @@ class FoodSeeder extends Seeder
             'materials' => 'meat',
             'price' => 100,
         ]);
-        Image::query()->create([
+        $firstFood->image()->create([
             'url' => 'images/pizza.jpg',
-            'imageable_id' => $firstFood->id,
-            'imageable_type' => Food::class
         ]);
         $secondFood = Food::query()->create([
             'restaurant_id' => 2,
@@ -33,10 +31,8 @@ class FoodSeeder extends Seeder
             'materials' => 'chicken',
             'price' => 80,
         ]);
-        Image::query()->create([
+        $secondFood->image()->create([
             'url' => 'images/chicken.jpg',
-            'imageable_id' => $secondFood->id,
-            'imageable_type' => Food::class
         ]);
         $thirdFood = Food::query()->create([
             'restaurant_id' => 2,
@@ -45,10 +41,8 @@ class FoodSeeder extends Seeder
             'materials' => 'meat',
             'price' => 120,
         ]);
-        Image::query()->create([
+        $thirdFood->image()->create([
             'url' => 'images/kebab.jpeg',
-            'imageable_id' => $thirdFood->id,
-            'imageable_type' => Food::class
         ]);
     }
 }

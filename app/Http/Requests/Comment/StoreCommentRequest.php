@@ -25,7 +25,7 @@ class StoreCommentRequest extends FormRequest
     {
         return [
             'cart_id' => ['required', 'numeric'],
-            'content' => ['required', 'string'],
+            'content' => ['required', 'string','max:255'],
             'score' => ['required', 'numeric', 'between:1,5']
         ];
     }

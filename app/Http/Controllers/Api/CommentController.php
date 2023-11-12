@@ -25,19 +25,16 @@ class CommentController extends Controller
      */
     public function index(GetCommentsRequest $request, CommentBearerService $service)
     {
-        if ($request->wantsJson()) {
-            $response = $service->getComments($request);
-            return  isset($response['msg']) ? response($response, 400) : response($response, 200);
-        }
+
+        $response = $service->getComments($request);
+        return isset($response['msg']) ? response()->json([
+            'data' => $response
+        ], 400) : response()->json([
+            'data' => $response
+        ], 200);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * @group Comment
@@ -50,39 +47,13 @@ class CommentController extends Controller
         $this->authorize('create', [Comment::class, $request]);
         $response = $commentStoreService->storeComment($request, $request->post('cart_id'));
         if (isset($response['success']))
-            return response($response, 201);
-        return response($response, 400);
+            return response()->json([
+                'data' => $response
+            ], 201);
+        return response()->json([
+            'data' => $response
+        ], 400);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCommentRequest $request, Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Comment $comment)
-    {
-        //
-    }
 }

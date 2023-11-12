@@ -47,9 +47,9 @@ class CartController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->wantsJson()) {
-            return response(new CartCollection(Auth::user()->carts), 200);
-        }
+
+        return response()->json(new CartCollection(Auth::user()->carts), 200);
+
     }
 
 
@@ -68,17 +68,13 @@ class CartController extends Controller
             'user_id' => Auth::user()->id,
             'restaurant_id' => Food::query()->find($request->food_id)->restaurant->id,
         ]);
-        CartFood::query()->create([
-            'food_id' => $request->food_id,
-            'cart_id' => $cart->id,
-            'food_count' => $request->food_count
-        ]);
-
+        $cart->foods()->attach($request->food_id, ['food_count' => $request->food_count]);
         $cartTotalService->updateTotal($request, $cart);
-
-        return response([
-            'msg' => 'Cart Created successfully',
-            'cart_id' => $cart->id
+        return response()->json([
+            'data' => [
+                'message' => 'Cart Created successfully',
+                'cart_id' => $cart->id
+            ]
         ], 201);
     }
 
@@ -93,7 +89,7 @@ class CartController extends Controller
     public function show(Cart $cart)
     {
         $this->authorize('isCartBelongingToUser', $cart);
-        return response(new CartResource($cart), 200);
+        return response()->json(new CartResource($cart), 200);
     }
 
 
@@ -106,15 +102,13 @@ class CartController extends Controller
     public function update(UpdateCartRequest $request, Cart $cart, CartTotalService $cartTotalService)
     {
         $this->authorize('isCartBelongingToUser', $cart);
-        CartFood::query()->create([
-            'food_id' => $request->food_id,
-            'cart_id' => $cart->id,
-            'food_count' => $request->food_count
-        ]);
-        $cartTotalService->updateTotal($request, $cart);
-        return response([
-            'msg' => 'your cart updated successfully',
 
+        $cart->foods()->attach($request->food_id, ['food_count' => $request->food_count]);
+        $cartTotalService->updateTotal($request, $cart);
+        return response()->json([
+            'data' => [
+                'message' => 'your cart updated successfully',
+            ]
         ], 200);
     }
 
@@ -128,9 +122,13 @@ class CartController extends Controller
         $response = $cartDestroyService->destroyCart($cart);
         if (isset($response['success'])) {
             $cart->delete();
-            return response($response, 200);
+            return response()->json([
+                'data' => $response
+            ], 200);
         }
-        return response($response, 400);
+        return response()->json([
+            'data' => $response
+        ], 400);
     }
 
     /**
@@ -156,9 +154,14 @@ class CartController extends Controller
         $response = $cartPayService->payCart($cart, Auth::user());
 
         if (isset($response['success'])) {
-            return response($response, 200);
+            return response()->json([
+                'data' => $response
+            ], 200);
         } else {
-            return response($response, 400);
+            return response()->json([
+                    'data' => $response
+                ]
+                , 400);
         }
     }
 }

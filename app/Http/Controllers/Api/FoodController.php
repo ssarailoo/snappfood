@@ -23,7 +23,7 @@ class FoodController extends Controller
 
             $foods = $restaurant->foods;
             $categoryIds = $foods->map(fn($food) => $food->food_category_id)->unique();
-            return response(new FoodCategoryCollection(FoodCategory::query()->whereIn('id', $categoryIds)->get()), 200);
+            return response()->json(new FoodCategoryCollection(FoodCategory::query()->whereIn('id', $categoryIds)->get()), 200);
 
     }
 }

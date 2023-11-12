@@ -27,29 +27,33 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::put('personal/update',UserController::class)->name('information.update');
-    Route::apiResource('/addresses',AddressController::class);
-    Route::patch('/addresses/current/{address}', [AddressController::class,'updateUserAddress'])->name('addresses.current');
+    Route::put('personal/update', UserController::class)->name('information.update');
+    //region Address
+    Route::apiResource('/addresses', AddressController::class);
+    Route::patch('/addresses/current/{address}', [AddressController::class, 'updateUserAddress'])->name('addresses.current');
+    //endregion
 
+    //region Restaurant
     Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{restaurant}', 'show')->name('show');
         });
     Route::get('/restaurants/{restaurant}/foods', [FoodController::class, 'index'])->name('foods.index');
-    //region cart
-    Route::prefix('/carts')->controller(CartController::class)->name('carts.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/{cart}', 'show')->name('show');
-        Route::post('/', 'store')->name('store');
-        Route::patch('/{cart}', 'update')->name('update');
-        Route::delete('/{cart}', 'destroy')->name('destroy');
-        Route::patch('/{cart}/pay', 'pay')->name('pay');
-    });
-    // endregion
+    //endregion
+
+    // region Cart
+    Route::apiResource('/carts', CartController::class);
+    Route::patch('/carts/{cart}/pay', [CartController::class, 'pay'])->name('carts.pay');
+    //endregion
+
+    //region Comment
     Route::prefix('/comments')->controller(CommentController::class)->name('comments.')
         ->group(function () {
             Route::post('/', 'store')->name('store');
             Route::get('/', 'index')->name('index');
         });
+    //endregion
 });
+
+

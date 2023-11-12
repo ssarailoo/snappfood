@@ -59,10 +59,8 @@ class RestaurantController extends Controller
     {
         $this->authorize('create', Restaurant::class);
         $restaurant = Restaurant::query()->create($request->validated());
-        Image::query()->create([
+        $restaurant->image()->create([
             'url' => 'images/default-restaurant.png',
-            'imageable_id' => $restaurant->id,
-            'imageable_type' => Restaurant::class
         ]);
         //assign role of manager to the user
         Auth::user()->assignRole(Role::query()->find(2));

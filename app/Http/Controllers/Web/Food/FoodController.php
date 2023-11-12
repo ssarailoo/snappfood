@@ -25,15 +25,15 @@ class FoodController extends Controller
     public function index(Restaurant $restaurant, FilterFoodRequest $request)
     {
 
-            $this->authorize('viewAny', [Food::class, $restaurant]);
-            $foodsOfRestaurant = Food::query()->foodsOf($restaurant->id);
-            $sortMethod = $request->input('sort_by', 'default_sort');
-            $foods = Food::getSortedFoods($request, $foodsOfRestaurant);
-            return view('food.index', [
-                'restaurant' => $restaurant,
-                'foods' => $foods->paginate(3),
-                'sortMethod' => $sortMethod
-            ]);
+        $this->authorize('viewAny', [Food::class, $restaurant]);
+        $foodsOfRestaurant = Food::query()->foodsOf($restaurant->id);
+        $sortMethod = $request->input('sort_by', 'default_sort');
+        $foods = Food::getSortedFoods($request, $foodsOfRestaurant);
+        return view('food.index', [
+            'restaurant' => $restaurant,
+            'foods' => $foods->paginate(3),
+            'sortMethod' => $sortMethod
+        ]);
 
 
     }
@@ -71,10 +71,8 @@ class FoodController extends Controller
 
         $this->authorize('create', [Food::class, $restaurant]);
         $food = Food::query()->create($request->validated());
-        Image::query()->create([
+        $food->image()->create([
             'url' => $request->file('image') ?? 'images/default-food.jpeg',
-            'imageable_id' => $food->id,
-            'imageable_type' => Food::class
         ]);
 
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', 'New Food added successfully');
