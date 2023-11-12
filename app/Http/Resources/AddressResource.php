@@ -22,4 +22,5 @@ class AddressResource extends JsonResource
             'latitude' => $this->latitude,
         ];
     }
+
 }

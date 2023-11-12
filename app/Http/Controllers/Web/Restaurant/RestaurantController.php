@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web\Restaurant;
 
-use App\Http\Controllers\Web\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web\Restaurant;
 
-use App\Http\Controllers\Web\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreRestaurantCategoryRequest;
 use App\Http\Requests\Category\UpdateRestaurantCategoryRequest;
 use App\Models\Restaurant\RestaurantCategory;

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\FoodController;
 use App\Http\Controllers\Api\RestaurantController;
 
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,22 +26,18 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
-    Route::post('logout',[AuthController::class,'logout']);
-    Route::prefix('/addresses')->controller(AddressController::class)->name('addresses.')
-        ->group(function () {
-            Route::get('/', 'index')->name('.index');
-            Route::get('/{address}', 'show')->name('.show');
-            Route::post('/', 'store')->name('.store');
-            Route::put('/{address}/', 'update')->name('.update');
-            Route::delete('/{address}/', 'destroy')->name('.destroy');
-            Route::patch('/current/{address}', 'updateUserAddress')->name('update.user');
-        });
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::put('personal/update',UserController::class)->name('information.update');
+    Route::apiResource('/addresses',AddressController::class);
+    Route::patch('/addresses/current/{address}', [AddressController::class,'updateUserAddress'])->name('addresses.current');
+
     Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{restaurant}', 'show')->name('show');
         });
     Route::get('/restaurants/{restaurant}/foods', [FoodController::class, 'index'])->name('foods.index');
+    //region cart
     Route::prefix('/carts')->controller(CartController::class)->name('carts.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{cart}', 'show')->name('show');
@@ -49,9 +46,10 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::delete('/{cart}', 'destroy')->name('destroy');
         Route::patch('/{cart}/pay', 'pay')->name('pay');
     });
+    // endregion
     Route::prefix('/comments')->controller(CommentController::class)->name('comments.')
         ->group(function () {
             Route::post('/', 'store')->name('store');
-            Route::get('/','index')->name('index');
+            Route::get('/', 'index')->name('index');
         });
 });

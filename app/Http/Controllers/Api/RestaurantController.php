@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 
 
-use App\Http\Controllers\Web\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Http\Resources\RestaurantResource;
 use App\Models\Restaurant\Restaurant;
@@ -25,7 +25,6 @@ class RestaurantController extends Controller
     public function index(RestaurantFilterRequest $request)
     {
         $query = Restaurant::filterApi($request);
-
         return response(RestaurantResource::collection($query->get()), 200);
 
     }

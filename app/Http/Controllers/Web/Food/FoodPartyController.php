@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web\Food;
 
-use App\Http\Controllers\Web\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodParty\SetFoodPartyTimesRequest;
 use App\Http\Requests\FoodParty\StoreFoodPartyRequest;
 use App\Http\Requests\FoodParty\UpdateFoodPartyRequest;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Web\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Food\FilterFoodRequest;
 use App\Http\Resources\Food\FoodCategoryCollection;
 use App\Models\Food\FoodCategory;

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Web\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Address\StoreAddressRequest;
 use App\Http\Requests\Address\UpdateAddressRequest;
 use App\Http\Resources\AddressResource;
 use App\Models\Address\Address;
-use App\Models\Address\AddressUser;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -24,7 +23,9 @@ class AddressController extends Controller
     public function index()
     {
         $addresses = Auth::user()->addresses;
-        return response(AddressResource::collection($addresses), 200);
+        return response()->json(
+           AddressResource::collection($addresses), 200
+        );
     }
 
     /**
@@ -35,7 +36,7 @@ class AddressController extends Controller
     public function show(Address $address)
     {
         $this->authorize('myAddress', $address);
-        return response(new AddressResource($address), 200);
+        return response()->json(new AddressResource($address), 200);
 
     }
 
@@ -57,11 +58,8 @@ class AddressController extends Controller
     public function store(StoreAddressRequest $request)
     {
         $address = Address::query()->create($request->validated());
-        AddressUser::query()->create([
-            'user_id' => Auth::user()->id,
-            'address_id' => $address->id
-        ]);
-        return response([
+        Auth::user()->addresses()->attach($address);
+        return response()->json([
             'message' => 'Address added successfully'
         ], 201);
 
@@ -85,7 +83,7 @@ class AddressController extends Controller
     {
         $this->authorize('myAddress', $address);
         $address->update($request->validated());
-        return response([
+        return response()->json([
             'message' => $address->title . "has been updated"
         ], 200);
     }
@@ -104,7 +102,7 @@ class AddressController extends Controller
     {
         $this->authorize('myAddress', $address);
         $address->delete();
-        return response([
+        return response()->json([
             'message' => $address->title . "has been deleted"
         ], 204);
     }
@@ -128,7 +126,7 @@ class AddressController extends Controller
         Auth::user()->update([
             'current_address' => $address->id
         ]);
-        return response([
+        return response()->json([
             'message' => 'current address updated successfully'
         ], 200);
     }

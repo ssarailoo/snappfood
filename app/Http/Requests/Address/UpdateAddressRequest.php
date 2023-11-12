@@ -22,8 +22,8 @@ class UpdateAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
-            'address' => ['required', 'string'],
+            'title' => ['required', 'string','max:255'],
+            'address' => ['required', 'string','max:255'],
             'longitude' => ['required', 'numeric', 'between:-90.000000000000,90.000000000000'],
             'latitude' => ['required', 'numeric', 'between:-90.000000000000,90.000000000000'],
         ];

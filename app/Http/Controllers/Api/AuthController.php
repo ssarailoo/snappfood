@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Web\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
@@ -45,9 +45,11 @@ class AuthController extends Controller
 
         $user = User::query()->create($request->validated());
         $token = $user->createToken('registered')->plainTextToken;
-        return response([
-            'token' => $token,
-            'message' => "Registered Successfully"
+        return response()->json([
+            'data' => [
+                'token' => $token,
+            ]
+            , 'message' => "Registered Successfully"
         ], 201);
 
 
@@ -69,19 +71,21 @@ class AuthController extends Controller
     {
         if (Auth::attempt($request->validated())) {
             $token = Auth::user()->createToken('logged')->plainTextToken;
-            return response([
-                'token' => $token,
+            return response()->json([
+                'data' => [
+                    'token' => $token,
+                ],
                 'message' => "Logged in Successfully"
             ], 200);
-        } else return response([
-            'message' => 'there is no user with this email and password'
+        } else return response()->json([
+            'message' => 'These credentials do not match our records.'
         ], 401);
     }
 
     public function logout()
     {
         Auth::user()->tokens()->delete();
-        return response([
+        return response()->json([
             'msg' => 'logged out!'
         ], 200);
     }
