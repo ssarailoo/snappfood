@@ -10,11 +10,15 @@ use App\Http\Resources\Cart\CartResource;
 use App\Models\Cart\Cart;
 use App\Models\Cart\CartFood;
 use App\Models\Food\Food;
+use App\Notifications\OrderRegistrationCustomer;
+use App\Notifications\OrderRegistrationRestaurant;
 use App\Services\Cart\CartDestroyService;
 use App\Services\Cart\CartPayService;
 use App\Services\Cart\CartTotalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * @group Cart
@@ -64,10 +68,13 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request, CartTotalService $cartTotalService)
     {
-        $cart = Cart::query()->create([
+       $cart= $cart = Cart::query()->create([
             'user_id' => Auth::user()->id,
             'restaurant_id' => Food::query()->find($request->food_id)->restaurant->id,
         ]);
+       $cart->update([
+           'hashed_id'=>strtolower(\Str::random(40))
+       ]);
         $cart->foods()->attach($request->food_id, ['food_count' => $request->food_count]);
         $cartTotalService->updateTotal($request, $cart);
         return response()->json([
@@ -102,7 +109,6 @@ class CartController extends Controller
     public function update(UpdateCartRequest $request, Cart $cart, CartTotalService $cartTotalService)
     {
         $this->authorize('isCartBelongingToUser', $cart);
-
         $cart->foods()->attach($request->food_id, ['food_count' => $request->food_count]);
         $cartTotalService->updateTotal($request, $cart);
         return response()->json([
@@ -154,6 +160,8 @@ class CartController extends Controller
         $response = $cartPayService->payCart($cart, Auth::user());
 
         if (isset($response['success'])) {
+            Notification::send($cart->user, new OrderRegistrationCustomer($cart));
+            Notification::send($cart->restaurant->user, new OrderRegistrationRestaurant($cart));
             return response()->json([
                 'data' => $response
             ], 200);

@@ -3,6 +3,7 @@
 use App\Http\Controllers\RestaurantScheduleController;
 use App\Http\Controllers\Web\BannerController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\FactorController;
 use App\Http\Controllers\Web\Food\FoodCategoryController;
 use App\Http\Controllers\Web\Food\FoodController;
 use App\Http\Controllers\Web\Food\FoodPartyController;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', WelcomeController::class);
+Route::get('/factor/{hash}', FactorController::class)->name('factor');
 
 Route::middleware('auth')->group(function () {
     Route::view('/docs', 'scribe/index')->middleware('role:admin');

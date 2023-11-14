@@ -23,7 +23,8 @@ class Cart extends Model
         'user_id',
         'restaurant_id',
         'total',
-        'is_paid'
+        'is_paid',
+        'hashed_id'
     ];
 
 
