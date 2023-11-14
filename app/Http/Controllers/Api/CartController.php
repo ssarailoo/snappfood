@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\StoreCartRequest;
 use App\Http\Requests\Cart\UpdateCartRequest;
@@ -68,13 +69,13 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request, CartTotalService $cartTotalService)
     {
-       $cart= $cart = Cart::query()->create([
+        $cart = $cart = Cart::query()->create([
             'user_id' => Auth::user()->id,
             'restaurant_id' => Food::query()->find($request->food_id)->restaurant->id,
         ]);
-       $cart->update([
-           'hashed_id'=>strtolower(\Str::random(40))
-       ]);
+        $cart->update([
+            'hashed_id' => strtolower(\Str::random(40))
+        ]);
         $cart->foods()->attach($request->food_id, ['food_count' => $request->food_count]);
         $cartTotalService->updateTotal($request, $cart);
         return response()->json([
@@ -162,6 +163,9 @@ class CartController extends Controller
         if (isset($response['success'])) {
             Notification::send($cart->user, new OrderRegistrationCustomer($cart));
             Notification::send($cart->restaurant->user, new OrderRegistrationRestaurant($cart));
+            $cart->update([
+                'status' => Status::CHECKING
+            ]);
             return response()->json([
                 'data' => $response
             ], 200);

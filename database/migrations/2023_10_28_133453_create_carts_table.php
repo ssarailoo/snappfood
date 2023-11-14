@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Hash;
@@ -18,6 +19,7 @@ return new class extends Migration {
             $table->foreignId('restaurant_id')->constrained();
             $table->decimal('total', 10, 2)->default(0);
             $table->boolean('is_paid')->default(0);
+            $table->enum('status', Status::getValues())->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });
