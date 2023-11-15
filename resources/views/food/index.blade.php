@@ -7,7 +7,7 @@
         </div>
     @endif
 
-    {{ $foods->appends(['sort_by' => $sortMethod])->links() }}
+        {{ $foods->withQueryString()->links() }}
     <div class="sm:p-8  bg-white shadow sm:rounded-lg p-6">
         <div id="food-cards-container">
             <div class="grid  grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
@@ -20,7 +20,11 @@
                         <div class="px-6 py-4">
                             <div class="font-bold text-xl mb-2">{{ $food->name }}</div>
                             <p class="text-gray-700 text-base">
-                                Materials: {{ $food->materials }}
+                                Materials:
+                                @foreach($food->materials as $material)
+                                <span
+                                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $material->name }}</span>
+                                @endforeach
                             </p>
                         </div>
                         <div class="px-6 pt-2 pb-2 grid grid-cols-2 gap-2">

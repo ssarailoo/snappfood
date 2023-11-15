@@ -53,7 +53,13 @@
                         {{FoodCategory::query()->find( $food->food_category_id)->name}}
                     </td>
                     <td class="px-6 py-4">
-                        {{$food->materials}}
+                        <p class="text-gray-700 text-base">
+                            Materials:
+                            @foreach($food->materials as $material)
+                                <span
+                                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $material->name }}</span>
+                            @endforeach
+                        </p>
                     </td>
                     <td class="px-6 py-4">
                         {{$food->price}}

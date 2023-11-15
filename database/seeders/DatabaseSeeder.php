@@ -87,6 +87,7 @@ class DatabaseSeeder extends Seeder
             'imageable_type' => Restaurant::class
         ]);
         $this->call([
+            MaterialSeeder::class,
             FoodSeeder::class
         ]);
         Banner::query()->create([

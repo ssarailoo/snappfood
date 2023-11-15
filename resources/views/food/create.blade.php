@@ -1,4 +1,4 @@
-@php use App\Models\Food\FoodCategory; @endphp
+@php use App\Models\Food\Food;use App\Models\Food\FoodCategory; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <form method="POST" action="{{ route('my-restaurant.foods.store',$restaurant) }}" enctype="multipart/form-data">
@@ -12,12 +12,16 @@
             </div>
             <!-- Materials -->
             <div>
-                <x-input-label for="materials" class="'block font-medium text-sm text-pink-700"
-                               :value="__('Materials')"/>
-                <x-text-input id="materials" class="block mt-1 w-full" type="text" name="materials"
-                              :value="old('materials')"/>
-                <x-input-error :messages="$errors->get('materials')" class="mt-2"/>
+                <div>
+                    <x-input-label for="materials" class="'block font-medium text-sm text-pink-700"
+                                   :value="__('Materials')"/>
+                    <select id="materials" class="block mt-1 w-full" name="materials[]" multiple>
+
+                    </select>
+                    <x-input-error :messages="$errors->get('materials')" class="mt-2"/>
+                </div>
             </div>
+
             <!--Price  -->
             <div>
                 <x-input-label for="price" class="'block font-medium text-sm text-pink-700" :value="__('Price')"/>
@@ -53,3 +57,26 @@
 </x-app-layout>
 
 
+<script>
+    $('#materials').select2({
+        tags: true,
+        ajax: {
+            url: '{{ route('search') }}',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            id: item.name,
+                            text: item.name
+                        };
+                    })
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 2 // Set the minimum length for a search term
+    })
+
+</script>

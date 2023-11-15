@@ -6,6 +6,7 @@ use App\Casts\ImageCast;
 use App\Models\Cart\Cart;
 use App\Models\Cart\CartFood;
 use App\Models\Image;
+use App\Models\Material;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -95,6 +96,11 @@ class Food extends Model
     public function scopeFilterBy(Builder $builder, string $attribute, string $value)
     {
         return $builder->where($attribute, $value);
+    }
+
+    public function materials(): BelongsToMany
+    {
+        return $this->belongsToMany(Material::class);
     }
 
 }

@@ -8,7 +8,9 @@ use App\Http\Requests\Food\StoreFoodRequest;
 use App\Http\Requests\Food\UpdateFoodRequest;
 use App\Models\Food\Food;
 use App\Models\Image;
+use App\Models\Material;
 use App\Models\Restaurant\Restaurant;
+use App\Services\Material\MaterialCreateOrRetrieveService;
 use Illuminate\Http\Request;
 
 
@@ -27,12 +29,10 @@ class FoodController extends Controller
 
         $this->authorize('viewAny', [Food::class, $restaurant]);
         $foodsOfRestaurant = Food::query()->foodsOf($restaurant->id);
-        $sortMethod = $request->input('sort_by', 'default_sort');
         $foods = Food::getSortedFoods($request, $foodsOfRestaurant);
         return view('food.index', [
             'restaurant' => $restaurant,
             'foods' => $foods->paginate(3),
-            'sortMethod' => $sortMethod
         ]);
 
 
@@ -65,19 +65,20 @@ class FoodController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFoodRequest $request, Restaurant $restaurant)
+    public function store(StoreFoodRequest $request, Restaurant $restaurant, MaterialCreateOrRetrieveService $service)
     {
 
-
         $this->authorize('create', [Food::class, $restaurant]);
-        $food = Food::query()->create($request->validated());
+        $food = Food::query()->create($request->except('materials'));
+        $materials = $service->createOrRetrieveMaterials(array_values($request->input('materials')));
+        $food->materials()->sync($materials);
         $food->image()->create([
             'url' => $request->file('image') ?? 'images/default-food.jpeg',
         ]);
-
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', 'New Food added successfully');
 
     }
+
 
     /**
      * Display the specified resource.
@@ -106,15 +107,16 @@ class FoodController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFoodRequest $request, Restaurant $restaurant, Food $food)
+    public function update(UpdateFoodRequest $request, Restaurant $restaurant, Food $food, MaterialCreateOrRetrieveService $service)
     {
-
         $this->authorize('update', [Food::class, $restaurant]);
-        $food->update($request->validated());
-       if ( $request->hasFile('url'))
-        $food->image->update([
-            'url' => $request->file('url'),
-        ]);
+        $food->update($request->except('materials'));
+        $materials=$service->createOrRetrieveMaterials(array_values($request->input('materials')));
+        $food->materials()->sync($materials);
+        if ($request->hasFile('url'))
+            $food->image->update([
+                'url' => $request->file('url'),
+            ]);
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");
     }
 

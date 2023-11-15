@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\RestaurantScheduleController;
 use App\Http\Controllers\Web\BannerController;
 use App\Http\Controllers\Web\DashboardController;
@@ -24,7 +25,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/materials/search', [MaterialController::class, 'search'])->name('search');
+Route::post('/materials/create', [MaterialController::class, 'create'])->name('create');
 Route::get('/', WelcomeController::class);
 Route::get('/factor/{hash}', FactorController::class)->name('factor');
 

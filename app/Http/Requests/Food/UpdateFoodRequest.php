@@ -23,7 +23,8 @@ class UpdateFoodRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'materials' => ['required'],
+            'materials' => ['required','array'],
+            'materials.*' => ['string','max:255'],
             'price' => ['required','numeric'],
             'food_category_id' => ['required'],
             'discount'=>['required','between:0,100','numeric'],
