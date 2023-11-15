@@ -125,7 +125,7 @@
         tags: true,
         tokenSeparators: [',', ' '],
         ajax: {
-            url: '{{ route('search') }}',
+            url: '{{ route('materials.suggest') }}',
             dataType: 'json',
             delay: 250,
             processResults: function (data) {

@@ -25,8 +25,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/materials/search', [MaterialController::class, 'search'])->name('search');
-Route::post('/materials/create', [MaterialController::class, 'create'])->name('create');
+
+
 Route::get('/', WelcomeController::class);
 Route::get('/factor/{hash}', FactorController::class)->name('factor');
 
@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
                 Route::post('/foods/filter', [FoodController::class, 'filter'])->name('foods.filter');
                 Route::resource('/schedules', ScheduleController::class);
             });
+        Route::get('/materials/search', MaterialController::class)->name('materials.suggest');
 
 
         Route::prefix('/party')->controller(FoodPartyController::class)->name('food-party.')

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class MaterialController extends Controller
 {
-    public function search(Request $request)
+    public function __invoke(Request $request)
     {
         $query = $request->input('q');
         Log::info('Search Query:', ['query' => $query]);
@@ -23,18 +23,8 @@ class MaterialController extends Controller
         return response()->json($materials);
     }
 
-//    public function create(Request $request)
-//    {
-//        $materialName = $request->input('name');
-//
-//        Log::info('Create Material:', ['name' => $materialName]);
-//
-//        // Check if the material already exists
-//        $material = Material::query()->firstOrCreate(['name' => $materialName]);
-//        Log::info('Material Created:', $material->toArray());
-//
-//
-//        return response()->json(['id' => $material->id, 'text' => $material->name]);
-//    }
+
+
+
 }
 
