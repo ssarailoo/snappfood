@@ -13,7 +13,7 @@ class DashboardController extends Controller
         return view('dashboard', [
             'carts' => Auth::user()->restaurant->carts()
 //                ->whereNotNull('status')
-                ->where('status', '!=', 'received')
+                ->where('status', '!=', 'delivered')
                 ->get(),
         ]);
     }

@@ -9,16 +9,14 @@ use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Http\Resources\Cart\CartCollection;
 use App\Http\Resources\Cart\CartResource;
 use App\Models\Cart\Cart;
-use App\Models\Cart\CartFood;
 use App\Models\Food\Food;
-use App\Notifications\OrderRegistrationCustomer;
-use App\Notifications\OrderRegistrationRestaurant;
+use App\Notifications\Customer\OrderRegistration;
+use App\Notifications\Restaurant\OrderRegistration as RestaurantOrderRegistration;
 use App\Services\Cart\CartDestroyService;
 use App\Services\Cart\CartPayService;
 use App\Services\Cart\CartTotalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 
 /**
@@ -161,8 +159,8 @@ class CartController extends Controller
         $response = $cartPayService->payCart($cart, Auth::user());
 
         if (isset($response['success'])) {
-            Notification::send($cart->user, new OrderRegistrationCustomer($cart));
-            Notification::send($cart->restaurant->user, new OrderRegistrationRestaurant($cart));
+            Notification::send($cart->user, new OrderRegistration($cart));
+            Notification::send($cart->restaurant->user, new RestaurantOrderRegistration($cart));
             $cart->update([
                 'status' => Status::CHECKING
             ]);

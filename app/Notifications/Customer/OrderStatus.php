@@ -1,25 +1,22 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Customer;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Hash;
 
-class OrderRegistrationCustomer extends Notification
+class OrderStatus extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    public $cart;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($cart)
+    public function __construct(public $cart,public  $status)
     {
-        $this->cart = $cart;
+        //
     }
 
     /**
@@ -38,9 +35,9 @@ class OrderRegistrationCustomer extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Order Registration')
-            ->line('Your order has been registered and is waiting for the restaurant\'s confirmation.')
-            ->action('Notification Action', url(route('factor',$this->cart->hashed_id)))
+            ->subject('Order Status')
+            ->line("Your order status has changed to {$this->status}.")
+            ->action('Order Tracking', url(route('factor',$this->cart->hashed_id)))
             ->line('Thank you for using our application!');
     }
 

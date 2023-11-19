@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Customer;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Hash;
 
-class OrderRegistrationRestaurant extends Notification implements ShouldQueue
+class OrderRegistration extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $cart;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public  $cart)
+    public function __construct($cart)
     {
-        //
+        $this->cart = $cart;
     }
 
     /**
@@ -38,9 +38,9 @@ class OrderRegistrationRestaurant extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject('Order Registration')
-            ->line('The new order has been registered by the customer and is waiting for your approval')
-            ->action('Notification Action', url(route('dashboard')))
-                    ->line('Thank you for using our application!');
+            ->line('Your order has been registered and is waiting for the restaurant\'s confirmation.')
+            ->action('Order Tracking', url(route('factor',$this->cart->hashed_id)))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -54,4 +54,6 @@ class OrderRegistrationRestaurant extends Notification implements ShouldQueue
             //
         ];
     }
+
+
 }

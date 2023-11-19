@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\RestaurantScheduleController;
 use App\Http\Controllers\Web\BannerController;
 use App\Http\Controllers\Web\DashboardController;
@@ -8,6 +7,8 @@ use App\Http\Controllers\Web\FactorController;
 use App\Http\Controllers\Web\Food\FoodCategoryController;
 use App\Http\Controllers\Web\Food\FoodController;
 use App\Http\Controllers\Web\Food\FoodPartyController;
+use App\Http\Controllers\Web\MaterialController;
+use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\Restaurant\RestaurantCategoryController;
 use App\Http\Controllers\Web\Restaurant\RestaurantController;
@@ -82,6 +83,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('banners', BannerController::class);
 
     });
+    Route::patch('/orders/status/{cart}/{newStatus}', [OrderController::class, 'update'])->name('orders.status.update');
 
 });
 

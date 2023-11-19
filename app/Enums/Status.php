@@ -12,7 +12,7 @@ enum Status: string
     case CANCELED = 'canceled';
     case PREPARING = 'preparing';
     case SHIPPING = 'shipping';
-    case RECEIVED = 'received';
+    case DELIVERED = 'delivered';
 
 
 }
