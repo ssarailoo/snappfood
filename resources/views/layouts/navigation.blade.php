@@ -52,6 +52,9 @@
                             <x-dropdown-link :href="route('my-restaurant.schedules.index',Auth::user()->restaurant)">
                                 {{ __('My Schedules') }}
                             </x-dropdown-link>
+                            <x-dropdown-link :href="route('my-restaurant.comments.index',Auth::user()->restaurant)">
+                                {{ __('Comments') }}
+                            </x-dropdown-link>
                         @else
                             <x-dropdown-link :href="route('restaurants.create')">
                                 {{ __('Create Restaurant') }}

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Enums\Status;
+use App\Enums\CartStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\UpdateCartStatusRequest;
 use App\Models\Cart\Cart;

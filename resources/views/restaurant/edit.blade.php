@@ -114,6 +114,13 @@
                 </x-primary-button>
             </div>
         </a>
+        <a href="{{route('my-restaurant.comments.index',$restaurant)}}">
+            <div class="flex items-center justify-end mt-4">
+                <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                    {{ __('Comment Section') }}
+                </x-primary-button>
+            </div>
+        </a>
         <div>
         </div>
     </div>

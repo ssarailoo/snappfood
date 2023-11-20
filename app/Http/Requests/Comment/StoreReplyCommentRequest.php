@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Cart;
+namespace App\Http\Requests\Comment;
 
-use App\Enums\CartStatus;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCartStatusRequest extends FormRequest
+class StoreReplyCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +22,10 @@ class UpdateCartStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'newStatus' =>[ 'required|in:' . implode(',', CartStatus::getValues())],
+            'parent_id' => ['required'],
+            'cart_id' => ['required'],
+            'status' => ['required'],
+            'content' => ['required', 'string', 'max:255'],
         ];
     }
 }

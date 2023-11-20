@@ -17,7 +17,8 @@ class Comment extends Model
         'cart_id',
         'parent_id',
         'content',
-        'score'
+        'score',
+        'status'
     ];
 
     public function cart(): BelongsTo

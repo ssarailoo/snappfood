@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Cart\Cart;
 use App\Models\Comment;
+use App\Models\Restaurant\Restaurant;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
@@ -13,25 +14,26 @@ class CommentPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        //
+        return $user->restaurant->is($restaurant) or $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Comment $comment): bool
+    public function view(User $user, Restaurant $restaurant): bool
     {
-        //
+        return $user->restaurant->is($restaurant) or $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Request $request): bool
+    public function create(User $user, Comment $comment = null): bool
     {
-       return $user->carts->contains(Cart::query()->find($request->post('cart_id')));
+        return $user->carts->contains(Cart::query()->find(\request()->post('cart_id'))) or
+            $user->restaurant->comments->contains($comment);
     }
 
     /**
@@ -39,7 +41,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment): bool
     {
-        //
+        return $user->restaurant->carts->map(fn($cart) => $cart->comments()->first())->contains($comment) or $user->hasRole('admin');
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RestaurantScheduleController;
 use App\Http\Controllers\Web\BannerController;
+use App\Http\Controllers\Web\CommentController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\FactorController;
 use App\Http\Controllers\Web\Food\FoodCategoryController;
@@ -67,6 +68,14 @@ Route::middleware('auth')->group(function () {
                 Route::resource('/foods', FoodController::class);
                 Route::post('/foods/filter', [FoodController::class, 'filter'])->name('foods.filter');
                 Route::resource('/schedules', ScheduleController::class);
+                Route::prefix('/comments')->controller(CommentController::class)->name('comments')
+                    ->group(function () {
+                        Route::get('/', 'index')->name('.index');
+                        Route::patch('/{comment}/{newStatus}', 'update')->name('.update');
+                        Route::get('/create/{comment}/', 'create')->name('.create');
+                        Route::post('/{comment}','store')->name('.store');
+                    });
+
             });
         Route::get('/materials/search', MaterialController::class)->name('materials.suggest');
 

@@ -2,6 +2,7 @@
 
 namespace App\Services\Comment;
 
+use App\Enums\CommentStatus;
 use App\Http\Requests\Comment\GetCommentsRequest;
 use App\Http\Resources\Comment\CommentCollection;
 use App\Models\Food\Food;
@@ -18,12 +19,13 @@ class CommentBearerService
         if ($restaurantId) {
 
             $response = new CommentCollection(Restaurant::query()->find($restaurantId)->comments->filter(function ($comment) {
-                return $comment->parent_id === null;
+                return $comment->parent_id === null and $comment->status===CommentStatus::Accepted->value;
             }));
         } elseif ($foodId) {
             $carts = Food::query()->find($foodId)->carts->filter(fn($cart) => $cart->is_paid === 1 && $cart->comments->first() == !null);
 
-            $response = new CommentCollection($carts->map(fn($cart)=>$cart->comments)->map(fn($comment)=>$comment->first()));
+            $response = new CommentCollection($carts->map(fn($cart)=>$cart->comments)->map(fn($comment)=>$comment->first())
+            ->filter(fn($comment)=>$comment->status===CommentStatus::Accepted->value));
         } else
             $response = [
                 'msg' => 'Bad Request=> you must enter food id or restaurant id in query param'

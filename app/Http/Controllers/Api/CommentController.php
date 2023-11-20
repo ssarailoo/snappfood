@@ -44,7 +44,7 @@ class CommentController extends Controller
     public function store(StoreCommentRequest $request, CommentStoreService $commentStoreService)
     {
 
-        $this->authorize('create', [Comment::class, $request]);
+        $this->authorize('create', Comment::class);
         $response = $commentStoreService->storeComment($request, $request->post('cart_id'));
         if (isset($response['success']))
             return response()->json([

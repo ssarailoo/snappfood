@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\Status;
+use App\Enums\CartStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\StoreCartRequest;
 use App\Http\Requests\Cart\UpdateCartRequest;
@@ -162,7 +162,7 @@ class CartController extends Controller
             Notification::send($cart->user, new OrderRegistration($cart));
             Notification::send($cart->restaurant->user, new RestaurantOrderRegistration($cart));
             $cart->update([
-                'status' => Status::CHECKING
+                'status' => CartStatus::CHECKING
             ]);
             return response()->json([
                 'data' => $response

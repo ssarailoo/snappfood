@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use App\Traits\HasEnumValues;
 
-enum Status: string
+enum CartStatus: string
 {
     use HasEnumValues;
 

@@ -5,6 +5,7 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://code.iconify.design/2/2.0.4/iconify.min.js"></script>
         <script
             src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         ></script>

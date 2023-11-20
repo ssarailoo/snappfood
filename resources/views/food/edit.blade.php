@@ -40,9 +40,9 @@
                 <span class="text-sm text-pink-700">The discount unit is percentage</span>
 
             </div>
-            <!--Status  -->
+            <!--CartStatus  -->
             <div>
-                <x-input-label for="status" class="'block font-medium text-sm text-pink-700" :value="__('Status')"/>
+                <x-input-label for="status" class="'block font-medium text-sm text-pink-700" :value="__('CartStatus')"/>
                 <select id="category" class="block mt-1 w-full" name="status">
 
                     <option value="0" @if($food->status === 0) selected @endif>Not Available</option>

@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Enums\Status;
+use App\Enums\CartStatus;
 use App\Models\Cart\Cart;
 use App\Models\User;
 
@@ -21,9 +21,9 @@ class CartPolicy
         }
         $currentStatus = $cart->status;
         $allowedTransitions = [
-            Status::CHECKING->value => [Status::CANCELED->value, Status::PREPARING->value],
-            Status::PREPARING->value => [Status::SHIPPING->value],
-            Status::SHIPPING->value => [Status::DELIVERED->value],
+            CartStatus::CHECKING->value => [CartStatus::CANCELED->value, CartStatus::PREPARING->value],
+            CartStatus::PREPARING->value => [CartStatus::SHIPPING->value],
+            CartStatus::SHIPPING->value => [CartStatus::DELIVERED->value],
         ];
         if (!in_array($newStatus, $allowedTransitions[$currentStatus])) {
             return false;

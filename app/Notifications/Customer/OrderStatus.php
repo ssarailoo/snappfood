@@ -35,7 +35,7 @@ class OrderStatus extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Order Status')
+            ->subject('Order CartStatus')
             ->line("Your order status has changed to {$this->status}.")
             ->action('Order Tracking', url(route('factor',$this->cart->hashed_id)))
             ->line('Thank you for using our application!');
