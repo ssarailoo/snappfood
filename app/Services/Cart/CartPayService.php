@@ -3,6 +3,7 @@
 namespace App\Services\Cart;
 
 use App\Models\Cart\Cart;
+use App\Models\Food\FoodParty;
 use App\Models\User;
 
 class CartPayService
@@ -15,7 +16,12 @@ class CartPayService
             return ['msg' => 'Bad Request: Already paid'];
         } else {
             $cart->update(['is_paid' => 1]);
+            $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===1)->map(function ($cartFood){
+                FoodParty::query()->where('food_id',$cartFood->food->id)->decrement('quantity',$cartFood->food_count);
+            });
             return ['success' => true, 'msg' => 'Your cart has been paid successfully'];
         }
     }
+
+
 }

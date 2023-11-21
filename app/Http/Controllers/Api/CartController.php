@@ -14,7 +14,9 @@ use App\Notifications\Customer\OrderRegistration;
 use App\Notifications\Restaurant\OrderRegistration as RestaurantOrderRegistration;
 use App\Services\Cart\CartDestroyService;
 use App\Services\Cart\CartPayService;
+use App\Services\Cart\CartStoreService;
 use App\Services\Cart\CartTotalService;
+use App\Services\Cart\CartUpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -65,23 +67,18 @@ class CartController extends Controller
      *      "cart_id": 1
      *  }
      */
-    public function store(StoreCartRequest $request, CartTotalService $cartTotalService)
+    public function store(StoreCartRequest $request, CartStoreService $cartStoreService, CartTotalService $cartTotalService)
     {
-        $cart = $cart = Cart::query()->create([
-            'user_id' => Auth::user()->id,
-            'restaurant_id' => Food::query()->find($request->food_id)->restaurant->id,
-        ]);
-        $cart->update([
-            'hashed_id' => strtolower(\Str::random(40))
-        ]);
-        $cart->foods()->attach($request->food_id, ['food_count' => $request->food_count]);
-        $cartTotalService->updateTotal($request, $cart);
+
+        $response = $cartStoreService->storeCart();
+        if (isset($response['cart'])) {
+            $cartTotalService->updateTotal( $response['cart']);
+            return response()->json($response['data']
+                , 201);
+        }
         return response()->json([
-            'data' => [
-                'message' => 'Cart Created successfully',
-                'cart_id' => $cart->id
-            ]
-        ], 201);
+            'data' => $response
+        ], 400);
     }
 
     /**
@@ -105,16 +102,20 @@ class CartController extends Controller
      *      "msg": "Your cart updated successfully"
      *  }
      */
-    public function update(UpdateCartRequest $request, Cart $cart, CartTotalService $cartTotalService)
+    public function update(UpdateCartRequest $request, Cart $cart, CartUpdateService $cartUpdateService, CartTotalService $cartTotalService)
     {
         $this->authorize('isCartBelongingToUser', $cart);
-        $cart->foods()->attach($request->food_id, ['food_count' => $request->food_count]);
-        $cartTotalService->updateTotal($request, $cart);
+        $response = $cartUpdateService->updateService($cart);
+        if (isset($response['success'])) {
+            $cartTotalService->updateTotal( $cart);
+            return response()->json([
+                'data' => $response
+            ], 200);
+        }
         return response()->json([
-            'data' => [
-                'message' => 'your cart updated successfully',
-            ]
-        ], 200);
+            'data' => $response
+        ], 400);
+
     }
 
     /**

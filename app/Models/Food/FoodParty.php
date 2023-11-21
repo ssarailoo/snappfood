@@ -37,9 +37,5 @@ class FoodParty extends Model
         return $this->belongsTo(Food::class);
     }
 
-    public function restaurant()
-    {
-        return $this->hasOneThrough(Restaurant::class,Food::class,'restaurant_id','id');
 
-}
 }

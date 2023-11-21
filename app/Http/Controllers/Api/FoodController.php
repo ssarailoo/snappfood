@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Food\FilterFoodRequest;
 use App\Http\Resources\Food\FoodCategoryCollection;
+use App\Http\Resources\Food\FoodPartyResource;
 use App\Models\Food\FoodCategory;
+use App\Models\Food\FoodParty;
 use App\Models\Restaurant\Restaurant;
 
 class FoodController extends Controller
@@ -21,9 +23,14 @@ class FoodController extends Controller
     public function index(Restaurant $restaurant, FilterFoodRequest $request)
     {
 
-            $foods = $restaurant->foods;
-            $categoryIds = $foods->map(fn($food) => $food->food_category_id)->unique();
-            return response()->json(new FoodCategoryCollection(FoodCategory::query()->whereIn('id', $categoryIds)->get()), 200);
+        $foods = $restaurant->foods;
+        $categoryIds = $foods->map(fn($food) => $food->food_category_id)->unique();
+        return response()->json(new FoodCategoryCollection(FoodCategory::query()->whereIn('id', $categoryIds)->get()), 200);
 
+    }
+
+    public function foodParty()
+    {
+        return response()->json(['data'=> FoodPartyResource::collection(FoodParty::all())]);
     }
 }

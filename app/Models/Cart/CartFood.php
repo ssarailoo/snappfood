@@ -14,7 +14,8 @@ class CartFood extends Model
     protected $fillable = [
         'cart_id',
         'food_id',
-        'food_count'
+        'food_count',
+        'in_party'
     ];
 
     public function cart(): BelongsTo

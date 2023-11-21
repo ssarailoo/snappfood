@@ -12,9 +12,12 @@ return new class extends Migration {
     {
         Schema::create('cart_food', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('food_id')->constrained('foods')->cascadeOnDelete();
+            $table->foreignId('food_id')->nullable()->constrained('foods')->cascadeOnDelete();
+            $table->boolean('in_party')->default(0);
             $table->foreignId('cart_id')->constrained()->cascadeOnDelete();
             $table->decimal('food_count');
+            $table->decimal('price',10,2);
+            $table->decimal('discount_percent');
             $table->timestamps();
         });
     }

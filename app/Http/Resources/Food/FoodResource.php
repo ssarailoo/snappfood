@@ -20,7 +20,7 @@ class FoodResource extends JsonResource
             'id' => $this->id,
             'title' => $this->name,
             'price' => $this->price,
-            'materials' => $this->materials,
+            'materials' => $this->materials->map(fn($material)=>$material->name),
             'image' =>asset('storage/'. $this->image->url),
             'off' => [
                 'label' => $this->discount . "%",

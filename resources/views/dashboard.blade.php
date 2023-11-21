@@ -1,4 +1,4 @@
-@php use App\Enums\CartStatus;use App\Models\Address\Address;use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Enums\CartStatus;use App\Models\Address\Address;use App\Models\Food\FoodParty;use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
 
     @if(session('success'))
@@ -71,10 +71,24 @@
                                             {{$cart->user->phone_number}}
                                         </td>
                                         <td class="px-6 py-4" style="white-space: nowrap;">
-                                            @foreach($cart->foods->unique('id') as $food)
+                                            @php
+                                                $cartFoods=    $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===0);
+                                                $cartFoodsInParty=    $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===1);
+                                            @endphp
+                                            Normal:
+                                            @foreach($cartFoods->unique('food_id') as $cartFood)
                                                 <p class="text-gray-700 text-base">
-                                                    {{$food->name}} {{$food->price}}
-                                                    * {{(int)$cart->cartFoods->where('food_id', $food->id)->sum('food_count')}}
+                                                    {{$cartFood->food->name}} {{$cartFood->price}}
+                                                    * {{(int)$cartFoods->where('food_id', $cartFood->food->id)->sum('food_count')}}
+                                                    => discount % {{$cartFood->discount_percent}}
+                                                </p>
+                                            @endforeach
+                                            Party:
+                                            @foreach($cartFoodsInParty->unique('food_id') as $cartFood)
+                                                <p class="text-gray-700 text-base">
+                                                    {{$cartFood->food->name}} {{$cartFood->price}}
+                                                    * {{(int)$cartFoodsInParty->where('food_id', $cartFood->food->id)->sum('food_count')}}
+                                                    => discount % {{$cartFood->discount_percent}}
                                                 </p>
                                             @endforeach
                                         </td>

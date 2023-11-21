@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Cart;
 
 use App\Models\Food\Food;
+use App\Models\Food\FoodParty;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCartRequest extends FormRequest
@@ -23,8 +24,9 @@ class UpdateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'food_id' => ['required', 'numeric',"in:".implode(',',Food::query()->pluck('id')->toArray())],
+            'food_id' => ['sometimes', 'nullable','numeric',"in:".implode(',',Food::query()->pluck('id')->toArray())],
             'food_count' => ['required', 'numeric', 'between:1,100'],
+            'food_party_id' => ['sometimes', 'nullable', 'numeric',"in:".implode(',',FoodParty::query()->pluck('id')->toArray())],
         ];
     }
 
