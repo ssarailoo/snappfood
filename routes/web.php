@@ -73,10 +73,10 @@ Route::middleware('auth')->group(function () {
                         Route::get('/', 'index')->name('.index');
                         Route::patch('/{comment}/{newStatus}', 'update')->name('.update');
                         Route::get('/create/{comment}/', 'create')->name('.create');
-                        Route::post('/{comment}','store')->name('.store');
+                        Route::post('/{comment}', 'store')->name('.store');
                     });
-
             });
+        Route::get('/comments/review', [CommentController::class,'review'])->middleware('role:admin')->name('comments.review');
         Route::get('/materials/search', MaterialController::class)->name('materials.suggest');
 
 

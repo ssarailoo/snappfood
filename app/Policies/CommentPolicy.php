@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\CommentStatus;
 use App\Models\Cart\Cart;
 use App\Models\Comment;
 use App\Models\Restaurant\Restaurant;
@@ -39,8 +40,16 @@ class CommentPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Comment $comment): bool
+    public function update(User $user, Comment $comment,$newStatus): bool
     {
+        $currentStatus=$comment->status;
+        $allowedTransitions = [
+          CommentStatus::PENDING->value => [CommentStatus::Accepted->value, CommentStatus::REVIEWING_BY_ADMIN->value],
+            CommentStatus::REVIEWING_BY_ADMIN->value => [CommentStatus::Accepted->value,CommentStatus::NOT_CONFIRMED->value],
+        ];
+        if (!in_array($newStatus, $allowedTransitions[$currentStatus])) {
+            return false;
+        }
         return $user->restaurant->carts->map(fn($cart) => $cart->comments()->first())->contains($comment) or $user->hasRole('admin');
     }
 

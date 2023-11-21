@@ -77,6 +77,9 @@
                             <x-dropdown-link :href="route('banners.index')">
                                 {{ __('Banners') }}
                             </x-dropdown-link>
+                            <x-dropdown-link :href="route('comments.review')">
+                                {{ __('Review Comments') }}
+                            </x-dropdown-link>
                         @endif
 
                         <!-- Authentication -->

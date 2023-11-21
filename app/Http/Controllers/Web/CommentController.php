@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\CommentStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\StoreReplyCommentRequest;
 use App\Models\Comment;
@@ -30,7 +31,7 @@ class CommentController extends Controller
 
     }
 
-    public function store(Restaurant $restaurant,Comment $comment,StoreReplyCommentRequest $request)
+    public function store(Restaurant $restaurant, Comment $comment, StoreReplyCommentRequest $request)
     {
         $this->authorize('create', $comment);
 
@@ -46,12 +47,19 @@ class CommentController extends Controller
 
     public function update(Restaurant $restaurant, Comment $comment, $newStatus)
     {
-        $this->authorize('update', $comment);
+        $this->authorize('update',[ $comment,$newStatus]);
         $comment->update([
             'status' => $newStatus,
         ]);
         $shortId = substr($comment->cart->hashed_id, 0, 10);
-        return redirect()->route('my-restaurant.comments.index', $restaurant)->with('success', "Shopping cart status comment with ID {$shortId} has been updated to $newStatus");
+    return    redirect()->back()->with('success', "Shopping cart status comment with ID {$shortId} has been updated to $newStatus");
 
+    }
+
+    public function review()
+    {
+        return view('comment.review', [
+            'comments' => Comment::query()->where('status', CommentStatus::REVIEWING_BY_ADMIN)->get()
+        ]);
     }
 }
