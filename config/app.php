@@ -160,6 +160,7 @@ return [
          * Package Service Providers...
          */
         Spatie\Permission\PermissionServiceProvider::class,
+        Kavenegar\Laravel\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -182,6 +183,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'Kavenegar' => Kavenegar\Laravel\Facade::class,
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

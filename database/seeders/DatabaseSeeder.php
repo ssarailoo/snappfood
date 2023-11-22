@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::query()->create([
             'name' => 'saeed',
             'email' => 's@yahoo.com',
-            'phone_number' => '09112729660',
+            'phone_number' => '09112729661',
             'password' => '123456789',
 
         ]);
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         $user2 = User::query()->create([
             'name' => 'hossein',
             'email' => 'h@yahoo.com',
-            'phone_number' => '09112740324',
+            'phone_number' => '09112729660',
             'password' => '123456789',
 
         ]);

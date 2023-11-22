@@ -24,9 +24,9 @@ class StoreCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'food_id' => ['sometimes','nullable', 'numeric',"in:".implode(',',Food::query()->pluck('id')->toArray())],
+            'food_id' => ['required_without:food_party_id','nullable', 'numeric',"in:".implode(',',Food::query()->pluck('id')->toArray())],
             'food_count' => ['required', 'numeric', 'between:1,100'],
-            'food_party_id' => ['sometimes', 'nullable', 'numeric',"in:".implode(',',FoodParty::query()->pluck('id')->toArray())]
+            'food_party_id' => ['required_without:food_id', 'nullable', 'numeric',"in:".implode(',',FoodParty::query()->pluck('id')->toArray())]
         ];
     }
 
