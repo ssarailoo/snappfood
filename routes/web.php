@@ -4,6 +4,7 @@ use App\Http\Controllers\RestaurantScheduleController;
 use App\Http\Controllers\Web\BannerController;
 use App\Http\Controllers\Web\CommentController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\DiscountController;
 use App\Http\Controllers\Web\FactorController;
 use App\Http\Controllers\Web\Food\FoodCategoryController;
 use App\Http\Controllers\Web\Food\FoodController;
@@ -32,14 +33,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', WelcomeController::class);
 Route::get('/factor/{hash}', FactorController::class)->name('factor');
 
+// region Authenticated
 Route::middleware('auth')->group(function () {
+
     Route::view('/docs', 'scribe/index')->middleware('role:admin');
+
+    // region Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // endregion
+
 
     Route::prefix('/dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
+
+        // region Admin
+
+        //region Restaurant Category
         Route::prefix('/restaurant/categories')->controller(RestaurantCategoryController::class)
             ->name('rest-categories.')->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -48,6 +59,9 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{restaurantCategory}', 'update')->name('update');
                 Route::delete('/{restaurantCategory}', 'destroy')->name('destroy');
             });
+        // endregion
+
+        // region Food Category
         Route::prefix('/food/categories')->controller(FoodCategoryController::class)
             ->name('food-categories.')->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -56,6 +70,23 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{foodCategory}', 'update')->name('update');
                 Route::delete('/{foodCategory}', 'destroy')->name('destroy');
             });
+        // endregion
+
+        // region Banner
+        Route::resource('banners', BannerController::class);
+        // endregion
+
+        //region Comment Review
+        Route::get('/comments/review', [CommentController::class,'review'])->middleware('role:admin')->name('comments.review');
+// endregion
+
+        // region Discount
+        Route::resource('/discounts', DiscountController::class)->except(['show']);
+        //endregion
+
+        // endregion
+
+        // region Restaurant
         Route::resource('/restaurants', RestaurantController::class);
         Route::prefix('/restaurants')->controller(RestaurantController::class)->name('restaurants.')
             ->group(function () {
@@ -63,11 +94,22 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/{restaurant}/force', 'forceDelete')->name('force')->withTrashed();
                 Route::patch('/{restaurant}/restore', 'restore')->name('restore')->withTrashed();
             });
+        // endregion
+
+        // region My Restaurant Setting
         Route::prefix('/{restaurant}')->name('my-restaurant.')
             ->group(function () {
+                //region Food
                 Route::resource('/foods', FoodController::class);
                 Route::post('/foods/filter', [FoodController::class, 'filter'])->name('foods.filter');
+                // endregion
+
+                // region Schedule
                 Route::resource('/schedules', ScheduleController::class);
+
+                //endregion
+
+                // region Comments
                 Route::prefix('/comments')->controller(CommentController::class)->name('comments')
                     ->group(function () {
                         Route::get('/', 'index')->name('.index');
@@ -75,11 +117,12 @@ Route::middleware('auth')->group(function () {
                         Route::get('/create/{comment}/', 'create')->name('.create');
                         Route::post('/{comment}', 'store')->name('.store');
                     });
+
+                // endregion
             });
-        Route::get('/comments/review', [CommentController::class,'review'])->middleware('role:admin')->name('comments.review');
-        Route::get('/materials/search', MaterialController::class)->name('materials.suggest');
+        //endregion
 
-
+        // region Food Party
         Route::prefix('/party')->controller(FoodPartyController::class)->name('food-party.')
             ->group(function () {
                 Route::get('/foods', 'index')->name('index');
@@ -88,12 +131,17 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/{restaurant}/{food}/{foodParty}', 'destroy')->name('destroy');
                 Route::get('/settings', 'showSetting')->name('showSetting');
                 Route::post('/settings', 'setting')->name('setting');
-            });
-        Route::resource('banners', BannerController::class);
 
+            });
+        // endregion
+
+        Route::get('/materials/search', MaterialController::class)->name('materials.suggest');
+        Route::patch('/orders/status/{cart}/{newStatus}', [OrderController::class, 'update'])->name('orders.status.update');
     });
-    Route::patch('/orders/status/{cart}/{newStatus}', [OrderController::class, 'update'])->name('orders.status.update');
+
 
 });
+
+// endregion
 
 require __DIR__ . '/auth.php';

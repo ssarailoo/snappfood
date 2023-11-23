@@ -4,6 +4,7 @@ namespace App\Models\Cart;
 
 use App\Http\Requests\Cart\StoreCartRequest;
 use App\Models\Comment;
+use App\Models\Discount;
 use App\Models\Food\Food;
 use App\Models\Restaurant\Restaurant;
 use App\Models\User;
@@ -25,7 +26,8 @@ class Cart extends Model
         'total',
         'is_paid',
         'hashed_id',
-        'status'
+        'status',
+        'discount_id'
     ];
 
 
@@ -56,5 +58,10 @@ class Cart extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function discount(): BelongsTo
+    {
+        return $this->belongsTo(Discount::class);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\CartStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cart\CheckDiscountCodeRequest;
 use App\Http\Requests\Cart\StoreCartRequest;
 use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Http\Resources\Cart\CartCollection;
@@ -155,7 +156,7 @@ class CartController extends Controller
      *
      *
      */
-    public function pay(Cart $cart, CartPayService $cartPayService)
+    public function pay(CheckDiscountCodeRequest $request,Cart $cart, CartPayService $cartPayService)
     {
         $this->authorize('isCartBelongingToUser', $cart);
         $response = $cartPayService->payCart($cart, Auth::user());

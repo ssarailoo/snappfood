@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('hashed_id')->nullable()->default(null)->unique();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('discount_id')->nullable()->default(null)->constrained();
             $table->foreignId('restaurant_id')->constrained();
             $table->decimal('total', 10, 2)->default(0);
             $table->boolean('is_paid')->default(0);

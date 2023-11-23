@@ -80,6 +80,9 @@
                             <x-dropdown-link :href="route('comments.review')">
                                 {{ __('Review Comments') }}
                             </x-dropdown-link>
+                            <x-dropdown-link :href="route('discounts.index')">
+                                {{ __('Discount Code') }}
+                            </x-dropdown-link>
                         @endif
 
                         <!-- Authentication -->

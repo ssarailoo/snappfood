@@ -42,6 +42,9 @@
                                         Total
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        Customer Payment
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -95,7 +98,10 @@
 
 
                                         <td class="px-6 py-4">
-                                            {{$cart->total + Auth::user()->restaurant->cost_of_sending_order}}$
+                                            {{$total=$cart->total + Auth::user()->restaurant->cost_of_sending_order}}$
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ $total * (100 - ($cart->discount ? $cart->discount->percent : 0)) / 100 }}$
                                         </td>
 
                                         <td class="px-6 py-4">
