@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\UpdateCartStatusRequest;
 use App\Models\Cart\Cart;
 use App\Notifications\Customer\OrderStatus;
+use App\Notifications\Customer\OrderStatusSMS;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
@@ -19,6 +20,7 @@ class OrderController extends Controller
             'status' => $newStatus,
         ]);
         Notification::send($cart->user, new OrderStatus($cart,$newStatus));
+        Notification::send($cart->user, new OrderStatusSMS($newStatus));
         $shortHashedId=substr($cart->hashed_id,0,10);
         return redirect()->route('dashboard')->with('success', "Order with id {$shortHashedId} has been updated to {$newStatus}");
     }

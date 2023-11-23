@@ -11,6 +11,7 @@ use App\Http\Resources\Cart\CartResource;
 use App\Models\Cart\Cart;
 use App\Models\Food\Food;
 use App\Notifications\Customer\OrderRegistration;
+use App\Notifications\Customer\OrderRegistrationSMS;
 use App\Notifications\Restaurant\OrderRegistration as RestaurantOrderRegistration;
 use App\Services\Cart\CartDestroyService;
 use App\Services\Cart\CartPayService;
@@ -161,6 +162,7 @@ class CartController extends Controller
 
         if (isset($response['success'])) {
             Notification::send($cart->user, new OrderRegistration($cart));
+            Notification::send($cart->user, new OrderRegistrationSMS());
             Notification::send($cart->restaurant->user, new RestaurantOrderRegistration($cart));
             $cart->update([
                 'status' => CartStatus::CHECKING

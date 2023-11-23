@@ -44,7 +44,10 @@ class User extends Authenticatable
 
         'password' => 'hashed',
     ];
-
+    public function routeNotificationForKavenegar($driver, $notification = null)
+    {
+        return $this->phone_number;
+    }
     public function restaurant(): HasOne
     {
         return $this->hasOne(Restaurant::class);
