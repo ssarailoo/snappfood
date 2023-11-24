@@ -30,10 +30,6 @@ class Cart extends Model
         'discount_id'
     ];
 
-
-
-
-
     public function cartFoods(): HasMany
     {
         return $this->hasMany(CartFood::class);

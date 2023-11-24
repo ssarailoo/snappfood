@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cart\FilterCartByStatusRequest;
+use App\Models\Cart\Cart;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function dashboard()
+    public function dashboard(FilterCartByStatusRequest $request)
     {
-
+        $carts = Auth::user()->restaurant->carts()->where('status', '!=', 'delivered');
+        $filter = $request->get('filter_status');
         return view('dashboard', [
-            'carts' => Auth::user()->restaurant->carts()
-//                ->whereNotNull('status')
-                ->where('status', '!=', 'delivered')
-                ->get(),
+            'carts' => $carts->when($filter, function ($query) use ($filter) {
+                return $query->where('status', $filter);
+            })->paginate(5),
         ]);
     }
 

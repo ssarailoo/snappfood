@@ -54,6 +54,7 @@
                                         Action
                                     </th>
                                 </tr>
+                                {{$carts->withQueryString()->links()}}
                                 </thead>
                                 <tbody>
                                 @foreach($carts as $key=> $cart)
@@ -101,7 +102,8 @@
                                             {{$total=$cart->total + Auth::user()->restaurant->cost_of_sending_order}}$
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $total * (100 - ($cart->discount ? $cart->discount->percent : 0)) / 100 }}$
+                                            {{ $total * (100 - ($cart->discount ? $cart->discount->percent : 0)) / 100 }}
+                                            $
                                         </td>
 
                                         <td class="px-6 py-4">
@@ -186,8 +188,27 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            @endif
                         </div>
-                        @endif
+
+                    </div>
+                    <div class="p-2">
+                        <form action="">
+                            @php
+                                $statuses=CartStatus::getValues();
+                               $last= array_key_last($statuses);
+                                unset($statuses[$last]);
+                            @endphp
+                            <select name="filter_status">
+                                @foreach($statuses as $status)
+                                    <option value="{{$status}}">{{ ucfirst($status)}}</option>
+                                @endforeach
+                            </select>
+                            <x-primary-button
+                                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                {{ __('Filter By Status') }}
+                            </x-primary-button>
+                        </form>
                     </div>
                 </div>
         </div>
