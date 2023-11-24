@@ -21,7 +21,7 @@ class CartStoreService
             }
             $cart = $cart = Cart::query()->create([
                 'user_id' => Auth::user()->id,
-                'restaurant_id' => $foodParty->restaurant->id,
+                'restaurant_id' => $foodParty->food->restaurant->id,
             ]);
             $cart->foods()->attach($foodParty->food_id, [
                 'food_count' => request()->food_count,
@@ -56,3 +56,6 @@ class CartStoreService
 
     }
 }
+
+
+
