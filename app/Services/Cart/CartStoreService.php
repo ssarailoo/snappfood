@@ -19,7 +19,7 @@ class CartStoreService
                 'user_id' => Auth::user()->id,
                 'restaurant_id' => $foodParty->food->restaurant->id,
             ]);
-            $cart->foods()->syncWithoutDetaching([$foodParty->food_id, [
+            $cart->foods()->syncWithoutDetaching([$foodParty->food_id=> [
                 'food_count' => DB::raw('food_count + ' . $count),
                 'in_party' => 1,
                 'discount_percent' => $foodParty->discount,

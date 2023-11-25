@@ -19,9 +19,6 @@ class CartPayService
             return ['msg' => 'Bad Request: Already paid'];
         } else {
 
-            $cart->cartFoods->filter(fn($cartFood) => $cartFood->in_party === 1)->map(function ($cartFood) {
-                FoodParty::query()->where('food_id', $cartFood->food->id)->decrement('quantity', $cartFood->food_count);
-            });
             $discount = Discount::query()->where('code', request()->input('code'))->first();
             if ($discount) {
                 if (Auth::user()->carts->contains(Cart::query()->where('discount_id', $discount->id)->first())) {

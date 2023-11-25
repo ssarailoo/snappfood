@@ -5,6 +5,7 @@ namespace App\Http\Requests\Cart;
 use App\Models\Food\Food;
 use App\Models\Food\FoodParty;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateCartRequest extends FormRequest
 {
@@ -23,21 +24,18 @@ class UpdateCartRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->request->has('food_party_id')) {
-            $foodPartyId = $this->post('food_party_id');
-            $foodParty=FoodParty::query()->find($foodPartyId);
+
+            if ($foodParty=FoodParty::query()->find($this->post('food_party_id')))
             return [
-                'food_id' => ['required_without:food_party_id', 'nullable', 'numeric', "in:" . implode(',', Food::query()->pluck('id')->toArray())],
-                'food_count' => ['required', 'numeric', 'between:1,' . (int)$foodParty->quantity],
-                'food_party_id' => ['required_without:food_id', 'nullable', 'numeric', "in:" . implode(',', FoodParty::query()->pluck('id')->toArray())]
+                'food_party_id' => ['bail','required_without:food_id', 'nullable', 'numeric', "in:" . implode(',', FoodParty::query()->pluck('id')->toArray())],
+                'food_count' => ['required', 'numeric', 'max:' .   (int)$foodParty->quantity],
             ];
-        }
-        $foodId = $this->post('food_id');
-        $foodParty = FoodParty::query()->where('food_id', $foodId)->first();
+
+        $foodParty = FoodParty::query()->where('food_id', $this->post('food_id'))->first();
         if ($foodParty !== null) {
             return [
                 'food_id' => ['required_without:food_party_id', 'nullable', 'numeric', "in:" . implode(',', Food::query()->pluck('id')->toArray())],
-                'food_count' => ['required', 'numeric', 'between:1,' . (int)$foodParty->quantity],
+                'food_count' => ['required', 'numeric', "max:" . (int)$foodParty->quantity],
                 'food_party_id' => ['required_without:food_id', 'nullable', 'numeric', "in:" . implode(',', FoodParty::query()->pluck('id')->toArray())]
             ];
         }
