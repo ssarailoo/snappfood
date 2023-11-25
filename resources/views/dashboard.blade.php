@@ -80,18 +80,18 @@
                                                 $cartFoodsInParty=    $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===1);
                                             @endphp
                                             Normal:
-                                            @foreach($cartFoods->unique('food_id') as $cartFood)
+                                            @foreach($cartFoods as $cartFood)
                                                 <p class="text-gray-700 text-base">
                                                     {{$cartFood->food->name}} {{$cartFood->price}}
-                                                    * {{(int)$cartFoods->where('food_id', $cartFood->food->id)->sum('food_count')}}
+                                                    * {{(int)$cartFood->food_count}}
                                                     => discount % {{$cartFood->discount_percent}}
                                                 </p>
                                             @endforeach
                                             Party:
-                                            @foreach($cartFoodsInParty->unique('food_id') as $cartFood)
+                                            @foreach($cartFoodsInParty as $cartFood)
                                                 <p class="text-gray-700 text-base">
                                                     {{$cartFood->food->name}} {{$cartFood->price}}
-                                                    * {{(int)$cartFoodsInParty->where('food_id', $cartFood->food->id)->sum('food_count')}}
+                                                    * {{(int)$cartFood->food_count}}
                                                     => discount % {{$cartFood->discount_percent}}
                                                 </p>
                                             @endforeach
