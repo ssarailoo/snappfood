@@ -55,7 +55,7 @@ class CartController extends Controller
     public function index(Request $request)
     {
 
-        return response()->json(new CartCollection(Auth::user()->carts), 200);
+        return response()->json(new CartCollection(Auth::user()->carts->filter(fn($cart) => $cart->is_paid === 0)), 200);
 
     }
 
@@ -74,7 +74,7 @@ class CartController extends Controller
 
         $response = $cartStoreService->storeCart();
         if (isset($response['cart'])) {
-            $cartTotalService->updateTotal( $response['cart']);
+            $cartTotalService->updateTotal($response['cart']);
             return response()->json($response['data']
                 , 201);
         }
@@ -109,7 +109,7 @@ class CartController extends Controller
         $this->authorize('isCartBelongingToUser', $cart);
         $response = $cartUpdateService->updateService($cart);
         if (isset($response['success'])) {
-            $cartTotalService->updateTotal( $cart);
+            $cartTotalService->updateTotal($cart);
             return response()->json([
                 'data' => $response
             ], 200);
@@ -156,7 +156,7 @@ class CartController extends Controller
      *
      *
      */
-    public function pay(CheckDiscountCodeRequest $request,Cart $cart, CartPayService $cartPayService)
+    public function pay(CheckDiscountCodeRequest $request, Cart $cart, CartPayService $cartPayService)
     {
         $this->authorize('isCartBelongingToUser', $cart);
         $response = $cartPayService->payCart($cart, Auth::user());
