@@ -75,8 +75,10 @@ class CartController extends Controller
         $response = $cartStoreService->storeCart();
         if (isset($response['cart'])) {
             $cartTotalService->updateTotal($response['cart']);
-            return response()->json($response['data']
-                , 201);
+            return $response['data']['message'] === "Cart Created successfully" ?
+                response()->json($response['data']
+                    , 201) : response()->json($response['data']
+                    , 200);
         }
         return response()->json([
             'data' => $response

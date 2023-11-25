@@ -23,10 +23,29 @@ class StoreCartRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        if ($this->request->has('food_party_id')) {
+            $foodPartyId = $this->post('food_party_id');
+            $foodParty=FoodParty::query()->find($foodPartyId);
+            return [
+                'food_id' => ['required_without:food_party_id', 'nullable', 'numeric', "in:" . implode(',', Food::query()->pluck('id')->toArray())],
+                'food_count' => ['required', 'numeric', 'between:1,' . (int)$foodParty->quantity],
+                'food_party_id' => ['required_without:food_id', 'nullable', 'numeric', "in:" . implode(',', FoodParty::query()->pluck('id')->toArray())]
+            ];
+        }
+        $foodId = $this->post('food_id');
+        $foodParty = FoodParty::query()->where('food_id', $foodId)->first();
+        if ($foodParty !== null) {
+            return [
+                'food_id' => ['required_without:food_party_id', 'nullable', 'numeric', "in:" . implode(',', Food::query()->pluck('id')->toArray())],
+                'food_count' => ['required', 'numeric', 'between:1,' . (int)$foodParty->quantity],
+                'food_party_id' => ['required_without:food_id', 'nullable', 'numeric', "in:" . implode(',', FoodParty::query()->pluck('id')->toArray())]
+            ];
+        }
         return [
-            'food_id' => ['required_without:food_party_id','nullable', 'numeric',"in:".implode(',',Food::query()->pluck('id')->toArray())],
-            'food_count' => ['required', 'numeric', 'between:1,100'],
-            'food_party_id' => ['required_without:food_id', 'nullable', 'numeric',"in:".implode(',',FoodParty::query()->pluck('id')->toArray())]
+            'food_id' => ['required_without:food_party_id', 'nullable', 'numeric', "in:" . implode(',', Food::query()->pluck('id')->toArray())],
+            'food_count' => ['required', 'numeric'],
+            'food_party_id' => ['required_without:food_id', 'nullable', 'numeric', "in:" . implode(',', FoodParty::query()->pluck('id')->toArray())]
         ];
     }
 
