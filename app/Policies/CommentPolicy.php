@@ -45,7 +45,7 @@ class CommentPolicy
         $currentStatus=$comment->status;
         $allowedTransitions = [
           CommentStatus::PENDING->value => [CommentStatus::Accepted->value, CommentStatus::REVIEWING_BY_ADMIN->value],
-            CommentStatus::REVIEWING_BY_ADMIN->value => [CommentStatus::Accepted->value,CommentStatus::NOT_CONFIRMED->value],
+            CommentStatus::REVIEWING_BY_ADMIN->value =>CommentStatus::Accepted->value,
         ];
         if (!in_array($newStatus, $allowedTransitions[$currentStatus])) {
             return false;

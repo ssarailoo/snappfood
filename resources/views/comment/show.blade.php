@@ -1,4 +1,4 @@
-@php use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Models\Comment;use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <div class="mb-4">
@@ -25,6 +25,10 @@
         <div class="mb-4">
             Comment: {{$comment->content}}
         </div>
+        @if(Comment::query()->where('parent_id',$comment->id)->exists())
+
+            Reply: {{Comment::query()->where('parent_id',$comment->id)->first()->content}}
+        @endif
         <a href="{{route('my-restaurant.comments.index',$restaurant)}}">
             <div class="flex items-center justify-end mt-4">
                 <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
