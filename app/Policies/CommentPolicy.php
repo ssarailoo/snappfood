@@ -46,6 +46,7 @@ class CommentPolicy
         $allowedTransitions = [
             CommentStatus::PENDING->value => [CommentStatus::Accepted->value, CommentStatus::REVIEWING_BY_ADMIN->value],
             CommentStatus::REVIEWING_BY_ADMIN->value =>[ CommentStatus::Accepted->value,CommentStatus::RECONSIDERING_BY_CUSTOMER->value],
+            CommentStatus::RECONSIDERING_BY_CUSTOMER->value=>[CommentStatus::Accepted->value]
         ];
         if (!in_array($newStatus, $allowedTransitions[$currentStatus])) {
             return false;
@@ -53,27 +54,20 @@ class CommentPolicy
         return $user->restaurant->carts->map(fn($cart) => $cart->comments()->first())->contains($comment) or $user->hasRole('admin');
     }
 
+    public function reconsider(User $user,Comment $comment)
+    {
+        return $user->carts->map(fn($cart)=>$cart->comments->first())->contains($comment) and
+            $comment->status===CommentStatus::RECONSIDERING_BY_CUSTOMER->value and
+            $comment->reconsidered===0;
+    }
+
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Comment $comment): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') and  $comment->reconsidered===1 ;
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Comment $comment): bool
-    {
-        return $user->hasRole('admin');
-    }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Comment $comment): bool
-    {
-        return $user->hasRole('admin');
-    }
 }

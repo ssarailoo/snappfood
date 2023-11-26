@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Enums\CommentStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\StoreReplyCommentRequest;
+use App\Http\Requests\Comment\UpdateCommentDescriptionRequest;
+use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Http\Requests\Comments\FilterCommentRequest;
 use App\Models\Comment;
 use App\Models\Restaurant\Restaurant;
@@ -17,7 +19,7 @@ class CommentController extends Controller
     {
 
         $this->authorize('viewAny', [Comment::class, $restaurant]);
-        $comments = $restaurant->carts->map(fn($cart) => $cart->comments->first());
+        $comments = $restaurant->carts->map(fn($cart) => $cart->comments->first())->filter(fn($comment)=>$comment!==null);
         $filter = $request->get('status');
 
         return view('comment.index', [
@@ -61,11 +63,13 @@ class CommentController extends Controller
 
     }
 
-    public function update(Restaurant $restaurant, Comment $comment, $newStatus, RestaurantUpdateScoreService $service)
+    public function update(UpdateCommentDescriptionRequest $request, Restaurant $restaurant, Comment $comment, $newStatus, RestaurantUpdateScoreService $service)
     {
         $this->authorize('update', [$comment, $newStatus]);
+
         $comment->update([
             'status' => $newStatus,
+            'description' => $request->description ?? null
         ]);
         $service->updateRestaurantScore($restaurant, $newStatus);
         $shortId = substr($comment->cart->hashed_id, 0, 10);
@@ -81,10 +85,13 @@ class CommentController extends Controller
 
     }
 
-    public function review()
+    public function review(FilterCommentRequest $request)
     {
+      $comments=  Comment::query()->whereNotIn('status', [CommentStatus::Accepted->value, CommentStatus::PENDING->value])->get();
         return view('comment.review', [
-            'comments' => Comment::query()->where('status', CommentStatus::REVIEWING_BY_ADMIN)->get()
+            'comments' => $comments->when(!empty($filter=$request->get('status')),function ($builder)use($filter){
+              return  $builder->filter(fn($comment)=>$comment->status===$filter);
+            })
         ]);
     }
 }

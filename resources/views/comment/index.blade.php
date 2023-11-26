@@ -175,13 +175,14 @@
                         </div>
                         @endif
                     </div>
-                    <form action="">
-                        <select name="status" >
-                            <option value="">all</option>
-                            @foreach(CommentStatus::getValues() as $status)
-                                <option value="{{$status}}">{{$status}}</option>
-                            @endforeach
-                        </select>
+                    <div class="p-2">
+                        <form action="">
+                            <select name="status">
+                                <option value="">all</option>
+                                @foreach(CommentStatus::getValues() as $status)
+                                    <option value="{{$status}}">{{$status}}</option>
+                                @endforeach
+                            </select>
 
                             <button
                                 type="submit"
@@ -189,7 +190,8 @@
                                 {{ __('Filter By Status') }}
                             </button>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
         </div>
     </div>

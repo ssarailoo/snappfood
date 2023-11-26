@@ -23,7 +23,7 @@ class FilterCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'nullable'
+            'status' => ['nullable','in:'.implode(',',CommentStatus::getValues())]
         ];
     }
 }

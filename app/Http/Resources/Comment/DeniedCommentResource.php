@@ -16,6 +16,7 @@ class DeniedCommentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'=>$this->id,
             'restaurant' => $this->cart->restaurant->name,
             'foods' => [
                 $this->cart->foods->map(fn($food) => $food->name)

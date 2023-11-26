@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->integer('score')->unsigned()->nullable()->default(null);
             $table->enum('status', CommentStatus::getValues())->default(CommentStatus::PENDING);
             $table->string('description')->nullable()->default(null);
+            $table->boolean('reconsidered')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

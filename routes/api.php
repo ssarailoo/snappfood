@@ -54,6 +54,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
             Route::post('/', 'store')->name('store');
             Route::get('/', 'index')->name('index');
             Route::get('/denied', 'showDeniedComments')->name('.showDenied');
+            Route::put('/{comment}', 'update')->name('.update');
         });
     //endregion
 });
