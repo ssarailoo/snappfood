@@ -53,6 +53,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         ->group(function () {
             Route::post('/', 'store')->name('store');
             Route::get('/', 'index')->name('index');
+            Route::get('/denied', 'showDeniedComments')->name('.showDenied');
         });
     //endregion
 });

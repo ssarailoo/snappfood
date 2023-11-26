@@ -11,6 +11,7 @@ enum CommentStatus: string
     case PENDING = 'pending';
     case Accepted = 'accepted';
     case REVIEWING_BY_ADMIN = 'reviewing by admin';
+    case RECONSIDERING_BY_CUSTOMER ='reconsidering by customer';
 
 
 }

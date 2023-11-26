@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\GetCommentsRequest;
 use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentRequest;
+use App\Http\Resources\Comment\DeniedCommentResource;
 use App\Models\Comment;
 use App\Services\Comment\CommentBearerService;
 use App\Services\Comment\CommentStoreService;
+use Illuminate\Support\Facades\Auth;
 
 /*
  * @group comment
@@ -55,5 +57,13 @@ class CommentController extends Controller
         ], 400);
     }
 
+    public function showDeniedComments()
+    {
+        $comments = Auth::user()->carts->map(fn($cart) => $cart->comments()->withTrashed()->first())->filter(fn($comment)=>$comment->deleted_at!==null);
+        return response()->json([
+            'data' => DeniedCommentResource::collection($comments)
+        ]);
+
+    }
 
 }
