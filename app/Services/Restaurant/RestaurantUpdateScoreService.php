@@ -8,7 +8,7 @@ class RestaurantUpdateScoreService
 {
     public function updateRestaurantScore($restaurant,$newStatus)
     {
-        if ($newStatus ===CommentStatus::Accepted){
+        if ($newStatus ===CommentStatus::Accepted->value){
             $count = count($restaurant->carts);
             $scores = $restaurant->carts->map(fn($cart) => $cart->comments->first()->score ?? 0)->sum();
             $restaurant->update([

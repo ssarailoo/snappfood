@@ -24,7 +24,7 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cart_id' => ['required', 'numeric'],
+            'cart_id' => ['required', 'numeric','in:'. implode(',',Auth::user()->carts->map(fn($cart)=>$cart->id)->toArray())],
             'content' => ['required', 'string','max:255'],
             'score' => ['required', 'numeric', 'between:1,5']
         ];
