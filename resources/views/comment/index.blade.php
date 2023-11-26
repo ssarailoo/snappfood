@@ -57,10 +57,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 @foreach($comments as $key=> $comment)
+                                    @if ($comment)
                                     <tr class="bg-white dark:bg-white">
-
-
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
                                             <a href="{{route('my-restaurant.comments.show',['restaurant'=>$restaurant,'comment'=>$comment])}}"> {{$key+1 }}</a>
@@ -165,6 +165,7 @@
                                                     #
                                                 </td>
 
+                                    @endif
                                     @endif
                                     @endif
 

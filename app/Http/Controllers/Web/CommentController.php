@@ -20,10 +20,10 @@ class CommentController extends Controller
         $filter = $request->get('status');
 
         return view('comment.index', [
-            'comments' => $comments->when(!empty($filter), function ($query) use ( $filter) {
+            'comments' => $comments->when(!empty($filter), function ($query) use ($filter) {
                 return $query->filter(fn($comment) => $comment->status === $filter);
             }),
-            'restaurant'=>$restaurant
+            'restaurant' => $restaurant
         ]);
     }
 
@@ -68,6 +68,14 @@ class CommentController extends Controller
         ]);
         $shortId = substr($comment->cart->hashed_id, 0, 10);
         return redirect()->back()->with('success', "Shopping cart status comment with ID {$shortId} has been updated to $newStatus");
+
+    }
+
+    public function destroy( Comment $comment)
+    {
+        $this->authorize('delete',$comment);
+        $comment->delete();
+        return redirect()->route('comments.review');
 
     }
 

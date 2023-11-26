@@ -40,12 +40,12 @@ class CommentPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Comment $comment,$newStatus): bool
+    public function update(User $user, Comment $comment, $newStatus): bool
     {
-        $currentStatus=$comment->status;
+        $currentStatus = $comment->status;
         $allowedTransitions = [
-          CommentStatus::PENDING->value => [CommentStatus::Accepted->value, CommentStatus::REVIEWING_BY_ADMIN->value],
-            CommentStatus::REVIEWING_BY_ADMIN->value =>CommentStatus::Accepted->value,
+            CommentStatus::PENDING->value => [CommentStatus::Accepted->value, CommentStatus::REVIEWING_BY_ADMIN->value],
+            CommentStatus::REVIEWING_BY_ADMIN->value => CommentStatus::Accepted->value,
         ];
         if (!in_array($newStatus, $allowedTransitions[$currentStatus])) {
             return false;
@@ -58,7 +58,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-        //
+        return $user->hasRole('admin');
     }
 
     /**
@@ -66,7 +66,7 @@ class CommentPolicy
      */
     public function restore(User $user, Comment $comment): bool
     {
-        //
+        return $user->hasRole('admin');
     }
 
     /**
@@ -74,6 +74,6 @@ class CommentPolicy
      */
     public function forceDelete(User $user, Comment $comment): bool
     {
-        //
+        return $user->hasRole('admin');
     }
 }

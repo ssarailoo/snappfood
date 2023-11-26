@@ -76,12 +76,19 @@ Route::middleware('auth')->group(function () {
         Route::resource('banners', BannerController::class);
         // endregion
 
-        //region Comment Review
-        Route::get('/comments/review', [CommentController::class,'review'])->middleware('role:admin')->name('comments.review');
+        //region Comment Admin
+        Route::prefix('/comments/')->controller(CommentController::class)->name('comments')->middleware('role:admin')
+            ->group(function (){
+            Route::get('/review', 'review')->name('.review');
+            Route::delete('/{comment}', 'destroy')->name('.destroy');
+
+        });
+
 // endregion
 
         // region Discount
         Route::resource('/discounts', DiscountController::class)->except(['show']);
+
         //endregion
 
         // endregion
@@ -117,7 +124,7 @@ Route::middleware('auth')->group(function () {
                         Route::get('/create/{comment}/', 'create')->name('.create');
                         Route::post('/{comment}', 'store')->name('.store');
                         Route::patch('/{comment}/{newStatus}', 'update')->name('.update');
-                        Route::delete('/{comment}', 'destroy')->name('.destroy');
+
                     });
 
                 // endregion

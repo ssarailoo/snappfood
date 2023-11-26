@@ -13,7 +13,7 @@ class CommentStoreService
     {
 
         $cart = Cart::query()->find($cartId);
-        if ($cart->comments->first() == !null) {
+        if ($cart->comments()->withTrashed()->first() == !null) {
             return ['msg' => 'Bad Request:You already have registered your opinion'];
         } elseif (!$cart->is_paid) {
             return ['msg' => 'Bad Request: Your cart has not been paid yet'];

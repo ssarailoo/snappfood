@@ -81,9 +81,9 @@
 
                                 <td class="px-6 py-4">
                                     <form id="denyForm"
-                                        action="{{route('my-restaurant.comments.update',['restaurant'=>$comment->cart->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::NOT_CONFIRMED])}}"
+                                        action="{{route('comments.destroy' ,$comment)}}"
                                         method="post">
-                                        @method("PATCH")
+                                        @method("DELETE")
                                         @csrf
 
                                         <div class="flex items-center justify-end mt-4">
@@ -91,7 +91,7 @@
                                                 type="button"
                                                 class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"
                                                 onclick="showDenyConfirmationModal()">
-                                                {{ __('Deny') }}
+                                                {{ __('Delete') }}
                                             </button>
                                         </div>
                                     </form>
@@ -172,7 +172,7 @@
             </div>
 
             <div class="modal-body">
-                Are you sure you want to Deny the comment?
+                Are you sure you want to Delete the comment?
             </div>
 
 
@@ -187,7 +187,7 @@
                     type="button"
                     class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"
                     onclick="submitDenyForm()">
-                    {{ __('Yes, Deny') }}
+                    {{ __('Yes, Delete') }}
                 </x-primary-button>
             </div>
 
