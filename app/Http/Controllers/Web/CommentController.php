@@ -16,7 +16,8 @@ class CommentController extends Controller
 
         $this->authorize('viewAny', [Comment::class, $restaurant]);
         return view('comment.index', [
-            'carts' => $restaurant->carts()->where('status', 'delivered')->with('comments')->get()
+            'carts' => $restaurant->carts()->where('status', 'delivered')->with('comments')->get(),
+            'restaurant'=>$restaurant
         ]);
     }
 

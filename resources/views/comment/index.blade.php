@@ -23,9 +23,6 @@
                                         Customer's Name
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Customer's Phone Number
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
                                         Foods
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -55,20 +52,17 @@
 
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                                            <a href="{{route('my-restaurant.comments.show',['restaurant'=>Auth::user()->restaurant,'comment'=>$cart->comments->first()])}}"> {{ substr($cart->hashed_id, 0, 10)}}</a>
+                                            <a href="{{route('my-restaurant.comments.show',['restaurant'=>$restaurant,'comment'=>$cart->comments->first()])}}"> {{ substr($cart->hashed_id, 0, 10)}}</a>
                                         </th>
                                         <td class="px-6 py-4">
                                             {{$cart->user->name}}
                                         </td>
 
-                                        <td class="px-6 py-4">
-                                            {{$cart->user->phone_number}}
-                                        </td>
                                         <td class="px-6 py-4" style="white-space: nowrap;">
-                                            @foreach($cart->foods->unique('id') as $food)
+                                            @foreach($cart->cartFoods as $cartFood)
                                                 <p class="text-gray-700 text-base">
-                                                    {{$food->name}}
-                                                    * {{(int)$cart->cartFoods->where('food_id', $food->id)->sum('food_count')}}
+                                                    {{$cartFood->food->name}}
+                                                    * {{(int)$cartFood->food_count}}
                                                 </p>
                                             @endforeach
                                         </td>
@@ -109,14 +103,14 @@
                                                 {{$comment->status}}
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{Comment::query()->where('parent_id',$comment->id)->first()->content ?? ""}}
+                                                {{Comment::query()->where('parent_id',$comment->id)->first()->content ?? "-"}}
                                             </td>
                                             @if($comment->status===CommentStatus::PENDING->value)
 
 
                                                 <td class="px-6 py-4">
                                                     <form
-                                                        action="{{route('my-restaurant.comments.update',['restaurant'=>Auth::user()->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::REVIEWING_BY_ADMIN->value])}}"
+                                                        action="{{route('my-restaurant.comments.update',['restaurant'=>$restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::REVIEWING_BY_ADMIN->value])}}"
                                                         method="post">
                                                         @method("PATCH")
                                                         @csrf
@@ -131,7 +125,7 @@
                                                 </td>
                                                 <td class="px-6 py-4">
                                                     <form id="acceptForm"
-                                                          action="{{route('my-restaurant.comments.update',['restaurant'=>Auth::user()->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::Accepted->value])}}"
+                                                          action="{{route('my-restaurant.comments.update',['restaurant'=>$restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::Accepted->value])}}"
                                                           method="post">
                                                         @method("PATCH")
                                                         @csrf
@@ -148,7 +142,7 @@
                                                 </td>
                                             @elseif($comment->status===CommentStatus::Accepted->value)
                                                 <td class="px-6 py-4">
-                                                    <a href="{{route('my-restaurant.comments.create',[Auth::user()->restaurant,$comment])}}">
+                                                    <a href="{{route('my-restaurant.comments.create',[$restaurant,$comment])}}">
 
                                                         <div class="flex items-center justify-end mt-4">
                                                             <x-primary-button
