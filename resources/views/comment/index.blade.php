@@ -55,7 +55,7 @@
 
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                                            <a href=""> {{ substr($cart->hashed_id, 0, 10)}}</a>
+                                            <a href="{{route('my-restaurant.comments.show',['restaurant'=>Auth::user()->restaurant,'comment'=>$cart->comments->first()])}}"> {{ substr($cart->hashed_id, 0, 10)}}</a>
                                         </th>
                                         <td class="px-6 py-4">
                                             {{$cart->user->name}}
