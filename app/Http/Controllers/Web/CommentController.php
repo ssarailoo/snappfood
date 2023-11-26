@@ -8,6 +8,7 @@ use App\Http\Requests\Comment\StoreReplyCommentRequest;
 use App\Http\Requests\Comments\FilterCommentRequest;
 use App\Models\Comment;
 use App\Models\Restaurant\Restaurant;
+use App\Services\Restaurant\RestaurantUpdateScoreService;
 
 
 class CommentController extends Controller
@@ -60,20 +61,21 @@ class CommentController extends Controller
 
     }
 
-    public function update(Restaurant $restaurant, Comment $comment, $newStatus)
+    public function update(Restaurant $restaurant, Comment $comment, $newStatus, RestaurantUpdateScoreService $service)
     {
         $this->authorize('update', [$comment, $newStatus]);
         $comment->update([
             'status' => $newStatus,
         ]);
+        $service->updateRestaurantScore($restaurant, $newStatus);
         $shortId = substr($comment->cart->hashed_id, 0, 10);
         return redirect()->back()->with('success', "Shopping cart status comment with ID {$shortId} has been updated to $newStatus");
 
     }
 
-    public function destroy( Comment $comment)
+    public function destroy(Comment $comment)
     {
-        $this->authorize('delete',$comment);
+        $this->authorize('delete', $comment);
         $comment->delete();
         return redirect()->route('comments.review');
 
