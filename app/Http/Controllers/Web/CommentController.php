@@ -21,6 +21,14 @@ class CommentController extends Controller
         ]);
     }
 
+    public function show(Comment $comment)
+    {
+        return view('comment.show', [
+            'comment' => $comment
+        ]);
+
+    }
+
     public function create(Restaurant $restaurant, Comment $comment)
     {
         $this->authorize('create', $comment);
@@ -47,12 +55,12 @@ class CommentController extends Controller
 
     public function update(Restaurant $restaurant, Comment $comment, $newStatus)
     {
-        $this->authorize('update',[ $comment,$newStatus]);
+        $this->authorize('update', [$comment, $newStatus]);
         $comment->update([
             'status' => $newStatus,
         ]);
         $shortId = substr($comment->cart->hashed_id, 0, 10);
-    return    redirect()->back()->with('success', "Shopping cart status comment with ID {$shortId} has been updated to $newStatus");
+        return redirect()->back()->with('success', "Shopping cart status comment with ID {$shortId} has been updated to $newStatus");
 
     }
 

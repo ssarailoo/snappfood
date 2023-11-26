@@ -113,9 +113,11 @@ Route::middleware('auth')->group(function () {
                 Route::prefix('/comments')->controller(CommentController::class)->name('comments')
                     ->group(function () {
                         Route::get('/', 'index')->name('.index');
-                        Route::patch('/{comment}/{newStatus}', 'update')->name('.update');
+                        Route::get('/{comment}', 'show')->name('.show');
                         Route::get('/create/{comment}/', 'create')->name('.create');
                         Route::post('/{comment}', 'store')->name('.store');
+                        Route::patch('/{comment}/{newStatus}', 'update')->name('.update');
+                        Route::delete('/{comment}', 'destroy')->name('.destroy');
                     });
 
                 // endregion
