@@ -6,6 +6,17 @@
             <p>{{ session('success') }}</p>
         </div>
     @endif
+
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if(Auth::user()->restaurant==!null)
@@ -46,29 +57,26 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($carts as $key=> $cart)
+                                @foreach($comments as $key=> $comment)
                                     <tr class="bg-white dark:bg-white">
 
 
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                                            <a href="{{route('my-restaurant.comments.show',['restaurant'=>$restaurant,'comment'=>$cart->comments->first()])}}"> {{ substr($cart->hashed_id, 0, 10)}}</a>
+                                            <a href="{{route('my-restaurant.comments.show',['restaurant'=>$restaurant,'comment'=>$comment])}}"> {{$key+1 }}</a>
                                         </th>
                                         <td class="px-6 py-4">
-                                            {{$cart->user->name}}
+                                            {{$comment->cart->user->name}}
                                         </td>
 
                                         <td class="px-6 py-4" style="white-space: nowrap;">
-                                            @foreach($cart->cartFoods as $cartFood)
+                                            @foreach($comment->cart->cartFoods as $cartFood)
                                                 <p class="text-gray-700 text-base">
                                                     {{$cartFood->food->name}}
                                                     * {{(int)$cartFood->food_count}}
                                                 </p>
                                             @endforeach
                                         </td>
-                                        @php
-                                            $comment=  $cart->comments()->first() @endphp
-
                                         @if($comment===null)
                                             <td class="px-6 py-4">
                                                 -
@@ -166,6 +174,21 @@
                         </div>
                         @endif
                     </div>
+                    <form action="">
+                        <select name="status" >
+                            <option value="">all</option>
+                            @foreach(CommentStatus::getValues() as $status)
+                                <option value="{{$status}}">{{$status}}</option>
+                            @endforeach
+                        </select>
+
+                            <button
+                                type="submit"
+                                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                {{ __('Filter By Status') }}
+                            </button>
+
+                    </form>
                 </div>
         </div>
     </div>

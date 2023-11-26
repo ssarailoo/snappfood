@@ -5,27 +5,33 @@ namespace App\Http\Controllers\Web;
 use App\Enums\CommentStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\StoreReplyCommentRequest;
+use App\Http\Requests\Comments\FilterCommentRequest;
 use App\Models\Comment;
 use App\Models\Restaurant\Restaurant;
 
 
 class CommentController extends Controller
 {
-    public function index(Restaurant $restaurant)
+    public function index(Restaurant $restaurant, FilterCommentRequest $request)
     {
 
         $this->authorize('viewAny', [Comment::class, $restaurant]);
+        $comments = $restaurant->carts->map(fn($cart) => $cart->comments->first());
+        $filter = $request->get('status');
+
         return view('comment.index', [
-            'carts' => $restaurant->carts()->where('status', 'delivered')->with('comments')->get(),
+            'comments' => $comments->when(!empty($filter), function ($query) use ( $filter) {
+                return $query->filter(fn($comment) => $comment->status === $filter);
+            }),
             'restaurant'=>$restaurant
         ]);
     }
 
-    public function show(Restaurant $restaurant,Comment $comment)
+    public function show(Restaurant $restaurant, Comment $comment)
     {
         return view('comment.show', [
             'comment' => $comment,
-            'restaurant'=>$restaurant
+            'restaurant' => $restaurant
         ]);
 
     }
