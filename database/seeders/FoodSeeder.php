@@ -19,8 +19,7 @@ class FoodSeeder extends Seeder
             'restaurant_id' => 2,
             'food_category_id' => 5,
             'name' => 'pizza',
-//            'materials' => 'meat',
-            'price' => 100,
+            'price' => 10,
         ]);
         $firstFood->materials()->sync([1, 3, 4]);
         $firstFood->image()->create([
@@ -30,8 +29,7 @@ class FoodSeeder extends Seeder
             'restaurant_id' => 2,
             'food_category_id' => 4,
             'name' => 'fried chicken',
-//            'materials' => 'chicken',
-            'price' => 80,
+            'price' => 8,
         ]);
         $secondFood->image()->create([
             'url' => 'images/chicken.jpg',
@@ -41,14 +39,34 @@ class FoodSeeder extends Seeder
             'restaurant_id' => 2,
             'food_category_id' => 3,
             'name' => 'donner kebab',
-//            'materials' => 'meat',
-            'price' => 120,
+            'price' => 12,
         ]);
         $thirdFood->image()->create([
             'url' => 'images/kebab.jpeg',
         ]);
         $thirdFood->materials()->sync([1, 4]);
 
+        $forthFood= Food::query()->create([
+            'restaurant_id' => 1,
+            'food_category_id' => 3,
+            'name' => 'Joojeh Kabab',
+            'price' => 15,
+        ]);
+        $forthFood->image()->create([
+            'url'=>'images/default-food.jpeg'
+        ]);
+        $thirdFood->materials()->sync([2, 6]);
+
+        $fifthFood= Food::query()->create([
+            'restaurant_id' => 1,
+            'food_category_id' => 3,
+            'name' => 'Kubideh',
+            'price' => 15,
+        ]);
+        $fifthFood->image()->create([
+            'url'=>'images/default-food.jpeg'
+        ]);
+        $fifthFood->materials()->sync([1, 6]);
 
     }
 }

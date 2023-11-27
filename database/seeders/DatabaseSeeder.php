@@ -42,6 +42,13 @@ class DatabaseSeeder extends Seeder
             'password' => '123456789',
 
         ]);
+        $user3 = User::query()->create([
+            'name' => 'mohammad',
+            'email' => 'm@yahoo.com',
+            'phone_number' => '09113744988',
+            'password' => '123456789',
+
+        ]);
 
 
         $this->call([
@@ -53,17 +60,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $admin->assignRole(Role::findByName('admin'));
-
-      $restaurant= Restaurant::query()->create([
-            'name' => 'neshat',
-            'address' => 'Tehran , Sattarkhan',
-            'telephone' => '12345678',
-            'bank_account_number' => '1234567891234',
+        $restaurant = Restaurant::query()->create([
+            'name' => 'Shandiz',
+            'address' => 'Tehran , Ferdos ',
+            'telephone' => '12345673',
+            'bank_account_number' => '1234567891231',
             'restaurant_category_id' => '1',
-            'latitude' => 35.70,
-            'longitude' => 51.300,
-            'user_id' => $admin->id
+            'latitude' => 35.723184596591,
+            'longitude' => 51.318961609131,
+            'user_id' => $user3->id
         ]);
+
         Image::query()->create([
             'url' => 'images/default-restaurant.png',
             'imageable_id' => $restaurant->id,
@@ -71,14 +78,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-   $secondRestaurant=     Restaurant::query()->create([
-            'name' => 'neshat2',
+        $secondRestaurant = Restaurant::query()->create([
+            'name' => 'neshat',
             'address' => 'Tehran , Sattarkhan',
             'telephone' => '12345672',
             'bank_account_number' => '1234567891232',
             'restaurant_category_id' => '2',
-            'latitude' => 34.70,
-            'longitude' => 50.300,
+            'latitude' => 35.707844934097,
+            'longitude' => 51.375545782461,
             'user_id' => $user->id
         ]);
         Image::query()->create([
@@ -98,8 +105,8 @@ class DatabaseSeeder extends Seeder
         $address = Address::query()->create([
             'title' => 'home',
             'address' => 'tehran sattar khan',
-            'latitude' => 33.70,
-            'longitude' => 53.300,
+            'latitude' => 35.704740840235,
+            'longitude' => 51.360176586375,
         ]);
         AddressUser::query()->create([
             'user_id' => $user2->id,
