@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Restaurant extends Model
 {
@@ -43,24 +44,38 @@ protected $casts=[
     {
         return $this->morphOne(Image::class, 'imageable');
     }
-    public static function filterApi(RestaurantFilterRequest $request)
+    public static function filterApi(RestaurantFilterRequest $request ,$restaurants)
     {
         $query = Restaurant::query();
-        $typeFilter = $request->input('type');
-        $is_openFilter = $request->input('is_open');
-        $sort = $request->input('sort');
-        $restaurantCategoryId = RestaurantCategory::query()->where('name', 'like', '%' . $typeFilter . '%')->first()->id;
-        if ($typeFilter) {
-            return $query->where('restaurant_category_id', $restaurantCategoryId);
-        } elseif ($is_openFilter !== null) {
-            return $query->where('status', $is_openFilter ? 1 : 0);
-        } elseif
-        ($sort) {
-            return $query->orderBy($sort, 'desc');
+        if ($typeFilter = $request->input('type')) {
+            $restaurantCategoryId = RestaurantCategory::query()->where('name', 'like', '%' . $typeFilter . '%')->first()->id;
+           $restaurants->where('restaurant_category_id', $restaurantCategoryId);
         }
-        return $query;
+
+        if ($is_openFilter = $request->input('is_open')) {
+            $restaurants->where('status', $is_openFilter ? 1 : 0);
+        }
+
+        if ($sort = $request->input('sort')) {
+           $restaurants->orderBy($sort, 'desc');
+        }
+        return $restaurants;
     }
 
+
+    public function scopeNearBy($query, $lat, $lon, $radius =4)
+    {
+        $haversine = "(6371 * acos(cos(radians($lat))
+            * cos(radians(latitude))
+            * cos(radians(longitude) - radians($lon))
+            + sin(radians($lat))
+            * sin(radians(latitude))))";
+        return $query
+            ->select()           // add here the columns you need, all columns: '*'
+            ->selectRaw("{$haversine} AS distance")
+            ->whereRaw("{$haversine} < ?", [$radius])
+            ->orderBy('distance','asc');
+    }
 
     public function getRouteKeyName()
     {

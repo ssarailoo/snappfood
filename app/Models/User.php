@@ -19,7 +19,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -44,10 +44,12 @@ class User extends Authenticatable
 
         'password' => 'hashed',
     ];
+
     public function routeNotificationForKavenegar($driver, $notification = null)
     {
         return $this->phone_number;
     }
+
     public function restaurant(): HasOne
     {
         return $this->hasOne(Restaurant::class);
@@ -57,14 +59,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Cart::class);
     }
+
     public function addressUsers(): HasMany
     {
-        return $this->hasMany(AddressUser::class,'user_id','id');
+        return $this->hasMany(AddressUser::class, 'user_id', 'id');
     }
 
     public function addresses(): BelongsToMany
     {
-    return    $this->belongsToMany(Address::class);
+        return $this->belongsToMany(Address::class);
+    }
+
+    public function currentAddress()
+    {
+        return $this->belongsTo(Address::class,'current_address','id');
     }
 
 }

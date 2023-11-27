@@ -16,8 +16,8 @@ class RestaurantCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
 
-             return [
-                 Restaurant::all()->map(function ($restaurant){
+             return[
+               $this->collection->map(function ($restaurant){
                      return [
                          'id' => $restaurant->id,
                          'title' => $restaurant->name,
@@ -32,7 +32,8 @@ class RestaurantCollection extends ResourceCollection
                          'score'=>$restaurant->score?? 'no score registered yet.',
                      ];
 
-                 }),
-        ];
+                 })
+             ];
+
     }
 }

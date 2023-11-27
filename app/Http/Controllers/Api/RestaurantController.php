@@ -9,6 +9,7 @@ use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Http\Resources\Restaurant\RestaurantCollection;
 use App\Http\Resources\Restaurant\RestaurantResource;
 use App\Models\Restaurant\Restaurant;
+use Illuminate\Support\Facades\Auth;
 
 
 class RestaurantController extends Controller
@@ -25,9 +26,15 @@ class RestaurantController extends Controller
      */
     public function index(RestaurantFilterRequest $request)
     {
-        $query = Restaurant::filterApi($request);
-        return response()->json(new RestaurantCollection($query->get()), 200);
+        $currentAddress = Auth::user()->currentAddress;
+        $lat = $currentAddress->latitude;
+        $lon = $currentAddress->longitude;
+        $restaurants = Restaurant::query()->nearBy($lat, $lon);
+        $restaurants = Restaurant::filterApi($request,$restaurants)->get();
 
+
+
+        return response()->json(new RestaurantCollection($restaurants), 200);
     }
 
     /**
