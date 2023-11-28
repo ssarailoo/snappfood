@@ -78,11 +78,11 @@ Route::middleware('auth')->group(function () {
 
         //region Comment Admin
         Route::prefix('/comments/')->controller(CommentController::class)->name('comments')->middleware('role:admin')
-            ->group(function (){
-            Route::get('/review', 'review')->name('.review');
-            Route::delete('/{comment}', 'destroy')->name('.destroy');
+            ->group(function () {
+                Route::get('/review', 'review')->name('.review');
+                Route::delete('/{comment}', 'destroy')->name('.destroy');
 
-        });
+            });
 
 // endregion
 
@@ -128,6 +128,15 @@ Route::middleware('auth')->group(function () {
                     });
 
                 // endregion
+                //region Orders
+                Route::prefix('/orders')->controller(OrderController::class)->name('orders.')->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/{cart}', 'show')->name('show');
+                });
+
+                //endregion
+
+
             });
         //endregion
 
