@@ -20,9 +20,9 @@ class CartPolicy
         return $user->restaurant->is($restaurant) or $user->hasRole('admin');
     }
 
-    public function view(User $user, Restaurant $restaurant, Cart $cart): bool
+    public function view(User $user,Cart $cart, Restaurant $restaurant): bool
     {
-        return $user->restaurant->is($restaurant) and $user->restaurant->carts->contains($cart) or $user->hasRole('admin');
+        return ($user->restaurant->is($restaurant) and $user->restaurant->carts->contains($cart)) or $user->hasRole('admin');
     }
 
     public function update(User $user, Cart $cart, $newStatus)
