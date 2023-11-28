@@ -95,20 +95,26 @@
 
                 </div>
                 <div class="p-2">
-                    <form action="">
-
-                        <select name="filter_date">
-
+                    <div class="flex justify-between">
+                        <form action="">
+                            <select name="filter_date">
                                 <option value="">All</option>
                                 <option value="month">Last Month</option>
                                 <option value="week">Last Week</option>
+                            </select>
+                            <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                {{ __('Filter By Date') }}
+                            </x-primary-button>
+                        </form>
 
-                        </select>
-                        <x-primary-button
-                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                            {{ __('Filter By Date') }}
-                        </x-primary-button>
-                    </form>
+                        <form action="{{ route('my-restaurant.orders.export', ['restaurant' => $restaurant, 'filter_date' => request()->get('filter_date')]) }}" method="post">
+                            @csrf
+                            <button type="submit" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                {{ __('Export to Excel') }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

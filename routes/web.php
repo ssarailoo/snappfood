@@ -132,6 +132,7 @@ Route::middleware('auth')->group(function () {
                 Route::prefix('/orders')->controller(OrderController::class)->name('orders.')->group(function () {
                     Route::get('/', 'index')->name('index');
                     Route::get('/{cart}', 'show')->name('show');
+                    Route::post('/export/{filterDate?}', 'export')->name('export');
                 });
 
                 //endregion
