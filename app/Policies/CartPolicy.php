@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\CartStatus;
 use App\Models\Cart\Cart;
+use App\Models\Restaurant\Restaurant;
 use App\Models\User;
 
 class CartPolicy
@@ -14,7 +15,17 @@ class CartPolicy
         return $user->carts->contains($cart);
     }
 
-    public function update(User $user,Cart $cart ,$newStatus)
+    public function viewAny(User $user, Restaurant $restaurant): bool
+    {
+        return $user->restaurant->is($restaurant) or $user->hasRole('admin');
+    }
+
+    public function view(User $user, Restaurant $restaurant, Cart $cart): bool
+    {
+        return $user->restaurant->is($restaurant) and $user->restaurant->carts->contains($cart) or $user->hasRole('admin');
+    }
+
+    public function update(User $user, Cart $cart, $newStatus)
     {
         if (!$user->restaurant->carts->contains($cart)) {
             return false;
