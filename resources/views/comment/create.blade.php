@@ -27,7 +27,7 @@
         </div>
 
         <form
-            action="{{route('my-restaurant.comments.store',['restaurant'=>Auth::user()->restaurant,'comment'=>$comment])}}"
+            action="{{route('my-restaurant.comments.store',['restaurant'=>$restaurant,'comment'=>$comment])}}"
             method="post">
             @csrf
 

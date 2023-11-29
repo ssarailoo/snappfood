@@ -19,7 +19,7 @@
         @endif
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if(Auth::user()->restaurant==!null)
+
                 <div>
                     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
                         <div class="relative overflow-x-auto">
@@ -173,7 +173,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        @endif
+
                     </div>
                     <div class="p-2">
                         <form action="">

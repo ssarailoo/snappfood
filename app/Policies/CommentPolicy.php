@@ -17,7 +17,7 @@ class CommentPolicy
      */
     public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        return $user->restaurant->is($restaurant) or $user->hasRole('admin');
+        return $user->hasRole('admin') or $user->restaurant->is($restaurant)  ;
     }
 
     /**
@@ -25,7 +25,7 @@ class CommentPolicy
      */
     public function view(User $user, Restaurant $restaurant): bool
     {
-        return $user->restaurant->is($restaurant) or $user->hasRole('admin');
+        return $user->hasRole('admin') or $user->restaurant->is($restaurant)  ;
     }
 
     /**
@@ -33,7 +33,7 @@ class CommentPolicy
      */
     public function create(User $user, Comment $comment = null): bool
     {
-        return $user->carts->contains(Cart::query()->find(\request()->post('cart_id'))) or
+        return $user->hasRole('admin') or $user->carts->contains(Cart::query()->find(\request()->post('cart_id'))) or
             $user->restaurant->comments->contains($comment);
     }
 
@@ -51,7 +51,7 @@ class CommentPolicy
         if (!in_array($newStatus, $allowedTransitions[$currentStatus])) {
             return false;
         }
-        return $user->restaurant->carts->map(fn($cart) => $cart->comments()->first())->contains($comment) or $user->hasRole('admin');
+        return  $user->hasRole('admin') or $user->restaurant->carts->map(fn($cart) => $cart->comments()->first())->contains($comment) ;
     }
 
     public function reconsider(User $user,Comment $comment)
