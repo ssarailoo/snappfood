@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
     <div class="flex justify-center items-center h-screen">
         <div class="max-w-sm bg-gray-100 rounded overflow-hidden shadow-lg">
@@ -35,7 +36,9 @@
                         <div class="ml-2">
                             {{ $cartFood->food->name }} {{ $cartFood->price }} $
                             * {{ (int)$cartFood->food_count }}
-                         @if( $cartFood->discount_percent!=="0.00")    => discount % {{ $cartFood->discount_percent }}@endif
+                            @if( $cartFood->discount_percent!=="0.00")
+                                => discount % {{ $cartFood->discount_percent }}
+                            @endif
                         </div>
                     </div>
                 @endforeach
@@ -49,7 +52,9 @@
                         <div class="ml-2">
                             {{ $cartFood->food->name }} {{ $cartFood->price }}
                             * {{ (int)$cartFood->food_count }}
-                            @if( $cartFood->discount_percent!=="0.00")    => discount % {{ $cartFood->discount_percent }}@endif
+                            @if( $cartFood->discount_percent!=="0.00")
+                                => discount % {{ $cartFood->discount_percent }}
+                            @endif
                         </div>
                     </div>
                 @endforeach
@@ -59,7 +64,9 @@
             <!-- Cost of Sending Order -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:currency-usd-circle" data-inline="false"></span>
-                <div class="ml-2">Cost of Sending Order: {{ $costSending = $cart->restaurant->cost_of_sending_order ?? 0 }} $</div>
+                <div class="ml-2">Cost of Sending
+                    Order: {{ $costSending = $cart->restaurant->cost_of_sending_order ?? 0 }} $
+                </div>
             </div>
 
 
@@ -112,12 +119,12 @@
         </div>
     </div>
     <div class="flex items-center justify-end mt-4">
-    <a href="{{route('my-restaurant.orders.index',$restaurant)}}">
+        <a href="{{Auth::user()->hasRole('admin')?  route('orders.all'): route('my-restaurant.orders.index',$restaurant)}}">
 
             <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                 {{ __("Back") }}
             </x-primary-button>
 
-    </a>
+        </a>
     </div>
 </x-app-layout>

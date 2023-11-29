@@ -26,6 +26,9 @@
                                     ID
                                 </th>
                                 <th scope="col" class="px-6 py-3">
+                                    Restaurant
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Foods
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -50,7 +53,9 @@
                                         class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
                                         <a href="{{route('my-restaurant.orders.show',[$cart->restaurant,$cart])}}"> {{$key+1}}</a>
                                     </th>
-
+                                    <td class="px-6 py-4">
+                                        {{ ucfirst($cart->restaurant->name)}}
+                                    </td>
                                     <td class="px-6 py-4" style="white-space: nowrap;">
                                         @php
                                             $cartFoods=    $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===0);
@@ -103,41 +108,27 @@
                                 <option value="month">Last Month</option>
                                 <option value="week">Last Week</option>
                             </select>
-                            <x-primary-button
-                                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                            <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                                 {{ __('Filter By Date') }}
                             </x-primary-button>
                         </form>
 
-                        @if(Auth::user()->hasRole('restaurant_manager'))
-                            <form
-                                action="{{ route('my-restaurant.orders.export', ['restaurant' => $restaurant, 'filter_date' => request()->get('filter_date')]) }}"
-                                method="post">
-                                @csrf
-                                <button type="submit"
-                                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                    {{ __('Export to Excel') }}
-                                </button>
-                                @else
-                                    <form
-                                        action="{{ route('orders.export', [ 'filter_date' => request()->get('filter_date')]) }}"
-                                        method="post">
+                                    <form action="{{ route('orders.export', [ 'filter_date' => request()->get('filter_date')]) }}" method="post">
                                         @csrf
-                                        <button type="submit"
-                                                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                        <button type="submit" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                                             {{ __('Export to Excel') }}
                                         </button>
 
-                                        @endif
-                        </form>
+                                    </form>
                     </div>
-                </div>
                 </div>
             </div>
         </div>
     </div>
 
+
 </x-app-layout>
+
 
 
 

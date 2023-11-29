@@ -55,7 +55,10 @@
                             <x-dropdown-link :href="route('my-restaurant.comments.index',Auth::user()->restaurant)">
                                 {{ __('Comments') }}
                             </x-dropdown-link>
-                        @else
+                            <x-dropdown-link :href="route('my-restaurant.orders.index',Auth::user()->restaurant)">
+                                {{ __('Orders') }}
+                            </x-dropdown-link>
+                        @elseif(!Auth::user()->hasRole('admin'))
                             <x-dropdown-link :href="route('restaurants.create')">
                                 {{ __('Create Restaurant') }}
                             </x-dropdown-link>
@@ -71,6 +74,9 @@
                             <x-dropdown-link :href="route('restaurants.index')">
                                 {{ __('All Restaurants') }}
                             </x-dropdown-link>
+                            <x-dropdown-link :href="route('orders.all')">
+                                {{ __('All Orders') }}
+                            </x-dropdown-link>
                             <x-dropdown-link :href="route('food-party.showSetting')">
                                 {{ __('Food Party Settings') }}
                             </x-dropdown-link>
@@ -83,6 +89,7 @@
                             <x-dropdown-link :href="route('discounts.index')">
                                 {{ __('Discount Code') }}
                             </x-dropdown-link>
+
                         @endif
 
                         <!-- Authentication -->

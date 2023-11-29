@@ -71,7 +71,13 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/{foodCategory}', 'destroy')->name('destroy');
             });
         // endregion
-
+// region Orders
+        Route::prefix('/orders')->controller(OrderController::class)->name('orders')->middleware('role:admin')
+        ->group(function (){
+          Route::get('/all','allOrders')->name('.all');
+          Route::post('/export/{filterDate?}','allExport')->name('.export');
+        });
+        // endregion
         // region Banner
         Route::resource('banners', BannerController::class);
         // endregion

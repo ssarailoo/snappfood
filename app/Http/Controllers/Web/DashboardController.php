@@ -11,13 +11,16 @@ class DashboardController extends Controller
 {
     public function dashboard(FilterCartByStatusRequest $request)
     {
-        $carts = Auth::user()->restaurant->carts()->where('status', '!=', 'delivered');
-        $filter = $request->get('filter_status');
-        return view('dashboard', [
-            'carts' => $carts->when($filter, function ($query) use ($filter) {
-                return $query->where('status', $filter);
-            })->paginate(5),
-        ]);
+        if (Auth::user()->hasRole('restaurant-manager')) {
+            $carts = Auth::user()->restaurant->carts()->where('status', '!=', 'delivered');
+            $filter = $request->get('filter_status');
+            return view('dashboard', [
+                'carts' => $carts->when($filter, function ($query) use ($filter) {
+                    return $query->where('status', $filter);
+                })->paginate(5),
+            ]);
+        }
+        return view('dashboard');
     }
 
 

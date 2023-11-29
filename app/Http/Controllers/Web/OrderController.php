@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Enums\CartStatus;
+use App\Exports\AllOrdersExport;
 use App\Exports\OrderExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\FilterCartByCreatedAtRequest;
@@ -35,13 +36,28 @@ class OrderController extends Controller
         ]);
     }
 
+    public function allOrders(FilterCartByCreatedAtRequest $request)
+    {
+       $carts= Cart::query()->where('status', CartStatus::DELIVERED->value)
+            ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
+                return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) :
+                    $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            });
+
+        return view('order.all', [
+            'carts' => $carts->paginate(10),
+            'totalOrders' => $carts->get()->count(),
+            'totalRevenue' => $carts->get()->map(fn($cart) => $cart->total)->sum()
+        ]);
+    }
+
     public function show(Restaurant $restaurant, Cart $cart)
     {
-        $this->authorize('view', [ $cart,$restaurant]);
+        $this->authorize('view', [$cart, $restaurant]);
 
         return view('order.show', [
             'cart' => $cart,
-            'restaurant'=>$restaurant
+            'restaurant' => $restaurant
         ]);
 
     }
@@ -67,6 +83,16 @@ class OrderController extends Controller
         })->get();
 
         return Excel::download(new OrderExport($carts), 'orders.xlsx');
+    }
+
+    public function allExport(FilterCartByCreatedAtRequest $request)
+    {
+        $carts= Cart::query()->where('status', CartStatus::DELIVERED->value)
+            ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
+                return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) :
+                    $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            })->get();
+        return Excel::download(new AllOrdersExport($carts), 'allOrders.xlsx');
     }
 
 

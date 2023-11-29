@@ -15,7 +15,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if(Auth::user()->restaurant==!null)
+            @if(Auth::user()->hasRole('restaurant-manager'))
                 <div>
                     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
                         <div class="relative overflow-x-auto">
@@ -188,7 +188,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            @endif
+
                         </div>
 
                     </div>
@@ -210,6 +210,7 @@
                             </x-primary-button>
                         </form>
                     </div>
+                    @endif
                 </div>
         </div>
     </div>
