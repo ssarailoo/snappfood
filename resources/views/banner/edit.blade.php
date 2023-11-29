@@ -1,7 +1,7 @@
 @php use App\Enums\Color; @endphp
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
-        <form method="POST" action="{{ route('banners.update',$banner) }}">
+        <form method="POST" action="{{ route('banners.update',$banner) }}" enctype="multipart/form-data">
             @csrf
             @method("PUT")
 
@@ -29,6 +29,14 @@
                 </select>
                 <x-input-error :messages="$errors->get('color')" class="mt-2"/>
             </div>
+            <x-input-label for="Image" class="'block font-medium text-sm text-pink-700" :value="__('Image')"/>
+                <div >
+                    <img style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                         src="{{ asset('storage/' . $banner->image->url) }}" alt="{{ $banner->title }}">
+                </div>
+            <input type="file" id="image" name="url">
+            <x-input-error :messages=" $errors->get('url')" class="mt-2"/>
+
 
 
             <div class="flex items-center justify-end mt-4">

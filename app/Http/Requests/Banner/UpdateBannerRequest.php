@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Banner;
 
+use App\Enums\Color;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBannerRequest extends FormRequest
@@ -22,9 +23,10 @@ class UpdateBannerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'=>'required',
-            'content'=>'required',
-            'color'=>'required'
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string', 'max:255'],
+            'color' => ['required', 'in:' . implode(',', Color::getValues())],
+            'url' => ['required', 'max:2048'],
         ];
     }
 }

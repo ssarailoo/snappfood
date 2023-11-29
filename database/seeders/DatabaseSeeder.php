@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\Color;
 use App\Http\Resources\AddressResource;
 use App\Models\Address\Address;
 use App\Models\Address\AddressUser;
@@ -97,11 +98,12 @@ class DatabaseSeeder extends Seeder
             MaterialSeeder::class,
             FoodSeeder::class
         ]);
-        Banner::query()->create([
+        $banner = Banner::query()->create([
             'title' => 'Summer Sale',
             'content' => 'Buy 1 Pizza get 2 !',
-            'color' => 'violet'
+            'color' => Color::PINK->value
         ]);
+        $banner->image()->create(['url'=> 'images/banner2.jpeg']);
         $address = Address::query()->create([
             'title' => 'home',
             'address' => 'tehran sattar khan',

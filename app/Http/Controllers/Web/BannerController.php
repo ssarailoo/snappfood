@@ -11,8 +11,9 @@ class BannerController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Banner::class,'banner');
+        $this->authorizeResource(Banner::class, 'banner');
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +30,7 @@ class BannerController extends Controller
      */
     public function create()
     {
-;
+        ;
         return view('banner.create');
     }
 
@@ -39,7 +40,8 @@ class BannerController extends Controller
     public function store(StoreBannerRequest $request)
     {
 
-        Banner::query()->create($request->validated());
+        $banner = Banner::query()->create($request->validated());
+        $banner->image()->create(['url' => $request->file('url')]);
         return redirect()->route('banners.index')->with('success', 'Banner created successfully');
     }
 
@@ -72,6 +74,7 @@ class BannerController extends Controller
     {
 
         $banner->update($request->validated());
+        $banner->image->update(['url' => $request->file('url')]);
         return redirect()->route('banners.index')->with('success', 'Banner updated successfully');
     }
 

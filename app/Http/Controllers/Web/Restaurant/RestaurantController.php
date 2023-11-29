@@ -91,7 +91,7 @@ public function __construct()
 
         $restaurant->update($request->validated());
         if ($request->hasFile('url'))
-        $restaurant->image()->update([
+        $restaurant->image->update([
             'url' => $request->file('url') ,
         ]);
         return redirect()->route('restaurants.edit', $restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");

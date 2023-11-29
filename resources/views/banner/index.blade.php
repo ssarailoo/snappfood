@@ -1,4 +1,3 @@
-
 <x-app-layout>
     @if(session('success'))
         <div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4 mb-4" role="alert">
@@ -16,13 +15,16 @@
                         #
                     </th>
                     <th scope="col" class="px-6 py-3">
-                       Title
+                        Title
                     </th>
                     <th scope="col" class="px-6 py-3">
-                     Content
+                        Content
                     </th>
                     <th scope="col" class="px-6 py-3">
-                Color
+                        Color
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Image
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Action
@@ -51,44 +53,46 @@
                         <td class="px-6 py-4">
                             {{$banner->color}}
                         </td>
+                        <td class="px-6 py-4">
+                            <div >
+                                <img style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                                     src="{{ asset('storage/' . $banner->image->url) }}" alt="{{ $banner->title }}">
+                            </div>
+                        </td>
+
+                        <td class="px-6 py-4">
+                            <form action="{{route('banners.destroy',$banner)}}" method="post">
+                                @csrf
+                                @method("DELETE")
+                                <x-primary-button
+                                    class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('Delete') }}
+                                </x-primary-button>
+
+                            </form>
+                        </td>
+                        <td class="px-6 py-4">
 
 
-                            <td class="px-6 py-4">
-                                <form action="{{route('banners.destroy',$banner)}}" method="post">
-                                    @csrf
-                                    @method("DELETE")
-                                    <x-primary-button
-                                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                        {{ __('Delete') }}
-                                    </x-primary-button>
+                            <a href="{{route('banners.edit',$banner)}}">
 
-                                </form>
-                            </td>
-                            <td class="px-6 py-4">
+                                <x-primary-button
+                                    class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                    {{ __('Edit') }}
+                                </x-primary-button>
+
+                            </a>
 
 
-                                <a href="{{route('banners.edit',$banner)}}">
-
-                                        <x-primary-button
-                                                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                            {{ __('Edit') }}
-                                        </x-primary-button>
-
-                                </a>
-
-
-
-                            </td>
-
-
+                        </td>
 
 
                     </tr>
                 @endforeach
 
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
             <a href="{{route('banners.create')}}">
                 <x-primary-button
                     class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
@@ -96,7 +100,7 @@
                 </x-primary-button>
             </a>
 
-    </div>
+        </div>
     </div>
 
 </x-app-layout>
