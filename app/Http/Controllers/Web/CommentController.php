@@ -45,7 +45,7 @@ class CommentController extends Controller
         $this->authorize('create', $comment);
         return view('comment.create', [
             'comment' => $comment,
-            'cart' => $comment->cart,
+            'order' => $comment->order,
             'restaurant'=>$restaurant
         ]);
 

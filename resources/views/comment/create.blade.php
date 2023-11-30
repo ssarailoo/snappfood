@@ -2,16 +2,16 @@
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <div class="mb-4">
-            Author: {{$cart->user->name}}
+            Author: {{$order->user->name}}
         </div>
         <div class="mb-4">
-            Phone Number: {{$cart->user->phone_number}}
+            Phone Number: {{$order->user->phone_number}}
         </div>
         <div class="mb-4">
             Foods:
-            @foreach($cart->foods->unique('id') as $food)
+            @foreach($order->foodsOrder as $foodOrder)
                 <p class="text-gray-700 text-base">
-                    {{$food->name}} * {{(int)$cart->cartFoods->where('food_id', $food->id)->sum('food_count')}}
+                    {{$foodOrder->food->name}} * {{(int)$foodOrder->food_count}}
                 </p>
             @endforeach
         </div>
@@ -56,7 +56,7 @@
                 </div>
             @endif
             <input type="hidden" name="parent_id" value="{{$comment->id}}">
-            <input type="hidden" name="cart_id" value="{{$cart->id}}">
+            <input type="hidden" name="order_id" value="{{$order->id}}">
             <input type="hidden" name="status" value="{{CommentStatus::Accepted}}">
             <div class="flex items-center justify-end mt-4">
                 <x-primary-button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
