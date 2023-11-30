@@ -74,8 +74,7 @@ class CommentController extends Controller
             'description' => $request->description ?? null
         ]);
         $service->updateRestaurantScore($restaurant, $newStatus);
-        $shortId = substr($comment->cart->hashed_id, 0, 10);
-        return redirect()->back()->with('success', "Shopping cart status comment with ID {$shortId} has been updated to $newStatus");
+        return redirect()->back()->with('success', " status  has been updated to $newStatus");
 
     }
 
