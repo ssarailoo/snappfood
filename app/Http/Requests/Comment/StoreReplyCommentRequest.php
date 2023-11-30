@@ -23,7 +23,7 @@ class StoreReplyCommentRequest extends FormRequest
     {
         return [
             'parent_id' => ['required'],
-            'cart_id' => ['required'],
+            'order_id' => ['required'],
             'status' => ['required'],
             'content' => ['required', 'string', 'max:255'],
         ];

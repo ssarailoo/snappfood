@@ -59,8 +59,8 @@ class CommentController extends Controller
             ['parent_id' => $comment->id],
             $request->validated()
         );
-        $shortId = substr($comment->cart->hashed_id, 0, 10);
-        return redirect()->route('my-restaurant.comments.index', $restaurant)->with('success', "reply comment added to Shopping cart with ID {$shortId}");
+
+        return redirect()->route('my-restaurant.comments.index', $restaurant)->with('success', "reply comment added ");
 
 
     }
