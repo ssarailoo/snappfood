@@ -23,7 +23,7 @@ class OrderController extends Controller
 {
     public function index(Restaurant $restaurant, FilterCartByCreatedAtRequest $request)
     {
-//        $this->authorize('viewAny', [Cart::class, $restaurant]);
+       $this->authorize('viewAny', [Order::class, $restaurant]);
         $orders = $restaurant->orders()->where('status', OrderStauts::DELIVERED->value
         )->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
             return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) : $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
@@ -55,7 +55,7 @@ class OrderController extends Controller
 
     public function show(Restaurant $restaurant, Order $order)
     {
-//        $this->authorize('view', [$cart, $restaurant]);
+        $this->authorize('view', [$order, $restaurant]);
 
         return view('order.show', [
             'order' => $order,
@@ -66,7 +66,7 @@ class OrderController extends Controller
 
     public function update(UpdateCartStatusRequest $request,Restaurant $restaurant, Order $order, $newStatus)
     {
-//        $this->authorize('update', [$cart, $newStatus]);
+        $this->authorize('update', [$order, $newStatus]);
         $order->update([
             'status' => $newStatus,
         ]);
@@ -78,7 +78,7 @@ class OrderController extends Controller
 
     public function export(Restaurant $restaurant, FilterCartByCreatedAtRequest $request)
     {
-//        $this->authorize('viewAny', [Cart::class, $restaurant]);
+        $this->authorize('viewAny', [Order::class, $restaurant]);
         $orders = $restaurant->orders()->where('status', OrderStauts::DELIVERED->value
         )->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
             return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) : $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
