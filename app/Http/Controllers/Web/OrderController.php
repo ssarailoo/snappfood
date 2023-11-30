@@ -89,12 +89,12 @@ class OrderController extends Controller
 
     public function allExport(FilterCartByCreatedAtRequest $request)
     {
-        $carts= Cart::query()->where('status', CartStatus::DELIVERED->value)
+        $orders= Order::query()->where('status', OrderStauts::DELIVERED->value)
             ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
                 return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) :
                     $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
             })->get();
-        return Excel::download(new AllOrdersExport($carts), 'allOrders.xlsx');
+        return Excel::download(new AllOrdersExport($orders), 'allOrders.xlsx');
     }
 
 

@@ -54,8 +54,8 @@ class AllOrdersExport implements FromCollection,WithHeadings
 
     private function getFoodsInfo($order)
     {
-        return $order->cartFoods->map(function ($cartFood) {
-            return "{$cartFood->food->name} ({$cartFood->food_count})";
+        return $order->foodsOrder->map(function ($foodOrder) {
+            return "{$foodOrder->food->name} ({$foodOrder->food_count})";
         })->implode(', ');
     }
 
