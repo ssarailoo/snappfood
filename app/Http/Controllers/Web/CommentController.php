@@ -32,6 +32,7 @@ class CommentController extends Controller
 
     public function show(Restaurant $restaurant, Comment $comment)
     {
+        $this->authorize('view',[$comment,$restaurant]);
         return view('comment.show', [
             'comment' => $comment,
             'restaurant' => $restaurant

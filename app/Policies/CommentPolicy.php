@@ -23,18 +23,22 @@ class CommentPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Restaurant $restaurant): bool
+    public function view(User $user, Comment $comment,Restaurant $restaurant): bool
     {
-        return $user->hasRole('admin') or $user->restaurant->is($restaurant)  ;
+
+        return $user->hasRole('admin') or $user->restaurant->is($restaurant) and $restaurant->comments->contains($comment)  ;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Comment $comment = null): bool
+    public function create(User $user, Comment $comment=null): bool
     {
+        if ($comment!==null and $comment->parent_id)
+            return false;
+
         return $user->hasRole('admin') or $user->carts->contains(Cart::query()->find(\request()->post('cart_id'))) or
-            $user->restaurant->comments->contains($comment);
+            $user->restaurant->comments->contains($comment) ;
     }
 
     /**
@@ -51,7 +55,7 @@ class CommentPolicy
         if (!in_array($newStatus, $allowedTransitions[$currentStatus])) {
             return false;
         }
-        return  $user->hasRole('admin') or $user->restaurant->carts->map(fn($cart) => $cart->comments()->first())->contains($comment) ;
+        return  $user->hasRole('admin') or $user->restaurant->comments->contains($comment) ;
     }
 
     public function reconsider(User $user,Comment $comment)
