@@ -78,13 +78,13 @@ class OrderController extends Controller
 
     public function export(Restaurant $restaurant, FilterCartByCreatedAtRequest $request)
     {
-        $this->authorize('viewAny', [Cart::class, $restaurant]);
-        $carts = $restaurant->carts()->where('status', CartStatus::DELIVERED->value
+//        $this->authorize('viewAny', [Cart::class, $restaurant]);
+        $orders = $restaurant->orders()->where('status', OrderStauts::DELIVERED->value
         )->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
             return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) : $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         })->get();
 
-        return Excel::download(new OrderExport($carts), 'orders.xlsx');
+        return Excel::download(new OrderExport($orders), 'orders.xlsx');
     }
 
     public function allExport(FilterCartByCreatedAtRequest $request)

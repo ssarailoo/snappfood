@@ -109,7 +109,6 @@
                             </x-primary-button>
                         </form>
 
-                        @if(Auth::user()->hasRole('restaurant_manager'))
                             <form
                                 action="{{ route('my-restaurant.orders.export', ['restaurant' => $restaurant, 'filter_date' => request()->get('filter_date')]) }}"
                                 method="post">
@@ -119,18 +118,7 @@
                                     {{ __('Export to Excel') }}
                                 </button>
                             </form>
-                                @else
-                                    <form
-                                        action="{{ route('orders.export', [ 'filter_date' => request()->get('filter_date')]) }}"
-                                        method="post">
-                                        @csrf
-                                        <button type="submit"
-                                                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                            {{ __('Export to Excel') }}
-                                        </button>
 
-                                        @endif
-                        </form>
                     </div>
                 </div>
                 </div>
