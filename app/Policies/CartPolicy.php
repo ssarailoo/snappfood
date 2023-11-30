@@ -17,12 +17,12 @@ class CartPolicy
 
     public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        return $user->restaurant->is($restaurant) or $user->hasRole('admin');
+        return $user->hasRole('admin') or $user->restaurant->is($restaurant)  ;
     }
 
     public function view(User $user,Cart $cart, Restaurant $restaurant): bool
     {
-        return ($user->restaurant->is($restaurant) and $user->restaurant->carts->contains($cart)) or $user->hasRole('admin');
+        return $user->hasRole('admin') or ($user->restaurant->is($restaurant) and $user->restaurant->carts->contains($cart))  ;
     }
 
     public function update(User $user, Cart $cart, $newStatus)
