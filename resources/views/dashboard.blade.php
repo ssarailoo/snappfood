@@ -200,6 +200,7 @@
                                 unset($statuses[$last]);
                             @endphp
                             <select name="filter_status">
+                                <option value="">All</option>
                                 @foreach($statuses as $status)
                                     <option value="{{$status}}">{{ ucfirst($status)}}</option>
                                 @endforeach

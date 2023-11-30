@@ -15,7 +15,7 @@ class DashboardController extends Controller
             $carts = Auth::user()->restaurant->carts()->where('status', '!=', 'delivered');
             $filter = $request->get('filter_status');
             return view('dashboard', [
-                'carts' => $carts->when($filter, function ($query) use ($filter) {
+                'carts' => $carts->when(!empty($filter), function ($query) use ($filter) {
                     return $query->where('status', $filter);
                 })->paginate(5),
             ]);
