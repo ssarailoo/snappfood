@@ -14,22 +14,25 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user_id',
         'restaurant_id',
         'total',
+        'is_paid',
         'hashed_id',
-        'status',
         'discount_id'
     ];
-
-    public function cartFoods(): HasMany
+    public function foodsOrder(): HasMany
     {
-        return $this->hasMany(CartFood::class);
+        return $this->hasMany(FoodOrder::class);
 
     }
 
-
+    public function foods(): BelongsToMany
+    {
+        return $this->belongsToMany(Food::class);
+    }
 
     public function restaurant(): BelongsTo
     {

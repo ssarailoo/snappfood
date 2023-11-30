@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->decimal('total', 10, 2)->default(0);
             $table->enum('status', OrderStauts::getValues())->nullable()->default(OrderStauts::CHECKING->value);
             $table->timestamps();
-            $table->timestamps();
+
         });
     }
 

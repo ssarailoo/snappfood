@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->decimal('price',10,2);
             $table->decimal('discount')->default(0);
             $table->boolean('status')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

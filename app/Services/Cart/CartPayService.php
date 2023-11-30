@@ -2,9 +2,11 @@
 
 namespace App\Services\Cart;
 
+use App\Enums\OrderStauts;
 use App\Models\Cart\Cart;
 use App\Models\Discount;
 use App\Models\Food\FoodParty;
+use App\Models\Order;
 use App\Models\User;
 use App\Notifications\Discount\DiscountEmailNotification;
 use Illuminate\Support\Facades\Auth;
@@ -29,10 +31,33 @@ class CartPayService
                 ]);
                 $payment = $cart->total * (100 - $discount->percent) / 100;
                 $cart->update(['is_paid' => 1]);
-                return ['success' => true, 'msg' => "Your cart has been paid successfully.{$discount->percent} percent discount was applied. total payment {$payment} dollars"];
+                $order = Order::query()->create([
+                    'user_id' => $cart->user_id,
+                    'restaurant_id' => $cart->restaurant_id,
+                    'total' => $cart->total,
+                    'discount_id'=>$cart->discount_id,
+                    'status' => OrderStauts::CHECKING->value,
+                    'hashed_id'=>$cart->hashed_id
+                ]);
+                $order->foods()->sync(
+                    $cart->getCartFoodsSyncData()
+                );
+                return ['success' => true, 'msg' => "Your order has been registered.{$discount->percent} percent discount was applied. total payment {$payment} dollars"];
             }
             $cart->update(['is_paid' => 1]);
-            return ['success' => true, 'msg' => 'Your cart has been paid successfully'];
+
+            $order = Order::query()->create([
+                'user_id' => $cart->user_id,
+                'restaurant_id' => $cart->restaurant_id,
+                'total' => $cart->total,
+                'status' => OrderStauts::CHECKING->value,
+                'hashed_id'=>$cart->hashed_id
+            ]);
+            $order->foods()->sync(
+                $cart->getCartFoodsSyncData()
+            );
+
+            return ['success' => true, 'msg' => 'Your order has been registered'];
         }
     }
 

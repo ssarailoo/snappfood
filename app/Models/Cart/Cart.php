@@ -60,4 +60,17 @@ class Cart extends Model
     {
         return $this->belongsTo(Discount::class);
     }
+
+    public function getCartFoodsSyncData()
+    {
+        return    $this->cartFoods->map(function ($cartFood) {
+            return [
+                'food_id'=>$cartFood->food_id,
+                'in_party' => $cartFood->in_party,
+                'food_count' => $cartFood->food_count,
+                'price' => $cartFood->price,
+                'discount_percent' => $cartFood->discount_percent,
+            ];
+        })->toArray();
+    }
 }

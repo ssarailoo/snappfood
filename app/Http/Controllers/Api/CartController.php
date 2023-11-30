@@ -167,12 +167,9 @@ class CartController extends Controller
             Notification::send($cart->user, new OrderRegistration($cart));
             Notification::send($cart->user, new OrderRegistrationSMS());
             Notification::send($cart->restaurant->user, new RestaurantOrderRegistration($cart));
-            $cart->update([
-                'status' => CartStatus::CHECKING
-            ]);
             return response()->json([
                 'data' => $response
-            ], 200);
+            ], 201);
         } else {
             return response()->json([
                     'data' => $response

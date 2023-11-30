@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->foreignId('restaurant_id')->constrained();
             $table->decimal('total', 10, 2)->default(0);
             $table->boolean('is_paid')->default(0);
-            $table->enum('status', CartStatus::getValues())->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });
