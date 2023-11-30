@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Enums\CommentStatus;
 use App\Models\Cart\Cart;
 use App\Models\Comment;
+use App\Models\Order;
 use App\Models\Restaurant\Restaurant;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -37,7 +38,7 @@ class CommentPolicy
         if ($comment!==null and $comment->parent_id)
             return false;
 
-        return $user->hasRole('admin') or $user->carts->contains(Cart::query()->find(\request()->post('cart_id'))) or
+        return $user->hasRole('admin') or $user->orders->contains(Order::query()->find(\request()->post('order_id'))) or
             $user->restaurant->comments->contains($comment) ;
     }
 

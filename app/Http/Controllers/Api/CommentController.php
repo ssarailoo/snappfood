@@ -30,9 +30,7 @@ class CommentController extends Controller
     {
 
         $response = $service->getComments($request);
-        return isset($response['msg']) ? response()->json([
-            'data' => $response
-        ], 400) : response()->json([
+        return  response()->json([
             'data' => $response
         ], 200);
 
@@ -48,7 +46,7 @@ class CommentController extends Controller
     {
 
         $this->authorize('create', Comment::class);
-        $response = $commentStoreService->storeComment($request, $request->post('cart_id'));
+        $response = $commentStoreService->storeComment($request, $request->post('order_id'));
         if (isset($response['success']))
             return response()->json([
                 'data' => $response

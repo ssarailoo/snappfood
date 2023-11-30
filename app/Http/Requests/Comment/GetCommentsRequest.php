@@ -25,7 +25,8 @@ class GetCommentsRequest extends FormRequest
     {
         return [
             'restaurant_id' => [ 'numeric', 'in:' . implode(',', Restaurant::query()->pluck('id')->toArray())],
-                'food_id' => [ 'numeric', 'in:' . implode(',', Food::query()->pluck('id')->toArray())]
+                'food_id' => [ 'numeric', 'in:' . implode(',', Food::query()->pluck('id')->toArray())],
+            'at_least_one_parameter' =>[ 'required_without_all:restaurant_id,food_id'],
         ];
 
     }

@@ -27,7 +27,7 @@ class CommentResource extends JsonResource
                 $this->order->foods->map(fn($food) => $food->name)
             ]),
             'restaurant' => $this->when($request->has('food_id'), $this->order->restaurant->name),
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('j F Y'),
             'score' => $this->score,
             'content' => $this->content,
             'answer' =>$this->whennotNull( $answer->content ??null)

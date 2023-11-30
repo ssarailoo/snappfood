@@ -7,6 +7,7 @@ use App\Models\Cart\Cart;
 use App\Models\Cart\CartFood;
 use App\Models\Image;
 use App\Models\Material;
+use App\Models\Order;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -80,6 +81,10 @@ class Food extends Model
     public function carts(): BelongsToMany
     {
         return $this->belongsToMany(Cart::class, 'cart_food');
+    }
+    public function orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class);
     }
 
     public function foodParties(): HasMany
