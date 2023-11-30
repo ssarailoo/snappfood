@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\FilterCartByCreatedAtRequest;
 use App\Http\Requests\Cart\UpdateCartStatusRequest;
 use App\Models\Cart\Cart;
+use App\Models\Order;
 use App\Models\Restaurant\Restaurant;
 use App\Notifications\Customer\OrderStatus;
 use App\Notifications\Customer\OrderStatusSMS;
@@ -62,15 +63,15 @@ class OrderController extends Controller
 
     }
 
-    public function update(UpdateCartStatusRequest $request, Cart $cart, $newStatus)
+    public function update(UpdateCartStatusRequest $request,Restaurant $restaurant, Order $order, $newStatus)
     {
-        $this->authorize('update', [$cart, $newStatus]);
-        $cart->update([
+//        $this->authorize('update', [$cart, $newStatus]);
+        $order->update([
             'status' => $newStatus,
         ]);
-        Notification::send($cart->user, new OrderStatus($cart, $newStatus));
-        Notification::send($cart->user, new OrderStatusSMS($newStatus));
-        $shortHashedId = substr($cart->hashed_id, 0, 10);
+        Notification::send($order->user, new OrderStatus($order, $newStatus));
+        Notification::send($order->user, new OrderStatusSMS($newStatus));
+        $shortHashedId = substr($order->hashed_id, 0, 10);
         return redirect()->route('dashboard')->with('success', "Order with id {$shortHashedId} has been updated to {$newStatus}");
     }
 

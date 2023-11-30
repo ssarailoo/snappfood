@@ -18,6 +18,7 @@ class DashboardController extends Controller
                 'orders' => $orders->when(!empty($filter), function ($query) use ($filter) {
                     return $query->where('status', $filter);
                 })->paginate(5),
+                'restaurant'=>Auth::user()->restaurant
             ]);
         }
         return view('dashboard');

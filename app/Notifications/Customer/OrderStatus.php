@@ -14,7 +14,7 @@ class OrderStatus extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      */
-    public function __construct(public $cart,public  $status)
+    public function __construct(public $order,public  $status)
     {
         //
     }
@@ -37,7 +37,7 @@ class OrderStatus extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('Order CartStatus')
             ->line("Your order status has changed to {$this->status}.")
-            ->action('Order Tracking', url(route('factor',$this->cart->hashed_id)))
+            ->action('Order Tracking', url(route('factor',$this->order->hashed_id)))
             ->line('Thank you for using our application!');
     }
 

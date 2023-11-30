@@ -137,8 +137,11 @@ Route::middleware('auth')->group(function () {
                 //region Orders
                 Route::prefix('/orders')->controller(OrderController::class)->name('orders.')->group(function () {
                     Route::get('/', 'index')->name('index');
-                    Route::get('/{cart}', 'show')->name('show');
+                    Route::get('/{order}', 'show')->name('show');
+                    Route::patch('/status/{order}/{newStatus}', 'update')->name('update');
+
                     Route::post('/export/{filterDate?}', 'export')->name('export');
+                });
                 });
 
                 //endregion
@@ -161,8 +164,7 @@ Route::middleware('auth')->group(function () {
         // endregion
 
         Route::get('/materials/search', MaterialController::class)->name('materials.suggest');
-        Route::patch('/orders/status/{cart}/{newStatus}', [OrderController::class, 'update'])->name('orders.status.update');
-    });
+
 
 
 });

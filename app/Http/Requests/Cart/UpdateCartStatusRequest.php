@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Cart;
 
 use App\Enums\CartStatus;
+use App\Enums\OrderStauts;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCartStatusRequest extends FormRequest
@@ -23,7 +24,7 @@ class UpdateCartStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'newStatus' =>[ 'required|in:' . implode(',', CartStatus::getValues())],
+            'newStatus' =>[ 'required|in:' . implode(',', OrderStauts::getValues())],
         ];
     }
 }

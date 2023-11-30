@@ -19,9 +19,9 @@ class Order extends Model
         'user_id',
         'restaurant_id',
         'total',
-        'is_paid',
         'hashed_id',
-        'discount_id'
+        'discount_id',
+        'status'
     ];
     public function foodsOrder(): HasMany
     {
