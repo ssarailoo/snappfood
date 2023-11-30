@@ -8,58 +8,58 @@
     @endif
 
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-                <div>
-                    <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
-                        <div class="relative overflow-x-auto">
-                            <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
-                                <thead
-                                    class="text-xs text-pink-500 uppercase bg-white dark:bg-white dark:text-pink-500">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        ID
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Customer's Name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Foods
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Score
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Comment
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Status
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Reply
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                @foreach($comments as $key=> $comment)
-                                    @if ($comment)
+            <div>
+                <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
+                            <thead
+                                class="text-xs text-pink-500 uppercase bg-white dark:bg-white dark:text-pink-500">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    ID
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Customer's Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Foods
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Score
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Comment
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Status
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Reply
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Action
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Action
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{$comments->withQueryString()->links()}}
+                            @foreach($comments as $key=> $comment)
+                                @if ($comment)
                                     <tr class="bg-white dark:bg-white">
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
@@ -165,34 +165,50 @@
                                                     #
                                                 </td>
 
-                                    @endif
-                                    @endif
-                                    @endif
+                                @endif
+                                @endif
+                                @endif
 
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="p-2">
-                        <form action="">
+
+                </div>
+                <div class="p-2">
+                    <form action=""  class="flex gap-4 items-center">
+                        <div class="flex items-center">
+                            <x-input-label class="'block mr-2 font-medium text-white"
+                                           :value="__('Status')"/>
                             <select name="status">
                                 <option value="">all</option>
                                 @foreach(CommentStatus::getValues() as $status)
                                     <option value="{{$status}}">{{$status}}</option>
                                 @endforeach
                             </select>
-
+                        </div>
+                        <div class="flex items-center">
+                            <x-input-label class="'block mr-2 font-medium  text-white"
+                                           :value="__('Food')"/>
+                            <select name="food">
+                                <option value="">all</option>
+                                @foreach($restaurant->foods as $food)
+                                    <option value="{{$food->id}}">{{$food->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="flex items-center">
                             <button
                                 type="submit"
                                 class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                                {{ __('Filter By Status') }}
+                                {{ __('Filter') }}
                             </button>
+                        </div>
 
-                        </form>
-                    </div>
+                    </form>
                 </div>
+
+            </div>
         </div>
     </div>
 </x-app-layout>

@@ -1,4 +1,4 @@
-@php use App\Enums\CommentStatus; @endphp
+@php use App\Enums\CommentStatus;use App\Models\Food\Food; @endphp
 <x-app-layout>
     @if(session('success'))
         <div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4 mb-4" role="alert">
@@ -86,21 +86,22 @@
                                     @if($comment->status===CommentStatus::REVIEWING_BY_ADMIN->value)
                                         <td class="px-6 py-4">
                                             <form id="reconsiderForm"
-                                                action="{{route('my-restaurant.comments.update' ,['restaurant'=>$comment->order->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::RECONSIDERING_BY_CUSTOMER->value])}}"
-                                                method="post">
+                                                  action="{{route('my-restaurant.comments.update' ,['restaurant'=>$comment->order->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::RECONSIDERING_BY_CUSTOMER->value])}}"
+                                                  method="post">
                                                 @method("PATCH")
                                                 @csrf
 
                                                 <input type="hidden" name="description" id="hiddenDescription" value="">
                                                 <x-input-error :messages="$errors->get('description')" class="mt-2"/>
-                                                    <div class="flex items-center justify-end mt-4">
-                                                        <button
-                                                            type="button"
-                                                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"  onclick="showDescriptionModal()">
+                                                <div class="flex items-center justify-end mt-4">
+                                                    <button
+                                                        type="button"
+                                                        class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"
+                                                        onclick="showDescriptionModal()">
 
-                                                            {{ __('Reconsider') }}
-                                                        </button>
-                                                    </div>
+                                                        {{ __('Reconsider') }}
+                                                    </button>
+                                                </div>
 
                                             </form>
                                         </td>
@@ -163,19 +164,39 @@
                     </div>
                 </div>
                 <div class="p-2">
-                    <form action="">
-                        <select name="status" >
-                            <option value="">all</option>
-                                <option value="{{CommentStatus::REVIEWING_BY_ADMIN->value}}">{{CommentStatus::REVIEWING_BY_ADMIN->value}}</option>
-                                <option value="{{CommentStatus::RECONSIDERING_BY_CUSTOMER->value}}">{{CommentStatus::RECONSIDERING_BY_CUSTOMER->value}}</option>
-
-                        </select>
-
-                        <button
-                            type="submit"
-                            class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
-                            {{ __('Filter By Status') }}
-                        </button>
+                    <form action="" class="flex gap-4 items-center">
+                        <div class="flex items-center">
+                            <x-input-label class="'block mr-2 font-medium text-white"
+                                           :value="__('Status')"/>
+                            <select name="status">
+                                <option value="">all</option>
+                                @php
+                                   $statuses= CommentStatus::getValues();
+                                   unset($statuses[0]);
+                                   unset($statuses[1]);
+                                @endphp
+                                @foreach( $statuses as $status)
+                                    <option value="{{$status}}">{{$status}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="flex items-center">
+                            <x-input-label class="'block mr-2 font-medium  text-white"
+                                           :value="__('Food')"/>
+                            <select name="food">
+                                <option value="">all</option>
+                                @foreach(Food::all() as $food)
+                                    <option value="{{$food->id}}">{{$food->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="flex items-center">
+                            <button
+                                type="submit"
+                                class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+                                {{ __('Filter') }}
+                            </button>
+                        </div>
 
                     </form>
                 </div>
@@ -270,7 +291,7 @@
 
             <div class="modal-body">
                 <div>
-                    <x-input-label  class="'block font-medium text-sm text-pink-700"
+                    <x-input-label class="'block font-medium text-sm text-pink-700"
                                    :value="__('Description')"/>
                     <x-text-input id="description-input" class="block mt-1 w-full" type="text"
                                   :value="old('description')"/>
@@ -339,7 +360,7 @@
 
     function submitForm() {
         var description = document.getElementById('description-input').value;
-            document.getElementById('hiddenDescription').value = description;
-            document.forms["reconsiderForm"].submit();
+        document.getElementById('hiddenDescription').value = description;
+        document.forms["reconsiderForm"].submit();
     }
 </script>

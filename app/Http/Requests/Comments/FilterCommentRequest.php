@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Comments;
 
 use App\Enums\CommentStatus;
+use App\Models\Food\Food;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class FilterCommentRequest extends FormRequest
 {
@@ -22,8 +24,16 @@ class FilterCommentRequest extends FormRequest
      */
     public function rules(): array
     {
+        if (Auth::user()->hasRole('restaurant-manager')) {
+            $foodIds = $this->route()->parameter('restaurant')->foods->pluck('id')->toArray();
+            return [
+                'status' => ['nullable', 'in:' . implode(',', CommentStatus::getValues())],
+                'food' => ['nullable', 'in:' . implode(',', $foodIds)],
+            ];
+        }
         return [
-            'status' => ['nullable','in:'.implode(',',CommentStatus::getValues())]
+            'status' => ['nullable', 'in:' . implode(',', CommentStatus::getValues())],
+            'food' => ['nullable', 'in:' . implode(',', Food::all()->pluck('id')->toArray())],
         ];
     }
 }

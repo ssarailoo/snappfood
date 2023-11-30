@@ -9,30 +9,39 @@ use App\Http\Requests\Comment\UpdateCommentDescriptionRequest;
 use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Http\Requests\Comments\FilterCommentRequest;
 use App\Models\Comment;
+use App\Models\Food\Food;
 use App\Models\Restaurant\Restaurant;
+use App\Services\Comment\CommentFilterService;
 use App\Services\Restaurant\RestaurantUpdateScoreService;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class CommentController extends Controller
 {
-    public function index(Restaurant $restaurant, FilterCommentRequest $request)
+    public function index(Restaurant $restaurant, FilterCommentRequest $request,CommentFilterService $service)
     {
 
         $this->authorize('viewAny', [Comment::class, $restaurant]);
-        $comments = $restaurant->orders->map(fn($order) => $order->comments->first())->filter(fn($comment)=>$comment!==null);
-        $filter = $request->get('status');
-
+        $comments = $restaurant->orders->map(fn($order) => $order->comments->first())->filter(fn($comment) => $comment !== null) ->sortByDesc('created_at');
+       $filteredComments= $service->filter($comments);
+        $perPage =10;
+        $page = request()->get('page', 1);
+        $paginator = new LengthAwarePaginator(
+            $filteredComments->forPage($page, $perPage),
+            $filteredComments->count(),
+            $perPage,
+            $page,
+            ['path' => url()->current()]
+        );
         return view('comment.index', [
-            'comments' => $comments->when(!empty($filter), function ($query) use ($filter) {
-                return $query->filter(fn($comment) => $comment->status === $filter);
-            }),
+            'comments' =>$paginator ,
             'restaurant' => $restaurant
         ]);
     }
 
     public function show(Restaurant $restaurant, Comment $comment)
     {
-        $this->authorize('view',[$comment,$restaurant]);
+        $this->authorize('view', [$comment, $restaurant]);
         return view('comment.show', [
             'comment' => $comment,
             'restaurant' => $restaurant
@@ -46,7 +55,7 @@ class CommentController extends Controller
         return view('comment.create', [
             'comment' => $comment,
             'order' => $comment->order,
-            'restaurant'=>$restaurant
+            'restaurant' => $restaurant
         ]);
 
     }
@@ -86,13 +95,22 @@ class CommentController extends Controller
 
     }
 
-    public function review(FilterCommentRequest $request)
+    public function review(FilterCommentRequest $request,CommentFilterService $service)
     {
-      $comments=  Comment::query()->whereNotIn('status', [CommentStatus::Accepted->value, CommentStatus::PENDING->value])->get();
+        $comments = Comment::query()->whereNotIn('status', [CommentStatus::Accepted->value, CommentStatus::PENDING->value])
+            ->get()->sortByDesc('created_at');
+        $filteredComments= $service->filter($comments);
+        $perPage =10;
+        $page = request()->get('page', 1);
+        $paginator = new LengthAwarePaginator(
+            $filteredComments->forPage($page, $perPage),
+            $filteredComments->count(),
+            $perPage,
+            $page,
+            ['path' => url()->current()]
+        );
         return view('comment.review', [
-            'comments' => $comments->when(!empty($filter=$request->get('status')),function ($builder)use($filter){
-              return  $builder->filter(fn($comment)=>$comment->status===$filter);
-            })
+            'comments' => $paginator
         ]);
     }
 }
