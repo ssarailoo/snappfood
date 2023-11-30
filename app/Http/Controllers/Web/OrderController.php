@@ -40,16 +40,16 @@ class OrderController extends Controller
 
     public function allOrders(FilterCartByCreatedAtRequest $request)
     {
-       $carts= Cart::query()->where('status', CartStatus::DELIVERED->value)
+       $orders= Order::query()->where('status', OrderStauts::DELIVERED->value)
             ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
                 return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) :
                     $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
             });
 
         return view('order.all', [
-            'carts' => $carts->paginate(10),
-            'totalOrders' => $carts->get()->count(),
-            'totalRevenue' => $carts->get()->map(fn($cart) => $cart->total)->sum()
+            'orders' => $orders->paginate(10),
+            'totalOrders' => $orders->get()->count(),
+            'totalRevenue' => $orders->get()->map(fn($cart) => $cart->total)->sum()
         ]);
     }
 
