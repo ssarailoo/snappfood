@@ -2,16 +2,16 @@
 <x-app-layout>
     <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
         <div class="mb-4">
-            Author: {{$comment->cart->user->name}}
+            Author: {{$comment->order->user->name}}
         </div>
         <div class="mb-4">
-            Phone Number: {{$comment->cart->user->phone_number}}
+            Phone Number: {{$comment->order->user->phone_number}}
         </div>
         <div class="mb-4">
             Foods:
-            @foreach($comment->cart->cartFoods as $cartFood)
+            @foreach($comment->order->foodsOrder as $foodOrder)
                 <p class="text-gray-700 text-base">
-                    {{$cartFood->food->name}} * {{(int)$cartFood->food_count}}
+                    {{$foodOrder->food->name}} * {{(int)$foodOrder->food_count}}
                 </p>
             @endforeach
         </div>
