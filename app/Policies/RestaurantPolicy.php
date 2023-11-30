@@ -28,7 +28,7 @@ class RestaurantPolicy
      */
     public function create(User $user): bool
     {
-        return is_null($user->restaurant);
+        return is_null($user->restaurant) and !$user->hasRole('admin');
     }
 
     /**
@@ -36,7 +36,7 @@ class RestaurantPolicy
      */
     public function update(User $user, Restaurant $restaurant): bool
     {
-        return $user->id === $restaurant->user_id or $user->hasRole('admin');
+        return $user->hasRole('admin') or $user->is($restaurant->user);
     }
 
     /**
@@ -44,7 +44,7 @@ class RestaurantPolicy
      */
     public function delete(User $user, Restaurant $restaurant): bool
     {
-        return $user->id === $restaurant->user_id or $user->hasRole('admin');
+        return $user->hasRole('admin') or $user->is($restaurant->user);
     }
 
     /**
