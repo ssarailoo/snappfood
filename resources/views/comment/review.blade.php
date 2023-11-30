@@ -52,17 +52,17 @@
                                         <a href=""> {{ $comment->id}}</a>
                                     </th>
                                     <td class="px-6 py-4">
-                                        {{$comment->cart->user->name}}
+                                        {{$comment->order->user->name}}
                                     </td>
 
                                     <td class="px-6 py-4">
-                                        {{$comment->cart->user->phone_number}}
+                                        {{$comment->order->user->phone_number}}
                                     </td>
                                     <td class="px-6 py-4" style="white-space: nowrap;">
-                                        @foreach($comment->cart->cartFoods as $cartFood)
+                                        @foreach($comment->order->foodsOrder as $foodOrder)
                                             <p class="text-gray-700 text-base">
-                                                {{$cartFood->food->name}}
-                                                * {{(int)$cartFood->food_count}}
+                                                {{$foodOrder->food->name}}
+                                                * {{(int)$foodOrder->food_count}}
                                             </p>
                                         @endforeach
                                     </td>
@@ -86,7 +86,7 @@
                                     @if($comment->status===CommentStatus::REVIEWING_BY_ADMIN->value)
                                         <td class="px-6 py-4">
                                             <form id="reconsiderForm"
-                                                action="{{route('my-restaurant.comments.update' ,['restaurant'=>$comment->cart->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::RECONSIDERING_BY_CUSTOMER->value])}}"
+                                                action="{{route('my-restaurant.comments.update' ,['restaurant'=>$comment->order->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::RECONSIDERING_BY_CUSTOMER->value])}}"
                                                 method="post">
                                                 @method("PATCH")
                                                 @csrf
@@ -106,7 +106,7 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <form id="acceptForm"
-                                                  action="{{route('my-restaurant.comments.update',['restaurant'=>$comment->cart->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::Accepted->value])}}"
+                                                  action="{{route('my-restaurant.comments.update',['restaurant'=>$comment->order->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::Accepted->value])}}"
                                                   method="post">
                                                 @method("PATCH")
                                                 @csrf
@@ -141,7 +141,7 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <form id="acceptForm"
-                                                  action="{{route('my-restaurant.comments.update',['restaurant'=>$comment->cart->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::Accepted->value])}}"
+                                                  action="{{route('my-restaurant.comments.update',['restaurant'=>$comment->order->restaurant,'comment' =>$comment, 'newStatus' => CommentStatus::Accepted->value])}}"
                                                   method="post">
                                                 @method("PATCH")
                                                 @csrf
