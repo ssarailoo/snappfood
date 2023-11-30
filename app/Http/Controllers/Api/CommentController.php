@@ -58,7 +58,7 @@ class CommentController extends Controller
 
     public function showDeniedComments()
     {
-        $comments = Auth::user()->carts->map(fn($cart) => $cart->comments->first())->filter(fn($comment) => $comment !== null)->
+        $comments = Auth::user()->orders->map(fn($order) => $order->comments->first())->filter(fn($comment) => $comment !== null)->
         filter(fn($comment) =>  $comment->status === CommentStatus::RECONSIDERING_BY_CUSTOMER->value and $comment->reconsidered===0);
 
         return response()->json([

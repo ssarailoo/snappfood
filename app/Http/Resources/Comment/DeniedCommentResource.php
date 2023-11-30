@@ -17,9 +17,9 @@ class DeniedCommentResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'restaurant' => $this->cart->restaurant->name,
+            'restaurant' => $this->order->restaurant->name,
             'foods' => [
-                $this->cart->foods->map(fn($food) => $food->name)
+                $this->order->foods->map(fn($food) => $food->name)
             ],
             'score' => $this->score,
             'content' => $this->content,
