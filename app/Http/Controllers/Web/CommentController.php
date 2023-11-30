@@ -19,7 +19,7 @@ class CommentController extends Controller
     {
 
         $this->authorize('viewAny', [Comment::class, $restaurant]);
-        $comments = $restaurant->carts->map(fn($cart) => $cart->comments->first())->filter(fn($comment)=>$comment!==null);
+        $comments = $restaurant->orders->map(fn($order) => $order->comments->first())->filter(fn($comment)=>$comment!==null);
         $filter = $request->get('status');
 
         return view('comment.index', [

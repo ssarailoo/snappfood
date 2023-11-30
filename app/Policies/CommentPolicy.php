@@ -71,7 +71,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-        return $user->hasRole('admin') and  $comment->reconsidered===1 ;
+        return $user->hasRole('admin') and $comment->status===CommentStatus::RECONSIDERING_BY_CUSTOMER->value and $comment->reconsidered===1 ;
     }
 
 

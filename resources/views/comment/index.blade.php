@@ -66,11 +66,11 @@
                                             <a href="{{route('my-restaurant.comments.show',['restaurant'=>$restaurant,'comment'=>$comment])}}"> {{$key+1 }}</a>
                                         </th>
                                         <td class="px-6 py-4">
-                                            {{$comment->cart->user->name}}
+                                            {{$comment->order->user->name}}
                                         </td>
 
                                         <td class="px-6 py-4" style="white-space: nowrap;">
-                                            @foreach($comment->cart->cartFoods as $cartFood)
+                                            @foreach($comment->order->foodsOrder as $cartFood)
                                                 <p class="text-gray-700 text-base">
                                                     {{$cartFood->food->name}}
                                                     * {{(int)$cartFood->food_count}}
