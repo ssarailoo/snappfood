@@ -61,7 +61,7 @@ class CommentPolicy
 
     public function reconsider(User $user,Comment $comment)
     {
-        return $user->carts->map(fn($cart)=>$cart->comments->first())->contains($comment) and
+        return $user->orders->map(fn($order)=>$order->comments->first())->contains($comment) and
             $comment->status===CommentStatus::RECONSIDERING_BY_CUSTOMER->value and
             $comment->reconsidered===0;
     }
