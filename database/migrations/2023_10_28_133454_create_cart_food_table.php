@@ -14,9 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('food_id')->nullable()->constrained('foods')->cascadeOnDelete();
             $table->boolean('in_party')->default(0);
-            $table->foreignId('cart_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('cart_id')->constrained();
+            $table->foreignId('order_id')->nullable()->default(null);
             $table->decimal('food_count');
-            $table->decimal('price',10,2);
+            $table->decimal('price', 10, 2);
             $table->decimal('discount_percent');
             $table->timestamps();
         });
