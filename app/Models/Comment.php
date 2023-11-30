@@ -15,7 +15,7 @@ class Comment extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'cart_id',
+        'order_id',
         'parent_id',
         'content',
         'score',

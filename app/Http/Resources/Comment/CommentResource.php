@@ -20,13 +20,13 @@ class CommentResource extends JsonResource
 
         return [
             'author' => [
-                'name' => $this->cart->user->name,
+                'name' => $this->order->user->name,
             ],
 
             'foods' => $this->when($request->has('restaurant_id'), [
-                $this->cart->foods->map(fn($food) => $food->name)
+                $this->order->foods->map(fn($food) => $food->name)
             ]),
-            'restaurant' => $this->when($request->has('food_id'), $this->cart->restaurant->name),
+            'restaurant' => $this->when($request->has('food_id'), $this->order->restaurant->name),
             'created_at' => $this->created_at,
             'score' => $this->score,
             'content' => $this->content,

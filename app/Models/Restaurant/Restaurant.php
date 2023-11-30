@@ -119,6 +119,6 @@ protected $casts=[
     }
     public function comments(): HasManyThrough
     {
-        return $this->hasManyThrough(Comment::class, Cart::class, 'restaurant_id', 'cart_id');
+        return $this->hasManyThrough(Comment::class, Order::class, 'restaurant_id', 'order_id');
     }
 }

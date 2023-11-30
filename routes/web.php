@@ -142,9 +142,10 @@ Route::middleware('auth')->group(function () {
 
                     Route::post('/export/{filterDate?}', 'export')->name('export');
                 });
-                });
 
                 //endregion
+                });
+
 
 
             });

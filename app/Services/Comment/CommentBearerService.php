@@ -21,12 +21,14 @@ class CommentBearerService
             $response = new CommentCollection(Restaurant::query()->find($restaurantId)->comments->filter(function ($comment) {
                 return $comment->parent_id === null and $comment->status===CommentStatus::Accepted->value;
             }));
-        } elseif ($foodId) {
+        }
+        elseif ($foodId) {
             $carts = Food::query()->find($foodId)->carts->filter(fn($cart) => $cart->is_paid === 1 && $cart->comments->first() == !null);
 
             $response = new CommentCollection($carts->map(fn($cart)=>$cart->comments)->map(fn($comment)=>$comment->first())
             ->filter(fn($comment)=>$comment->status===CommentStatus::Accepted->value));
-        } else
+        }
+        else
             $response = [
                 'msg' => 'Bad Request=> you must enter food id or restaurant id in query param'
             ];
