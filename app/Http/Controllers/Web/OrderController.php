@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Enums\CartStatus;
+use App\Enums\OrderStauts;
 use App\Exports\AllOrdersExport;
 use App\Exports\OrderExport;
 use App\Http\Controllers\Controller;
@@ -22,16 +23,16 @@ class OrderController extends Controller
 {
     public function index(Restaurant $restaurant, FilterCartByCreatedAtRequest $request)
     {
-        $this->authorize('viewAny', [Cart::class, $restaurant]);
-        $carts = $restaurant->carts()->where('status', CartStatus::DELIVERED->value
+//        $this->authorize('viewAny', [Cart::class, $restaurant]);
+        $orders = $restaurant->orders()->where('status', OrderStauts::DELIVERED->value
         )->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
             return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) : $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         });
 
         return view('order.index', [
-            'carts' => $carts->orderByDesc('created_at')->paginate(10),
-            'totalRevenue' => $carts->get()->map(fn($cart) => $cart->total)->sum(),
-            'totalOrders' => $carts->get()->count(),
+            'orders' => $orders->orderByDesc('created_at')->paginate(10),
+            'totalRevenue' => $orders->get()->map(fn($cart) => $cart->total)->sum(),
+            'totalOrders' => $orders->get()->count(),
             'restaurant' => $restaurant,
 
         ]);

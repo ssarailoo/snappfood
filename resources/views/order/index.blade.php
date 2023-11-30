@@ -39,51 +39,51 @@
                                 </th>
 
                             </tr>
-                            {{$carts->withQueryString()->links()}}
+                            {{$orders->withQueryString()->links()}}
                             </thead>
                             <tbody>
-                            @foreach($carts as $key=> $cart)
+                            @foreach($orders as $key=> $order)
                                 <tr class="bg-white dark:bg-white">
 
 
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                                        <a href="{{route('my-restaurant.orders.show',[$cart->restaurant,$cart])}}"> {{$key+1}}</a>
+                                        <a href="{{route('my-restaurant.orders.show',[$order->restaurant,$order])}}"> {{$key+1}}</a>
                                     </th>
 
                                     <td class="px-6 py-4" style="white-space: nowrap;">
                                         @php
-                                            $cartFoods=    $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===0);
-                                            $cartFoodsInParty=    $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===1);
+                                            $orderFoods=    $order->foodsOrder->filter(fn($orderFood)=>$orderFood->in_party===0);
+                                            $orderFoodsInParty=    $order->foodsOrder->filter(fn($orderFood)=>$orderFood->in_party===1);
                                         @endphp
                                         Normal:
-                                        @foreach($cartFoods as $cartFood)
+                                        @foreach($orderFoods as $orderFood)
                                             <p class="text-gray-700 text-base">
-                                                {{$cartFood->food->name}} {{$cartFood->price}}
-                                                * {{(int)$cartFood->food_count}}
-                                                => discount % {{$cartFood->discount_percent}}
+                                                {{$orderFood->food->name}} {{$orderFood->price}}
+                                                * {{(int)$orderFood->food_count}}
+                                                => discount % {{$orderFood->discount_percent}}
                                             </p>
                                         @endforeach
                                         Party:
-                                        @foreach($cartFoodsInParty as $cartFood)
+                                        @foreach($orderFoodsInParty as $orderFood)
                                             <p class="text-gray-700 text-base">
-                                                {{$cartFood->food->name}} {{$cartFood->price}}
-                                                * {{(int)$cartFood->food_count}}
-                                                => discount % {{$cartFood->discount_percent}}
+                                                {{$orderFood->food->name}} {{$orderFood->price}}
+                                                * {{(int)$orderFood->food_count}}
+                                                => discount % {{$orderFood->discount_percent}}
                                             </p>
                                         @endforeach
                                     </td>
 
 
                                     <td class="px-6 py-4">
-                                        {{$total=$cart->total + $cart->restaurant->cost_of_sending_order}}$
+                                        {{$total=$order->total + $order->restaurant->cost_of_sending_order}}$
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $total * (100 - ($cart->discount ? $cart->discount->percent : 0)) / 100 }}
+                                        {{ $total * (100 - ($order->discount ? $order->discount->percent : 0)) / 100 }}
                                         $
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $formattedDate = Carbon::parse($cart->created_at)->format('d F Y')}}
+                                        {{ $formattedDate = Carbon::parse($order->created_at)->format('d F Y')}}
                                     </td>
 
                             @endforeach
@@ -118,6 +118,7 @@
                                         class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
                                     {{ __('Export to Excel') }}
                                 </button>
+                            </form>
                                 @else
                                     <form
                                         action="{{ route('orders.export', [ 'filter_date' => request()->get('filter_date')]) }}"
@@ -135,7 +136,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
 </x-app-layout>
 
