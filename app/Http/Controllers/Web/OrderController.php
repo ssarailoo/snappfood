@@ -53,12 +53,12 @@ class OrderController extends Controller
         ]);
     }
 
-    public function show(Restaurant $restaurant, Cart $cart)
+    public function show(Restaurant $restaurant, Order $order)
     {
-        $this->authorize('view', [$cart, $restaurant]);
+//        $this->authorize('view', [$cart, $restaurant]);
 
         return view('order.show', [
-            'cart' => $cart,
+            'order' => $order,
             'restaurant' => $restaurant
         ]);
 

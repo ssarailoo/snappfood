@@ -24,9 +24,9 @@ class Comment extends Model
         'reconsidered'
     ];
 
-    public function cart(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(Cart::class);
+        return $this->belongsTo(Order::class);
     }
 
     public function parent(): BelongsTo

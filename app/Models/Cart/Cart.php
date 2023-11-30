@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Cart extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'user_id',

@@ -5,21 +5,21 @@
             <!-- Customer's Name -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:account" data-inline="false"></span>
-                <div class="font-bold ml-2">Customer's Name: {{ $cart->user->name }}</div>
+                <div class="font-bold ml-2">Customer's Name: {{ $order->user->name }}</div>
             </div>
 
 
             <!-- Customer's Phone Number -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:phone" data-inline="false"></span>
-                <div class="ml-2">Customer's Phone Number: {{ $cart->user->phone_number }}</div>
+                <div class="ml-2">Customer's Phone Number: {{ $order->user->phone_number }}</div>
             </div>
 
 
             <!-- Customer's Address -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:map-marker" data-inline="false"></span>
-                <div class="ml-2">Customer's Address: {{ $cart->user->currentAddress->address }}</div>
+                <div class="ml-2">Customer's Address: {{ $order->user->currentAddress->address }}</div>
             </div>
 
 
@@ -27,17 +27,17 @@
             <div class="px-6 py-4">
                 <div class="mb-2">Foods:</div>
                 @php
-                    $cartFoods = $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===0);
-                    $cartFoodsInParty = $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===1);
+                    $orderFoods = $order->foodsOrder->filter(fn($orderFood)=>$orderFood->in_party===0);
+                    $orderFoodsInParty = $order->foodsOrder->filter(fn($orderFood)=>$orderFood->in_party===1);
                 @endphp
-                @foreach($cartFoods as $cartFood)
+                @foreach($orderFoods as $orderFood)
                     <div class="flex items-center mb-2">
                         <span class="iconify text-xl" data-icon="mdi:food-variant" data-inline="false"></span>
                         <div class="ml-2">
-                            {{ $cartFood->food->name }} {{ $cartFood->price }} $
-                            * {{ (int)$cartFood->food_count }}
-                            @if( $cartFood->discount_percent!=="0.00")
-                                => discount % {{ $cartFood->discount_percent }}
+                            {{ $orderFood->food->name }} {{ $orderFood->price }} $
+                            * {{ (int)$orderFood->food_count }}
+                            @if( $orderFood->discount_percent!=="0.00")
+                                => discount % {{ $orderFood->discount_percent }}
                             @endif
                         </div>
                     </div>
@@ -46,14 +46,14 @@
 
                 <!-- Foods in Party -->
                 <div class="mb-2">Party:</div>
-                @foreach($cartFoodsInParty as $cartFood)
+                @foreach($orderFoodsInParty as $orderFood)
                     <div class="flex items-center mb-2">
                         <span class="iconify text-xl" data-icon="mdi:cake-variant" data-inline="false"></span>
                         <div class="ml-2">
-                            {{ $cartFood->food->name }} {{ $cartFood->price }}
-                            * {{ (int)$cartFood->food_count }}
-                            @if( $cartFood->discount_percent!=="0.00")
-                                => discount % {{ $cartFood->discount_percent }}
+                            {{ $orderFood->food->name }} {{ $orderFood->price }}
+                            * {{ (int)$orderFood->food_count }}
+                            @if( $orderFood->discount_percent!=="0.00")
+                                => discount % {{ $orderFood->discount_percent }}
                             @endif
                         </div>
                     </div>
@@ -65,7 +65,7 @@
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:currency-usd-circle" data-inline="false"></span>
                 <div class="ml-2">Cost of Sending
-                    Order: {{ $costSending = $cart->restaurant->cost_of_sending_order ?? 0 }} $
+                    Order: {{ $costSending = $order->restaurant->cost_of_sending_order ?? 0 }} $
                 </div>
             </div>
 
@@ -73,31 +73,31 @@
             <!-- Total -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:attach-money" data-inline="false"></span>
-                <div class="ml-2">Total: {{ $cart->total + $costSending }} $</div>
+                <div class="ml-2">Total: {{ $order->total + $costSending }} $</div>
             </div>
 
 
             <!-- SnappFood Discount -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:percent" data-inline="false"></span>
-                <div class="ml-2">SnappFood Discount: {{ $cart->discount ?? 0 }} %</div>
+                <div class="ml-2">SnappFood Discount: {{ $order->discount ?? 0 }} %</div>
             </div>
 
             <!-- Customer Payment -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:credit-card" data-inline="false"></span>
-                <div class="ml-2">Customer Payment: {{ $cart->total * (100 - $cart->discount) / 100 }} $</div>
+                <div class="ml-2">Customer Payment: {{ $order->total * (100 - $order->discount) / 100 }} $</div>
             </div>
 
             <!-- Score -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:star" data-inline="false"></span>
                 <div class="mb-2 ml-2">Score:</div>
-                @if($cart->comments->first() !== null)
+                @if($order->comments->first() !== null)
                     @for ($i = 2; $i <= 5; $i++)
                         <span class="iconify text-xl"
                               data-icon="mdi:star"
-                              style="color: {{ $i > $cart->comments->first()->score ? '#D1D5DB' : '#F59E0B' }}"
+                              style="color: {{ $i > $order->comments->first()->score ? '#D1D5DB' : '#F59E0B' }}"
                               data-inline="false">
             </span>
                     @endfor
@@ -110,8 +110,8 @@
             <!-- Comment -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:comment" data-inline="false"></span>
-                @if($cart->comments->first() !== null)
-                    <div class="ml-2">Comment: {{ $cart->comments->first()->content }}</div>
+                @if($order->comments->first() !== null)
+                    <div class="ml-2">Comment: {{ $order->comments->first()->content }}</div>
                 @else
                     <div class="ml-2">Comment: No Comment Registered</div>
                 @endif
