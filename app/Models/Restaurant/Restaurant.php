@@ -8,6 +8,7 @@ use App\Models\Cart\Cart;
 use App\Models\Comment;
 use App\Models\Food\Food;
 use App\Models\Image;
+use App\Models\Order;
 use App\Models\Schedule\RestaurantSchedule;
 use App\Models\Schedule\Schedule;
 use App\Models\User;
@@ -100,6 +101,10 @@ protected $casts=[
     public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);
+    }
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function restaurantSchedules(): HasMany

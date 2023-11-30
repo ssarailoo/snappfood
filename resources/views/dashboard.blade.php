@@ -1,4 +1,4 @@
-@php use App\Enums\CartStatus;use App\Models\Address\Address;use App\Models\Food\FoodParty;use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Enums\CartStatus;use App\Enums\OrderStauts;use App\Models\Address\Address;use App\Models\Food\FoodParty;use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
 
     @if(session('success'))
@@ -54,65 +54,65 @@
                                         Action
                                     </th>
                                 </tr>
-                                {{$carts->withQueryString()->links()}}
+                                {{$orders->withQueryString()->links()}}
                                 </thead>
                                 <tbody>
-                                @foreach($carts as $key=> $cart)
+                                @foreach($orders as $key=> $order)
                                     <tr class="bg-white dark:bg-white">
 
 
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-pink-500 whitespace-nowrap dark:text-pink-500">
-                                            <a href=""> {{ substr($cart->hashed_id, 0, 10)}}</a>
+                                            <a href=""> {{ substr($order->hashed_id, 0, 10)}}</a>
                                         </th>
                                         <td class="px-6 py-4">
-                                            {{$cart->user->name}}
+                                            {{$order->user->name}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{Address::query()->find( $cart->user->current_address)->address}}
+                                            {{Address::query()->find( $order->user->current_address)->address}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{$cart->user->phone_number}}
+                                            {{$order->user->phone_number}}
                                         </td>
                                         <td class="px-6 py-4" style="white-space: nowrap;">
                                             @php
-                                                $cartFoods=    $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===0);
-                                                $cartFoodsInParty=    $cart->cartFoods->filter(fn($cartFood)=>$cartFood->in_party===1);
+                                                $foodsOrder=    $order->foodsOrder->filter(fn($orderFood)=>$orderFood->in_party===0);
+                                                $foodsOrderInParty=    $order->foodsOrder->filter(fn($orderFood)=>$orderFood->in_party===1);
                                             @endphp
                                             Normal:
-                                            @foreach($cartFoods as $cartFood)
+                                            @foreach($foodsOrder as $foodOrder)
                                                 <p class="text-gray-700 text-base">
-                                                    {{$cartFood->food->name}} {{$cartFood->price}}
-                                                    * {{(int)$cartFood->food_count}}
-                                                    => discount % {{$cartFood->discount_percent}}
+                                                    {{$foodOrder->food->name}} {{$foodOrder->price}}
+                                                    * {{(int)$foodOrder->food_count}}
+                                                    => discount % {{$foodOrder->discount_percent}}
                                                 </p>
                                             @endforeach
                                             Party:
-                                            @foreach($cartFoodsInParty as $cartFood)
+                                            @foreach($foodsOrderInParty as $foodOrder)
                                                 <p class="text-gray-700 text-base">
-                                                    {{$cartFood->food->name}} {{$cartFood->price}}
-                                                    * {{(int)$cartFood->food_count}}
-                                                    => discount % {{$cartFood->discount_percent}}
+                                                    {{$foodOrder->food->name}} {{$foodOrder->price}}
+                                                    * {{(int)$foodOrder->food_count}}
+                                                    => discount % {{$foodOrder->discount_percent}}
                                                 </p>
                                             @endforeach
                                         </td>
 
 
                                         <td class="px-6 py-4">
-                                            {{$total=$cart->total + Auth::user()->restaurant->cost_of_sending_order}}$
+                                            {{$total=$order->total + Auth::user()->restaurant->cost_of_sending_order}}$
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $total * (100 - ($cart->discount ? $cart->discount->percent : 0)) / 100 }}
+                                            {{ $total * (100 - ($order->discount ? $order->discount->percent : 0)) / 100 }}
                                             $
                                         </td>
 
                                         <td class="px-6 py-4">
-                                            {{$cart->status}}
+                                            {{$order->status}}
                                         </td>
-                                        @if($cart->status === CartStatus::CHECKING->value)
+                                        @if($order->status === OrderStauts::CHECKING->value)
                                             <td class="px-6 py-4">
                                                 <form id="cancelForm"
-                                                      action="{{ route('orders.status.update', ['cart' => $cart, 'newStatus' => CartStatus::CANCELED->value]) }}"
+                                                      action="{{ route('orders.status.update', ['cart' => $order, 'newStatus' => CartStatus::CANCELED->value]) }}"
                                                       method="post">
                                                     @method("PATCH")
                                                     @csrf
@@ -128,7 +128,7 @@
                                             </td>
                                             <td class="px-6 py-4">
                                                 <form
-                                                    action="{{route('orders.status.update',['cart' => $cart, 'newStatus' => CartStatus::PREPARING->value])}}"
+                                                    action="{{route('orders.status.update',['cart' => $order, 'newStatus' => OrderStauts::PREPARING->value])}}"
                                                     method="post">
                                                     @method("PATCH")
                                                     @csrf
@@ -142,11 +142,11 @@
                                                 </form>
                                             </td>
                                         @endif
-                                        @if($cart->status === CartStatus::PREPARING->value)
+                                        @if($order->status ===  OrderStauts::PREPARING->value)
                                             <td class="px-6 py-4">
 
                                                 <form
-                                                    action="{{route('orders.status.update',['cart' => $cart, 'newStatus' => CartStatus::SHIPPING->value])}}"
+                                                    action="{{route('orders.status.update',['cart' => $order, 'newStatus' => CartStatus::SHIPPING->value])}}"
                                                     method="post">
                                                     @method("PATCH")
                                                     @csrf
@@ -164,10 +164,10 @@
                                                 #
                                             </td>
                                         @endif
-                                        @if($cart->status === CartStatus::SHIPPING->value)
+                                        @if($order->status === OrderStauts::SHIPPING->value)
                                             <td class="px-6 py-4">
                                                 <form
-                                                    action="{{route('orders.status.update',['cart' => $cart, 'newStatus' => CartStatus::DELIVERED->value])}}"
+                                                    action="{{route('orders.status.update',['cart' => $order, 'newStatus' =>OrderStauts::DELIVERED->value])}}"
                                                     method="post">
                                                     @method("PATCH")
                                                     @csrf
@@ -195,7 +195,7 @@
                     <div class="p-2">
                         <form action="">
                             @php
-                                $statuses=CartStatus::getValues();
+                                $statuses=OrderStauts::getValues();
                                $last= array_key_last($statuses);
                                 unset($statuses[$last]);
                             @endphp
