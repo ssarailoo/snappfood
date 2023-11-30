@@ -54,7 +54,7 @@ class ScheduleController extends Controller
      */
     public function show(Restaurant $restaurant, Schedule $schedule)
     {
-        $this->authorize('view', [Schedule::class, $schedule]);
+        $this->authorize('view', [ $schedule,$restaurant]);
         return view('schedule.show', [
             'schedule' => $schedule,
             'restaurant' => $restaurant
@@ -66,7 +66,7 @@ class ScheduleController extends Controller
      */
     public function edit(Restaurant $restaurant, Schedule $schedule)
     {
-        $this->authorize('update', [Schedule::class, $schedule]);
+        $this->authorize('update',[$schedule,$restaurant]);
         return view('schedule.edit', [
             'schedule' => $schedule,
             'restaurant' => $restaurant
@@ -78,7 +78,7 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Restaurant $restaurant, Schedule $schedule)
     {
-        $this->authorize('update', [Schedule::class, $schedule]);
+        $this->authorize('update', [$schedule,$restaurant]);
         $schedule->update($request->validated());
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule with id  {$schedule->id} Updated from {$schedule->start_time} to {$schedule->end_time}  on {$schedule->day->name}"
@@ -90,7 +90,7 @@ class ScheduleController extends Controller
      */
     public function destroy(Restaurant $restaurant, Schedule $schedule)
     {
-        $this->authorize('delete', [Schedule::class, $schedule]);
+        $this->authorize('delete', [ $schedule,$restaurant]);
         $schedule->delete();
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule with id  {$schedule->id} Deleted "
