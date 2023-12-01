@@ -86,7 +86,10 @@
             <!-- Customer Payment -->
             <div class="flex items-center px-6 py-4">
                 <span class="iconify text-xl" data-icon="mdi:credit-card" data-inline="false"></span>
+                @if($order->discount!==null)
                 <div class="ml-2">Customer Payment: {{ $order->total * (100 - $order->discount->percent) / 100 }} $</div>
+                @else  <div class="ml-2">Customer Payment:  {{ $order->total + $costSending }} $</div>
+                @endif
             </div>
 
             <!-- Score -->

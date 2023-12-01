@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Comment;
 
 use App\Models\Comment;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use function PHPUnit\Framework\isNull;
@@ -27,7 +28,7 @@ class CommentResource extends JsonResource
                 $this->order->foods->map(fn($food) => $food->name)
             ]),
             'restaurant' => $this->when($request->has('food_id'), $this->order->restaurant->name),
-            'created_at' => $this->created_at->format('j F Y'),
+            'created_at' =>Verta::instance($this->created_at)->format('%e %B %Y') ,
             'score' => $this->score,
             'content' => $this->content,
             'answer' =>$this->whennotNull( $answer->content ??null)
