@@ -15,7 +15,7 @@ class CartStoreService
         $count = request()->food_count;
         if (request()->has('food_party_id')) {
             $foodParty = FoodParty::query()->find(request()->post('food_party_id'));
-            $cart = $cart = Cart::query()->updateOrCreate([
+            $cart =  Cart::query()->where('is_paid',0)->updateOrCreate([
                 'user_id' => Auth::user()->id,
                 'restaurant_id' => $foodParty->food->restaurant->id,
             ]);
