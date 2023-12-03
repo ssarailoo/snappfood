@@ -8,6 +8,7 @@ use App\Models\Discount;
 use App\Models\Food\Food;
 use App\Models\Restaurant\Restaurant;
 use App\Models\User;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Cart extends Model
 {
-    use HasFactory;
+    use HasFactory ,SoftDeletes,CascadeSoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -29,6 +30,8 @@ class Cart extends Model
         'status',
         'discount_id'
     ];
+    protected $cascadeDeletes = ['cartFoods'];
+
 
     public function cartFoods(): HasMany
     {
@@ -51,10 +54,7 @@ class Cart extends Model
         return $this->belongsTo(User::class);
     }
 
-//    public function comments(): HasMany
-//    {
-//        return $this->hasMany(Comment::class);
-//    }
+
 
     public function discount(): BelongsTo
     {

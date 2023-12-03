@@ -166,6 +166,7 @@ class CartController extends Controller
             Notification::send($cart->user, new OrderRegistration($cart));
             Notification::send($cart->user, new OrderRegistrationSMS());
             Notification::send($cart->restaurant->user, new RestaurantOrderRegistration($cart));
+            $cart->delete();
             return response()->json([
                 'data' => $response
             ], 201);
