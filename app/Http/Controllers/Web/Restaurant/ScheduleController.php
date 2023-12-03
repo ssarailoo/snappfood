@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Web\Restaurant;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Schedule\StoreRestaurantShceduleRequest;
 use App\Http\Requests\Schedule\StoreScheduleRequest;
-use App\Http\Requests\Schedule\UpdateRestaurantShceduleRequest;
 use App\Http\Requests\Schedule\UpdateScheduleRequest;
 use App\Models\Restaurant\Restaurant;
-use App\Models\Schedule\RestaurantSchedule;
 use App\Models\Schedule\Schedule;
 
 class ScheduleController extends Controller

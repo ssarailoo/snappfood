@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\CartStatus;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\CheckDiscountCodeRequest;
 use App\Http\Requests\Cart\StoreCartRequest;
@@ -10,7 +10,6 @@ use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Http\Resources\Cart\CartCollection;
 use App\Http\Resources\Cart\CartResource;
 use App\Models\Cart\Cart;
-use App\Models\Food\Food;
 use App\Notifications\Customer\OrderRegistration;
 use App\Notifications\Customer\OrderRegistrationSMS;
 use App\Notifications\Restaurant\OrderRegistration as RestaurantOrderRegistration;

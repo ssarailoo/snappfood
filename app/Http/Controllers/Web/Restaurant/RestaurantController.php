@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
-use App\Models\Image;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\RestaurantScheduleController;
 use App\Http\Controllers\Web\BannerController;
 use App\Http\Controllers\Web\CommentController;
 use App\Http\Controllers\Web\DashboardController;

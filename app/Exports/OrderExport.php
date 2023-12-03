@@ -2,10 +2,8 @@
 
 namespace App\Exports;
 
-use App\Enums\CartStatus;
-use App\Models\Cart\Cart;
+
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 

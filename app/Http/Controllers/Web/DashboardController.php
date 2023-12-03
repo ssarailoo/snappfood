@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\FilterCartByStatusRequest;
-use App\Models\Cart\Cart;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller

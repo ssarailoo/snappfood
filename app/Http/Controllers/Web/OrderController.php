@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Enums\CartStatus;
 use App\Enums\OrderStauts;
 use App\Exports\AllOrdersExport;
 use App\Exports\OrderExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\FilterCartByCreatedAtRequest;
 use App\Http\Requests\Cart\UpdateCartStatusRequest;
-use App\Models\Cart\Cart;
 use App\Models\Order;
 use App\Models\Restaurant\Restaurant;
 use App\Notifications\Customer\OrderStatus;
 use App\Notifications\Customer\OrderStatusSMS;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
 

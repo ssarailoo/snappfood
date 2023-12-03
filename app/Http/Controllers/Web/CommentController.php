@@ -7,15 +7,13 @@ use App\Events\CommentReview;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\StoreReplyCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentDescriptionRequest;
-use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Http\Requests\Comments\FilterCommentRequest;
 use App\Models\Comment;
-use App\Models\Food\Food;
 use App\Models\Restaurant\Restaurant;
 use App\Services\Comment\CommentFilterService;
 use App\Services\Restaurant\RestaurantUpdateScoreService;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
+
 
 
 class CommentController extends Controller
