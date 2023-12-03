@@ -39,7 +39,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link  :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
                         @if(Auth::user()->restaurant==!null)
@@ -84,6 +84,8 @@
                                 {{ __('Banners') }}
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('comments.review')">
+
+                                <span id="notification-icon" class="iconify" data-icon="basil:notification-on-outline" style=" display: none; color: darkred;"></span>
                                 {{ __('Review Comments') }}
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('discounts.index')">

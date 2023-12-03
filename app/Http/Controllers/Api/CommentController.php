@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\CommentStatus;
+use App\Events\CommentReview;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\GetCommentsRequest;
 use App\Http\Requests\Comment\StoreCommentRequest;
@@ -30,7 +31,7 @@ class CommentController extends Controller
     {
 
         $response = $service->getComments($request);
-        return  response()->json([
+        return response()->json([
             'data' => $response
         ], 200);
 
@@ -59,10 +60,10 @@ class CommentController extends Controller
     public function showDeniedComments()
     {
         $comments = Auth::user()->orders->map(fn($order) => $order->comments->first())->filter(fn($comment) => $comment !== null)->
-        filter(fn($comment) =>  $comment->status === CommentStatus::RECONSIDERING_BY_CUSTOMER->value and $comment->reconsidered===0);
+        filter(fn($comment) => $comment->status === CommentStatus::RECONSIDERING_BY_CUSTOMER->value and $comment->reconsidered === 0);
 
         return response()->json([
-            'data' =>[ 'comments'=> DeniedCommentResource::collection($comments)]
+            'data' => ['comments' => DeniedCommentResource::collection($comments)]
         ]);
 
     }
@@ -75,6 +76,7 @@ class CommentController extends Controller
             'content' => $request->input('content'),
             'reconsidered' => 1
         ]);
+        event(new CommentReview($comment));
         return response()->json([
             'data' => [
                 'msg' => "your comment has been updated successfully and waiting for Admin confirmation"

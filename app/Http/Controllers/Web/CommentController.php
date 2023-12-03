@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Enums\CommentStatus;
+use App\Events\CommentReview;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comment\StoreReplyCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentDescriptionRequest;
@@ -14,17 +15,18 @@ use App\Models\Restaurant\Restaurant;
 use App\Services\Comment\CommentFilterService;
 use App\Services\Restaurant\RestaurantUpdateScoreService;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 
 class CommentController extends Controller
 {
-    public function index(Restaurant $restaurant, FilterCommentRequest $request,CommentFilterService $service)
+    public function index(Restaurant $restaurant, FilterCommentRequest $request, CommentFilterService $service)
     {
 
         $this->authorize('viewAny', [Comment::class, $restaurant]);
-        $comments = $restaurant->orders->map(fn($order) => $order->comments->first())->filter(fn($comment) => $comment !== null) ->sortByDesc('created_at');
-       $filteredComments= $service->filter($comments);
-        $perPage =10;
+        $comments = $restaurant->orders->map(fn($order) => $order->comments->first())->filter(fn($comment) => $comment !== null)->sortByDesc('created_at');
+        $filteredComments = $service->filter($comments);
+        $perPage = 10;
         $page = request()->get('page', 1);
         $paginator = new LengthAwarePaginator(
             $filteredComments->forPage($page, $perPage),
@@ -34,7 +36,7 @@ class CommentController extends Controller
             ['path' => url()->current()]
         );
         return view('comment.index', [
-            'comments' =>$paginator ,
+            'comments' => $paginator,
             'restaurant' => $restaurant
         ]);
     }
@@ -82,6 +84,7 @@ class CommentController extends Controller
             'status' => $newStatus,
             'description' => $request->description ?? null
         ]);
+        event(new CommentReview($comment));
         $service->updateRestaurantScore($restaurant, $newStatus);
         return redirect()->back()->with('success', " status  has been updated to $newStatus");
 
@@ -95,12 +98,12 @@ class CommentController extends Controller
 
     }
 
-    public function review(FilterCommentRequest $request,CommentFilterService $service)
+    public function review(FilterCommentRequest $request, CommentFilterService $service)
     {
         $comments = Comment::query()->whereNotIn('status', [CommentStatus::Accepted->value, CommentStatus::PENDING->value])
-            ->get()->sortByDesc('created_at');
-        $filteredComments= $service->filter($comments);
-        $perPage =10;
+            ->get()->sortByDesc('updated_at');
+        $filteredComments = $service->filter($comments);
+        $perPage = 10;
         $page = request()->get('page', 1);
         $paginator = new LengthAwarePaginator(
             $filteredComments->forPage($page, $perPage),
@@ -112,5 +115,18 @@ class CommentController extends Controller
         return view('comment.review', [
             'comments' => $paginator
         ]);
+    }
+
+    public function getUpdatedComments()
+    {
+            $comments = Comment::query()
+                ->whereNotIn('status', [CommentStatus::Accepted->value, CommentStatus::PENDING->value])
+                ->get()
+                ->sortByDesc('updated_at');
+
+            return view('comment.new', [
+                'comments' => $comments
+            ]);
+
     }
 }

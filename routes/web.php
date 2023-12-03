@@ -73,10 +73,10 @@ Route::middleware('auth')->group(function () {
         // endregion
 // region Orders
         Route::prefix('/orders')->controller(OrderController::class)->name('orders')->middleware('role:admin')
-        ->group(function (){
-          Route::get('/all','allOrders')->name('.all');
-          Route::post('/export/{filterDate?}','allExport')->name('.export');
-        });
+            ->group(function () {
+                Route::get('/all', 'allOrders')->name('.all');
+                Route::post('/export/{filterDate?}', 'allExport')->name('.export');
+            });
         // endregion
         // region Banner
         Route::resource('banners', BannerController::class);
@@ -87,6 +87,7 @@ Route::middleware('auth')->group(function () {
             ->group(function () {
                 Route::get('/review', 'review')->name('.review');
                 Route::delete('/{comment}', 'destroy')->name('.destroy');
+                Route::get('/new/comments', 'getUpdatedComments')->name('.new');
 
             });
 
@@ -144,28 +145,26 @@ Route::middleware('auth')->group(function () {
                 });
 
                 //endregion
-                });
-
-
-
             });
-        //endregion
 
-        // region Food Party
-        Route::prefix('/party')->controller(FoodPartyController::class)->name('food-party.')
-            ->group(function () {
-                Route::get('/foods', 'index')->name('index');
-                Route::post('/{restaurant}/{food}', 'store')->name('store');
-                Route::put('/{restaurant}/{food}/{foodParty}', 'update')->name('update');
-                Route::delete('/{restaurant}/{food}/{foodParty}', 'destroy')->name('destroy');
-                Route::get('/settings', 'showSetting')->name('showSetting');
-                Route::post('/settings', 'setting')->name('setting');
 
-            });
-        // endregion
+    });
+    //endregion
 
-        Route::get('/materials/search', MaterialController::class)->name('materials.suggest');
+    // region Food Party
+    Route::prefix('/party')->controller(FoodPartyController::class)->name('food-party.')
+        ->group(function () {
+            Route::get('/foods', 'index')->name('index');
+            Route::post('/{restaurant}/{food}', 'store')->name('store');
+            Route::put('/{restaurant}/{food}/{foodParty}', 'update')->name('update');
+            Route::delete('/{restaurant}/{food}/{foodParty}', 'destroy')->name('destroy');
+            Route::get('/settings', 'showSetting')->name('showSetting');
+            Route::post('/settings', 'setting')->name('setting');
 
+        });
+    // endregion
+
+    Route::get('/materials/search', MaterialController::class)->name('materials.suggest');
 
 
 });

@@ -11,7 +11,7 @@
             <div>
                 <div class="sm:p-8 bg-white shadow sm:rounded-lg p-6">
                     <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
+                        <table id="comment-container" class="w-full text-sm text-left text-pink-500 dark:text-pink-500">
                             <thead
                                 class="text-xs text-pink-500 uppercase bg-white dark:bg-white dark:text-pink-500">
                             <tr>
@@ -44,7 +44,7 @@
                                 </th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody >
                             @foreach($comments as $key=> $comment)
                                 <tr class="bg-white dark:bg-white">
                                     <th scope="row"
