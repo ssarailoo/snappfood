@@ -70,6 +70,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         if (Auth::attempt($request->validated())) {
+            Auth::user()->tokens()->delete();
             $token = Auth::user()->createToken('logged')->plainTextToken;
             return response()->json([
                 'data' => [
