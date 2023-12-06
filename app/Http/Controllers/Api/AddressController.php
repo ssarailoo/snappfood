@@ -7,7 +7,9 @@ use App\Http\Requests\Address\StoreAddressRequest;
 use App\Http\Requests\Address\UpdateAddressRequest;
 use App\Http\Resources\AddressResource;
 use App\Models\Address\Address;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group User Management Addresses
@@ -24,7 +26,7 @@ class AddressController extends Controller
     {
         $addresses = Auth::user()->addresses;
         return response()->json(
-           AddressResource::collection($addresses), 200
+            AddressResource::collection($addresses), 200
         );
     }
 
@@ -57,8 +59,17 @@ class AddressController extends Controller
      */
     public function store(StoreAddressRequest $request)
     {
-        $address = Address::query()->create($request->validated());
-        Auth::user()->addresses()->attach($address);
+        try {
+            $address = Address::query()->create($request->validated());
+            Auth::user()->addresses()->attach($address);
+        } catch (QueryException $e) {
+            Log::error('Error Crating new Address');
+            return response()->json([
+                'data' => [
+                    'message' => 'An unexpected error occurred'
+                ]
+            ],500);
+        }
         return response()->json([
             'message' => 'Address added successfully'
         ], 201);
@@ -81,8 +92,18 @@ class AddressController extends Controller
 
     public function update(UpdateAddressRequest $request, Address $address)
     {
-        $this->authorize('myAddress', $address);
-        $address->update($request->validated());
+        try {
+            $this->authorize('myAddress', $address);
+            $address->update($request->validated());
+        } catch (QueryException $e) {
+            Log::error('Error Updating Address');
+            return response()->json([
+                'data' => [
+                    'message' => 'An unexpected error occurred'
+                ]
+            ],500);
+        }
+
         return response()->json([
             'message' => $address->title . "has been updated"
         ], 200);
@@ -101,7 +122,17 @@ class AddressController extends Controller
     public function destroy(Address $address)
     {
         $this->authorize('myAddress', $address);
-        $address->delete();
+        try {
+
+            $address->delete();
+        } catch (QueryException $e) {
+            Log::error('Error Deleting  Address' . $e->getMessage());
+            return response()->json([
+                'data' => [
+                    'message' => 'An unexpected error occurred'
+                ]
+            ],500);
+        }
         return response()->json([
             'message' => $address->title . "has been deleted"
         ], 204);
@@ -123,9 +154,18 @@ class AddressController extends Controller
     public function updateUserAddress(Address $address)
     {
         $this->authorize('myAddress', $address);
-        Auth::user()->update([
-            'current_address' => $address->id
-        ]);
+        try {
+            Auth::user()->update([
+                'current_address' => $address->id
+            ]);
+        } catch (QueryException $e) {
+            Log::error('Error User Current Address' . $e->getMessage());
+            return response()->json([
+                'data' => [
+                    'message' => 'An unexpected error occurred'
+                ]
+            ],500);
+        }
         return response()->json([
             'message' => 'current address updated successfully'
         ], 200);
