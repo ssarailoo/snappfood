@@ -9,7 +9,9 @@ use App\Models\Discount;
 use App\Models\User;
 use App\Notifications\Discount\DiscountEmailNotification;
 use App\Notifications\Discount\DiscountSMSNotification;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class DiscountController extends Controller
@@ -37,11 +39,14 @@ class DiscountController extends Controller
      */
     public function store(StoreDiscountRequest $request)
     {
-        $discount=Discount::query()->create($request->validated());
-        Notification::send(User::all()->filter(fn($user)=>$user->restaurant===null),new DiscountEmailNotification($discount));
-        Notification::send(User::all()->filter(fn($user)=>$user->restaurant===null),new DiscountSMSNotification($discount));
-
-        return redirect()->route('discounts.index')->with('success',"a new discount code created");
+        try {
+            $discount = Discount::query()->create($request->validated());
+            Notification::send(User::all()->filter(fn($user) => $user->restaurant === null), new DiscountEmailNotification($discount));
+            Notification::send(User::all()->filter(fn($user) => $user->restaurant === null), new DiscountSMSNotification($discount));
+        } catch (QueryException $e) {
+            Log::error('Error Creating new Discount' . $e->getMessage());
+        }
+        return redirect()->route('discounts.index')->with('success', "a new discount code created");
     }
 
 
@@ -50,9 +55,9 @@ class DiscountController extends Controller
      */
     public function edit(Discount $discount)
     {
-      return view('discount.edit',[
-          'discount'=>$discount
-      ]);
+        return view('discount.edit', [
+            'discount' => $discount
+        ]);
     }
 
     /**
@@ -61,7 +66,7 @@ class DiscountController extends Controller
     public function update(UpdateDiscountRequest $request, Discount $discount)
     {
         $discount->update($request->validated());
-        return redirect()->route('discounts.index')->with('success',"Discount with id {$discount->id} has been updated");
+        return redirect()->route('discounts.index')->with('success', "Discount with id {$discount->id} has been updated");
     }
 
     /**
@@ -69,7 +74,11 @@ class DiscountController extends Controller
      */
     public function destroy(Discount $discount)
     {
-        $discount->delete();
-        return redirect()->route('discounts.index')->with('success',"Discount with id {$discount->id} has been deleted");
+        try {
+            $discount->delete();
+        } catch (QueryException $e) {
+            Log::error('Error Creating new Discount' . $e->getMessage());
+        }
+        return redirect()->route('discounts.index')->with('success', "Discount with id {$discount->id} has been deleted");
     }
 }
