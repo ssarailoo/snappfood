@@ -22,7 +22,8 @@ class CommentController extends Controller
     {
 
         $this->authorize('viewAny', [Comment::class, $restaurant]);
-        $comments = $restaurant->orders->map(fn($order) => $order->comments->first())->filter(fn($comment) => $comment !== null)->sortByDesc('created_at');
+        $comments = $restaurant->orders->load(['comments.order.user', 'comments.order.foodsOrder','comments.order'])
+            ->map(fn($order) => $order->comments->first())->filter(fn($comment) => $comment !== null)->sortByDesc('created_at');
         $filteredComments = $service->filter($comments);
         $perPage = 10;
         $page = request()->get('page', 1);
@@ -98,7 +99,7 @@ class CommentController extends Controller
 
     public function review(FilterCommentRequest $request, CommentFilterService $service)
     {
-        $comments = Comment::query()->whereNotIn('status', [CommentStatus::Accepted->value, CommentStatus::PENDING->value])
+        $comments = Comment::query()->with(['order','order.user','order.foodsOrder'])->whereNotIn('status', [CommentStatus::Accepted->value, CommentStatus::PENDING->value])
             ->get()->sortByDesc('updated_at');
         $filteredComments = $service->filter($comments);
         $perPage = 10;
