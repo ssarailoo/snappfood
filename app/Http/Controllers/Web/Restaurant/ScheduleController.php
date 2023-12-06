@@ -18,7 +18,7 @@ class ScheduleController extends Controller
         $this->authorize('viewAny', [Schedule::class, $restaurant]);
         return view('schedule.index', [
             'restaurant' => $restaurant,
-            'schedules' => $restaurant->schedules
+            'schedules' =>   $restaurant->schedules->load('day')
         ]);
     }
 
