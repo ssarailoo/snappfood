@@ -21,7 +21,7 @@ class OrderController extends Controller
     public function index(Restaurant $restaurant, FilterCartByCreatedAtRequest $request)
     {
        $this->authorize('viewAny', [Order::class, $restaurant]);
-        $orders = $restaurant->orders()->where('status', OrderStauts::DELIVERED->value
+        $orders = $restaurant->orders()->with(['restaurant','foodsOrder','discount'])->where('status', OrderStauts::DELIVERED->value
         )->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
             return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) : $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         });
@@ -37,7 +37,7 @@ class OrderController extends Controller
 
     public function allOrders(FilterCartByCreatedAtRequest $request)
     {
-       $orders= Order::query()->where('status', OrderStauts::DELIVERED->value)
+       $orders= Order::query()->where('status', OrderStauts::DELIVERED->value)->with(['restaurant','foodsOrder','discount'])
             ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
                 return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) :
                     $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
