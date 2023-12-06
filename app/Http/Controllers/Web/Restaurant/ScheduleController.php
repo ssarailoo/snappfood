@@ -7,6 +7,8 @@ use App\Http\Requests\Schedule\StoreScheduleRequest;
 use App\Http\Requests\Schedule\UpdateScheduleRequest;
 use App\Models\Restaurant\Restaurant;
 use App\Models\Schedule\Schedule;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class ScheduleController extends Controller
 {
@@ -18,7 +20,7 @@ class ScheduleController extends Controller
         $this->authorize('viewAny', [Schedule::class, $restaurant]);
         return view('schedule.index', [
             'restaurant' => $restaurant,
-            'schedules' =>   $restaurant->schedules->load('day')
+            'schedules' => $restaurant->schedules->load('day')
         ]);
     }
 
@@ -39,8 +41,12 @@ class ScheduleController extends Controller
     public function store(StoreScheduleRequest $request, Restaurant $restaurant)
     {
         $this->authorize('create', [Schedule::class, $restaurant]);
-        $schedule = Schedule::query()->create($request->validated());
-        $restaurant->schedules()->attach($schedule);
+        try {
+            $schedule = Schedule::query()->create($request->validated());
+            $restaurant->schedules()->attach($schedule);
+        } catch (QueryException $e) {
+            Log::error('Error creating schedule' . $e->getMessage());
+        }
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule was made from {$schedule->start_time} to {$schedule->end_time}  on {$schedule->day->name}"
         );
@@ -51,7 +57,7 @@ class ScheduleController extends Controller
      */
     public function show(Restaurant $restaurant, Schedule $schedule)
     {
-        $this->authorize('view', [ $schedule,$restaurant]);
+        $this->authorize('view', [$schedule, $restaurant]);
         return view('schedule.show', [
             'schedule' => $schedule,
             'restaurant' => $restaurant
@@ -63,7 +69,7 @@ class ScheduleController extends Controller
      */
     public function edit(Restaurant $restaurant, Schedule $schedule)
     {
-        $this->authorize('update',[$schedule,$restaurant]);
+        $this->authorize('update', [$schedule, $restaurant]);
         return view('schedule.edit', [
             'schedule' => $schedule,
             'restaurant' => $restaurant
@@ -75,8 +81,12 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Restaurant $restaurant, Schedule $schedule)
     {
-        $this->authorize('update', [$schedule,$restaurant]);
-        $schedule->update($request->validated());
+        $this->authorize('update', [$schedule, $restaurant]);
+        try {
+            $schedule->update($request->validated());
+        } catch (QueryException $e) {
+            Log::error('Error Updating schedule' . $e->getMessage());
+        }
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule with id  {$schedule->id} Updated from {$schedule->start_time} to {$schedule->end_time}  on {$schedule->day->name}"
         );
@@ -87,8 +97,12 @@ class ScheduleController extends Controller
      */
     public function destroy(Restaurant $restaurant, Schedule $schedule)
     {
-        $this->authorize('delete', [ $schedule,$restaurant]);
-        $schedule->delete();
+        $this->authorize('delete', [$schedule, $restaurant]);
+        try {
+            $schedule->delete();
+        } catch (QueryException $e) {
+            Log::error('Error Deleting schedule' . $e->getMessage());
+        }
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule with id  {$schedule->id} Deleted "
         );
