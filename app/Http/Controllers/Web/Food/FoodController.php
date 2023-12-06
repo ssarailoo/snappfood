@@ -9,7 +9,9 @@ use App\Http\Requests\Food\UpdateFoodRequest;
 use App\Models\Food\Food;
 use App\Models\Restaurant\Restaurant;
 use App\Services\Material\MaterialCreateOrRetrieveService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class FoodController extends Controller
@@ -26,7 +28,7 @@ class FoodController extends Controller
     {
 
         $this->authorize('viewAny', [Food::class, $restaurant]);
-        $foodsOfRestaurant = Food::query()->with(['image','materials','foodParties'])->foodsOf($restaurant->id);
+        $foodsOfRestaurant = Food::query()->with(['image', 'materials', 'foodParties'])->foodsOf($restaurant->id);
         $foods = Food::getSortedFoods($request, $foodsOfRestaurant);
         return view('food.index', [
             'restaurant' => $restaurant,
@@ -67,12 +69,16 @@ class FoodController extends Controller
     {
 
         $this->authorize('create', [Food::class, $restaurant]);
-        $food = Food::query()->create($request->except('materials'));
-        $materials = $service->createOrRetrieveMaterials(array_values($request->input('materials')));
-        $food->materials()->sync($materials);
-        $food->image()->create([
-            'url' => $request->file('image') ?? 'images/default-food.jpeg',
-        ]);
+        try {
+            $food = Food::query()->create($request->except('materials'));
+            $materials = $service->createOrRetrieveMaterials(array_values($request->input('materials')));
+            $food->materials()->sync($materials);
+            $food->image()->create([
+                'url' => $request->file('image') ?? 'images/default-food.jpeg',
+            ]);
+        } catch (QueryException $e) {
+            Log::error('Error creating new food: ' . $e->getMessage());
+        }
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', 'New Food added successfully');
 
     }
@@ -108,13 +114,18 @@ class FoodController extends Controller
     public function update(UpdateFoodRequest $request, Restaurant $restaurant, Food $food, MaterialCreateOrRetrieveService $service)
     {
         $this->authorize('update', [Food::class, $restaurant]);
-        $food->update($request->except('materials'));
-        $materials=$service->createOrRetrieveMaterials(array_values($request->input('materials')));
-        $food->materials()->sync($materials);
-        if ($request->hasFile('url'))
-            $food->image->update([
-                'url' => $request->file('url'),
-            ]);
+        try {
+            $food->update($request->except('materials'));
+            $materials = $service->createOrRetrieveMaterials(array_values($request->input('materials')));
+            $food->materials()->sync($materials);
+            if ($request->hasFile('url'))
+                $food->image->update([
+                    'url' => $request->file('url'),
+                ]);
+        } catch (QueryException $e) {
+            Log::error('Error Updating  food: ' . $e->getMessage());
+        }
+
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");
     }
 
@@ -123,8 +134,12 @@ class FoodController extends Controller
      */
     public function destroy(Restaurant $restaurant, Food $food,)
     {
-        $this->authorize('delete', [Food::class, $restaurant]);
-        $food->delete();
+        try {
+            $this->authorize('delete', [Food::class, $restaurant]);
+            $food->delete();
+        } catch (QueryException $e) {
+            Log::error('Error Deleting  food: ' . $e->getMessage());
+        }
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name deleted successfully ");
     }
 }
