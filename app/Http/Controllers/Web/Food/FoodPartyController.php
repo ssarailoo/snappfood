@@ -27,8 +27,9 @@ class FoodPartyController extends Controller
             FoodParty::query()->create($request->validated());
         }catch (QueryException $e){
             Log::error('Error Creating new Food Party '.$e->getMessage());
+            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
         }
-        return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
+        return redirect()->route('my-restaurant.foods.index', $restaurant)->
         with('success',
             " {$request->post('quantity')} numbers of  $food->name added to Food Party with {$request->post('discount')} % discount! ");
     }
@@ -44,6 +45,7 @@ class FoodPartyController extends Controller
             $foodParty->update($request->validated());
         }catch (QueryException $e){
             Log::error('Error Updating Food Party '.$e->getMessage());
+            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
         }
         return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
         with('success',
@@ -60,6 +62,7 @@ class FoodPartyController extends Controller
             $foodParty->delete();
         }catch (QueryException $e){
             Log::error('Error Deleting Food Party '.$e->getMessage());
+            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
         }
         return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
         with('success',

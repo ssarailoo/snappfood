@@ -6,8 +6,8 @@ use App\Enums\OrderStauts;
 use App\Exports\AllOrdersExport;
 use App\Exports\OrderExport;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Cart\FilterCartByCreatedAtRequest;
-use App\Http\Requests\Cart\UpdateCartStatusRequest;
+use App\Http\Requests\Order\FilterOrderByCreatedAtRequest;
+use App\Http\Requests\Order\UpdateOrderStatusRequest;
 use App\Models\Order;
 use App\Models\Restaurant\Restaurant;
 use App\Notifications\Customer\OrderStatus;
@@ -20,7 +20,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
-    public function index(Restaurant $restaurant, FilterCartByCreatedAtRequest $request)
+    public function index(Restaurant $restaurant, FilterOrderByCreatedAtRequest $request)
     {
         $this->authorize('viewAny', [Order::class, $restaurant]);
         $orders = $restaurant->orders()->with(['restaurant', 'foodsOrder', 'discount'])->where('status', OrderStauts::DELIVERED->value
@@ -37,7 +37,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function allOrders(FilterCartByCreatedAtRequest $request)
+    public function allOrders(FilterOrderByCreatedAtRequest $request)
     {
         $orders = Order::query()->where('status', OrderStauts::DELIVERED->value)->with(['restaurant', 'foodsOrder', 'discount'])
             ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
@@ -63,7 +63,7 @@ class OrderController extends Controller
 
     }
 
-    public function update(UpdateCartStatusRequest $request, Restaurant $restaurant, Order $order, $newStatus)
+    public function update(UpdateOrderStatusRequest $request, Restaurant $restaurant, Order $order, $newStatus)
     {
         $this->authorize('update', [$order, $newStatus]);
         try {
@@ -74,12 +74,13 @@ class OrderController extends Controller
             Notification::send($order->user, new OrderStatusSMS($newStatus));
         } catch (QueryException $e) {
             Log::error('Error Updating Order Status');
+            return view('error.500',['route',route('dashboard')]);
         }
         $shortHashedId = substr($order->hashed_id, 0, 10);
         return redirect()->route('dashboard')->with('success', "Order with id {$shortHashedId} has been updated to {$newStatus}");
     }
 
-    public function export(Restaurant $restaurant, FilterCartByCreatedAtRequest $request)
+    public function export(Restaurant $restaurant, FilterOrderByCreatedAtRequest $request)
     {
         $this->authorize('viewAny', [Order::class, $restaurant]);
         $orders = $restaurant->orders()->where('status', OrderStauts::DELIVERED->value
@@ -90,7 +91,7 @@ class OrderController extends Controller
         return Excel::download(new OrderExport($orders), 'orders.xlsx');
     }
 
-    public function allExport(FilterCartByCreatedAtRequest $request)
+    public function allExport(FilterOrderByCreatedAtRequest $request)
     {
         $orders = Order::query()->where('status', OrderStauts::DELIVERED->value)
             ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {

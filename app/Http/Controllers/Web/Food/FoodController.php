@@ -78,6 +78,7 @@ class FoodController extends Controller
             ]);
         } catch (QueryException $e) {
             Log::error('Error creating new food: ' . $e->getMessage());
+            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
         }
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', 'New Food added successfully');
 
@@ -124,6 +125,7 @@ class FoodController extends Controller
                 ]);
         } catch (QueryException $e) {
             Log::error('Error Updating  food: ' . $e->getMessage());
+            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
         }
 
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");
@@ -139,6 +141,7 @@ class FoodController extends Controller
             $food->delete();
         } catch (QueryException $e) {
             Log::error('Error Deleting  food: ' . $e->getMessage());
+            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
         }
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name deleted successfully ");
     }

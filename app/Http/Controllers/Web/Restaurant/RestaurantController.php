@@ -25,7 +25,7 @@ class RestaurantController extends Controller
 
         $categoryFilter = $request->get('restaurant_category_id');
         return view('restaurant.index', [
-            'restaurants' => Restaurant::withTrashed()->with(['image','restaurantCategory','user'])
+            'restaurants' => Restaurant::withTrashed()->with(['image', 'restaurantCategory', 'user'])
                 ->when($categoryFilter, function ($query) use ($categoryFilter) {
                     return $query->where('restaurant_category_id', $categoryFilter);
                 })
@@ -66,6 +66,7 @@ class RestaurantController extends Controller
             Auth::user()->assignRole(Role::query()->find(2));
         } catch (QueryException $e) {
             Log::error('Error Creating Restaurant ' . $e->getMessage());
+            return view('error.500', ['route' => route("dashboard")]);
         }
         return redirect()->route('dashboard')->with('success', 'Your Restaurant Created Successfully');
 
@@ -99,6 +100,7 @@ class RestaurantController extends Controller
                 ]);
         } catch (QueryException $e) {
             Log::error('Error Updating Restaurant ' . $e->getMessage());
+            return view('error.500', ['route' => route("restaurants.edit", $restaurant)]);
         }
         return redirect()->route('restaurants.edit', $restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");
     }
@@ -114,6 +116,7 @@ class RestaurantController extends Controller
         } catch
         (QueryException $e) {
             Log::error('Error Deleting Restaurant ' . $e->getMessage());
+            return view('error.500', ['route' => route("restaurants.edit", $restaurant)]);
         }
         return redirect()->route('dashboard')->with('success', 'Your Restaurant Deleted Successfully');
     }
@@ -127,6 +130,7 @@ class RestaurantController extends Controller
         } catch
         (QueryException $e) {
             Log::error('Error Restoring Restaurant ' . $e->getMessage());
+            return view('error.500', ['route' => route("restaurants.index")]);
         }
         return redirect()->route('restaurants.index');
 
@@ -140,6 +144,7 @@ class RestaurantController extends Controller
         } catch
         (QueryException $e) {
             Log::error('Error Force Deleting Restaurant ' . $e->getMessage());
+            return view('error.500', ['route' => route("restaurants.index", $restaurant)]);
         }
         return redirect()->route('restaurants.index');
 

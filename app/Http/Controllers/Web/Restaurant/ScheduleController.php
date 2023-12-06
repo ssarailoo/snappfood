@@ -46,6 +46,7 @@ class ScheduleController extends Controller
             $restaurant->schedules()->attach($schedule);
         } catch (QueryException $e) {
             Log::error('Error creating schedule' . $e->getMessage());
+            return view('error.500', ['route' => route('my-restaurant.schedules.index', $restaurant)]);
         }
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule was made from {$schedule->start_time} to {$schedule->end_time}  on {$schedule->day->name}"
@@ -86,6 +87,7 @@ class ScheduleController extends Controller
             $schedule->update($request->validated());
         } catch (QueryException $e) {
             Log::error('Error Updating schedule' . $e->getMessage());
+            return view('error.500', ['route' => route('my-restaurant.schedules.index', $restaurant)]);
         }
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule with id  {$schedule->id} Updated from {$schedule->start_time} to {$schedule->end_time}  on {$schedule->day->name}"
@@ -102,6 +104,7 @@ class ScheduleController extends Controller
             $schedule->delete();
         } catch (QueryException $e) {
             Log::error('Error Deleting schedule' . $e->getMessage());
+            return view('error.500', ['route' => route('my-restaurant.schedules.index', $restaurant)]);
         }
         return redirect()->route('my-restaurant.schedules.index', $restaurant)->with('success',
             "A Schedule with id  {$schedule->id} Deleted "

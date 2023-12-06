@@ -5,15 +5,16 @@ namespace App\Http\Controllers\Web;
 use App\Enums\CommentStatus;
 use App\Events\CommentReview;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Comment\FilterCommentRequest;
 use App\Http\Requests\Comment\StoreReplyCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentDescriptionRequest;
-use App\Http\Requests\Comments\FilterCommentRequest;
 use App\Models\Comment;
 use App\Models\Restaurant\Restaurant;
 use App\Services\Comment\CommentFilterService;
 use App\Services\Restaurant\RestaurantUpdateScoreService;
 use Illuminate\Database\QueryException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 
@@ -72,6 +73,7 @@ class CommentController extends Controller
             );
         } catch (QueryException $e) {
             Log::error("Error Creating Reply Comment");
+            return view('error.500', ['route' => route('my-restaurant.comments.index', $restaurant)]);
         }
         return redirect()->route('my-restaurant.comments.index', $restaurant)->with('success', "reply comment added ");
     }
@@ -86,6 +88,7 @@ class CommentController extends Controller
             ]);
         } catch (QueryException $e) {
             Log::error("Error Updating Comment");
+            return view('error.500', ['route' =>Auth::user()->hasRole('admin')? route('comments.review') : route('my-restaurant.comments.index', $restaurant)]);
         }
 
         event(new CommentReview($comment));
@@ -101,6 +104,7 @@ class CommentController extends Controller
             $comment->delete();
         } catch (QueryException $e) {
             Log::error("Error Deleting Comment");
+            return view('error.500', ['route' => route('comments.review')]);
         }
         return redirect()->route('comments.review');
 

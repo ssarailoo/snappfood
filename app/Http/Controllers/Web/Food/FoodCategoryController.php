@@ -45,6 +45,7 @@ class FoodCategoryController extends Controller
             FoodCategory::query()->create($request->validated());
         } catch (QueryException $e) {
             Log::error('Error creating FoodCategory: ' . $e->getMessage());
+            return view('error.500', ['route' => route("food-categories.index")]);
         }
         return redirect()->route('food-categories.index');
     }
@@ -59,6 +60,7 @@ class FoodCategoryController extends Controller
             $foodCategory->update($request->validated());
         } catch (QueryException $e) {
             Log::error('Error Updating FoodCategory: ' . $e->getMessage());
+            return view('error.500', ['route' => route("food-categories.index")]);
         }
 
         return redirect()->route('food-categories.index');
@@ -73,6 +75,7 @@ class FoodCategoryController extends Controller
             $foodCategory->delete();
         } catch (QueryException $e) {
             Log::error('Error Destroying FoodCategory: ' . $e->getMessage());
+            return view('error.500', ['route' => route("food-categories.index")]);
         }
         return redirect()->route('food-categories.index');
     }

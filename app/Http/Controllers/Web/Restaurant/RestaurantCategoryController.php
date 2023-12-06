@@ -45,6 +45,7 @@ class RestaurantCategoryController extends Controller
             RestaurantCategory::query()->create($request->validated());
         } catch (QueryException $e) {
             Log::error('Error creating RestaurantCategory: ' . $e->getMessage());
+            return view('error.500', ['route' => route("rest-categories.index")]);
         }
         return redirect()->route('rest-categories.index');
     }
@@ -58,6 +59,7 @@ class RestaurantCategoryController extends Controller
             $restaurantCategory->update($request->validated());
         } catch (QueryException $e) {
             Log::error('Error creating RestaurantCategory: ' . $e->getMessage());
+            return view('error.500', ['route' => route("rest-categories.index")]);
         }
         return redirect()->route('rest-categories.index');
     }
@@ -71,6 +73,7 @@ class RestaurantCategoryController extends Controller
             $restaurantCategory->delete();
         } catch (QueryException $e) {
             Log::error('Error creating RestaurantCategory: ' . $e->getMessage());
+            return view('error.500', ['route' => route("rest-categories.index")]);
         }
         return redirect()->route('rest-categories.index');
     }

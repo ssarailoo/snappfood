@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Cart;
+namespace App\Http\Requests\Order;
 
-use App\Enums\CartStatus;
+use App\Enums\OrderStauts;
 use Illuminate\Foundation\Http\FormRequest;
 
-class FilterCartByStatusRequest extends FormRequest
+class UpdateOrderStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,8 @@ class FilterCartByStatusRequest extends FormRequest
      */
     public function rules(): array
     {
-        $statuses=CartStatus::getValues();
-        $last= array_key_last($statuses);
-        unset($statuses[$last]);
         return [
-          'filter_status'=>['sometimes','nullable',"in:".implode(',',$statuses)]
+            'newStatus' =>[ 'required|in:' . implode(',', OrderStauts::getValues())],
         ];
     }
 }

@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Cart\FilterCartByStatusRequest;
+use App\Http\Requests\Order\FilterOrderByStatusRequest;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function dashboard(FilterCartByStatusRequest $request)
+    public function dashboard(FilterOrderByStatusRequest $request)
     {
         if (Auth::user()->hasRole('restaurant-manager')) {
             $orders = Auth::user()->restaurant->orders()->with(['user','user.currentAddress','foodsOrder'])

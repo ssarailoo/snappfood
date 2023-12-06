@@ -46,6 +46,7 @@ class BannerController extends Controller
             $banner->image()->create(['url' => $request->file('url')]);
         }catch (QueryException $e){
             Log::error('Error Creating Banner'. $e->getMessage());
+            return view('error.500', ['route' => route('banners.index')]);
         }
 
         return redirect()->route('banners.index')->with('success', 'Banner created successfully');
@@ -83,6 +84,7 @@ class BannerController extends Controller
             $banner->image->update(['url' => $request->file('url')]);
         }catch (QueryException $e){
             Log::error('Error Updating Banner'. $e->getMessage());
+            return view('error.500', ['route' => route('banners.index')]);
         }
 
         return redirect()->route('banners.index')->with('success', 'Banner updated successfully');
@@ -97,6 +99,7 @@ class BannerController extends Controller
             $banner->delete();
         }catch (QueryException $e){
             Log::error('Error Deleting Banner'. $e->getMessage());
+            return view('error.500', ['route' => route('banners.index')]);
         }
 
         return redirect()->route('banners.index')->with('success', 'Banner deleted successfully');
