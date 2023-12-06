@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Banner\StoreBannerRequest;
 use App\Http\Requests\Banner\UpdateBannerRequest;
 use App\Models\Banner;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class BannerController extends Controller
 {
@@ -39,9 +41,13 @@ class BannerController extends Controller
      */
     public function store(StoreBannerRequest $request)
     {
+        try {
+            $banner = Banner::query()->create($request->validated());
+            $banner->image()->create(['url' => $request->file('url')]);
+        }catch (QueryException $e){
+            Log::error('Error Creating Banner'. $e->getMessage());
+        }
 
-        $banner = Banner::query()->create($request->validated());
-        $banner->image()->create(['url' => $request->file('url')]);
         return redirect()->route('banners.index')->with('success', 'Banner created successfully');
     }
 
@@ -72,9 +78,13 @@ class BannerController extends Controller
      */
     public function update(UpdateBannerRequest $request, Banner $banner)
     {
+        try {
+            $banner->update($request->validated());
+            $banner->image->update(['url' => $request->file('url')]);
+        }catch (QueryException $e){
+            Log::error('Error Updating Banner'. $e->getMessage());
+        }
 
-        $banner->update($request->validated());
-        $banner->image->update(['url' => $request->file('url')]);
         return redirect()->route('banners.index')->with('success', 'Banner updated successfully');
     }
 
@@ -83,8 +93,12 @@ class BannerController extends Controller
      */
     public function destroy(Banner $banner)
     {
+        try {
+            $banner->delete();
+        }catch (QueryException $e){
+            Log::error('Error Deleting Banner'. $e->getMessage());
+        }
 
-        $banner->delete();
         return redirect()->route('banners.index')->with('success', 'Banner deleted successfully');
     }
 }

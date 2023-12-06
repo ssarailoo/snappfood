@@ -26,7 +26,7 @@ class UpdateBannerRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string', 'max:255'],
             'color' => ['required', 'in:' . implode(',', Color::getValues())],
-            'url' => ['required', 'max:2048'],
+            'url' => ['sometimes','nullable', 'max:2048'],
         ];
     }
 }
