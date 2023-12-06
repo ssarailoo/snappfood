@@ -7,8 +7,6 @@ use App\Http\Requests\Food\FilterFoodRequest;
 use App\Http\Requests\Food\StoreFoodRequest;
 use App\Http\Requests\Food\UpdateFoodRequest;
 use App\Models\Food\Food;
-use App\Models\Image;
-use App\Models\Material;
 use App\Models\Restaurant\Restaurant;
 use App\Services\Material\MaterialCreateOrRetrieveService;
 use Illuminate\Http\Request;
@@ -28,11 +26,11 @@ class FoodController extends Controller
     {
 
         $this->authorize('viewAny', [Food::class, $restaurant]);
-        $foodsOfRestaurant = Food::query()->foodsOf($restaurant->id);
+        $foodsOfRestaurant = Food::query()->with(['image','materials','foodParties'])->foodsOf($restaurant->id);
         $foods = Food::getSortedFoods($request, $foodsOfRestaurant);
         return view('food.index', [
             'restaurant' => $restaurant,
-            'foods' => $foods->paginate(3),
+            'foods' => $foods->paginate(10),
         ]);
 
 
