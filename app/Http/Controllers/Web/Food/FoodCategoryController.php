@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreFoodCategoryRequest;
 use App\Http\Requests\Category\UpdateFoodCategoryRequest;
 use App\Models\Food\FoodCategory;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class FoodCategoryController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(FoodCategory::class,'foodCategory');
+        $this->authorizeResource(FoodCategory::class, 'foodCategory');
     }
 
     /**
@@ -39,8 +41,11 @@ class FoodCategoryController extends Controller
      */
     public function store(StoreFoodCategoryRequest $request)
     {
-
-        FoodCategory::query()->create($request->validated());
+        try {
+            FoodCategory::query()->create($request->validated());
+        } catch (QueryException $e) {
+            Log::error('Error creating FoodCategory: ' . $e->getMessage());
+        }
         return redirect()->route('food-categories.index');
     }
 
@@ -50,8 +55,12 @@ class FoodCategoryController extends Controller
      */
     public function update(UpdateFoodCategoryRequest $request, FoodCategory $foodCategory)
     {
+        try {
+            $foodCategory->update($request->validated());
+        } catch (QueryException $e) {
+            Log::error('Error Updating FoodCategory: ' . $e->getMessage());
+        }
 
-        $foodCategory->update($request->validated());
         return redirect()->route('food-categories.index');
     }
 
@@ -60,8 +69,11 @@ class FoodCategoryController extends Controller
      */
     public function destroy(FoodCategory $foodCategory)
     {
-//
-        $foodCategory->delete();
+        try {
+            $foodCategory->delete();
+        } catch (QueryException $e) {
+            Log::error('Error Destroying FoodCategory: ' . $e->getMessage());
+        }
         return redirect()->route('food-categories.index');
     }
 }
