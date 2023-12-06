@@ -7,39 +7,40 @@ use App\Http\Requests\Restauarant\StoreRestaurantRequest;
 use App\Http\Requests\Restauarant\UpdateRestaurantRequest;
 use App\Http\Requests\Restaurant\RestaurantFilterRequest;
 use App\Models\Restaurant\Restaurant;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 
 class RestaurantController extends Controller
 {
-public function __construct()
-{
-    $this->authorizeResource(Restaurant::class,'restaurant');
-}
+    public function __construct()
+    {
+        $this->authorizeResource(Restaurant::class, 'restaurant');
+    }
 
     public function index(RestaurantFilterRequest $request)
     {
 
-            $categoryFilter = $request->get('restaurant_category_id');
-            return view('restaurant.index', [
-                'restaurants' => Restaurant::withTrashed()
-                    ->when($categoryFilter, function ($query) use ($categoryFilter) {
-                        return $query->where('restaurant_category_id', $categoryFilter);
-                    })
-                    ->get(),
-            ]);
+        $categoryFilter = $request->get('restaurant_category_id');
+        return view('restaurant.index', [
+            'restaurants' => Restaurant::withTrashed()
+                ->when($categoryFilter, function ($query) use ($categoryFilter) {
+                    return $query->where('restaurant_category_id', $categoryFilter);
+                })
+                ->get(),
+        ]);
 
     }
-
 
 
     public function show(Restaurant $restaurant, Request $request)
     {
 
-            return view('restaurant.show', [
-                'restaurant' => $restaurant
-            ]);
+        return view('restaurant.show', [
+            'restaurant' => $restaurant
+        ]);
 
     }
 
@@ -56,13 +57,16 @@ public function __construct()
      */
     public function store(StoreRestaurantRequest $request)
     {
-
-        $restaurant = Restaurant::query()->create($request->validated());
-        $restaurant->image()->create([
-            'url' => 'images/default-restaurant.png',
-        ]);
-        //assign role of manager to the user
-        Auth::user()->assignRole(Role::query()->find(2));
+        try {
+            $restaurant = Restaurant::query()->create($request->validated());
+            $restaurant->image()->create([
+                'url' => 'images/default-restaurant.png',
+            ]);
+            //assign role of manager to the user
+            Auth::user()->assignRole(Role::query()->find(2));
+        } catch (QueryException $e) {
+            Log::error('Error Creating Restaurant ' . $e->getMessage());
+        }
         return redirect()->route('dashboard')->with('success', 'Your Restaurant Created Successfully');
 
     }
@@ -87,43 +91,62 @@ public function __construct()
      */
     public function update(UpdateRestaurantRequest $request, Restaurant $restaurant)
     {
-
-        $restaurant->update($request->validated());
-        if ($request->hasFile('url'))
-        $restaurant->image->update([
-            'url' => $request->file('url') ,
-        ]);
+        try {
+            $restaurant->update($request->validated());
+            if ($request->hasFile('url'))
+                $restaurant->image->update([
+                    'url' => $request->file('url'),
+                ]);
+        } catch (QueryException $e) {
+            Log::error('Error Updating Restaurant ' . $e->getMessage());
+        }
         return redirect()->route('restaurants.edit', $restaurant)->with('success', "{$restaurant->name} has been Updated Successfully");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Restaurant $restaurant)
+    public
+    function destroy(Restaurant $restaurant)
     {
-
-        $restaurant->delete();
+        try {
+            $restaurant->delete();
+        } catch
+        (QueryException $e) {
+            Log::error('Error Deleting Restaurant ' . $e->getMessage());
+        }
         return redirect()->route('dashboard')->with('success', 'Your Restaurant Deleted Successfully');
     }
 
 
-    public function restore(Restaurant $restaurant)
+    public
+    function restore(Restaurant $restaurant)
     {
-
-        $restaurant->restore();
+        try {
+            $restaurant->restore();
+        } catch
+        (QueryException $e) {
+            Log::error('Error Restoring Restaurant ' . $e->getMessage());
+        }
         return redirect()->route('restaurants.index');
 
     }
 
-    public function forceDelete(Restaurant $restaurant)
+    public
+    function forceDelete(Restaurant $restaurant)
     {
-
-        $restaurant->forceDelete();
+        try {
+            $restaurant->forceDelete();
+        } catch
+        (QueryException $e) {
+            Log::error('Error Force Deleting Restaurant ' . $e->getMessage());
+        }
         return redirect()->route('restaurants.index');
 
     }
 
-    public function saveLocation(Request $request, Restaurant $restaurant)
+    public
+    function saveLocation(Request $request, Restaurant $restaurant)
     {
         $restaurant->update([
             'longitude' => $request->post('longitude'),
