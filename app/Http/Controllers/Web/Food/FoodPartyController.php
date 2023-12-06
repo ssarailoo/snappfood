@@ -9,16 +9,12 @@ use App\Http\Requests\FoodParty\UpdateFoodPartyRequest;
 use App\Models\Food\Food;
 use App\Models\Food\FoodParty;
 use App\Models\Restaurant\Restaurant;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class FoodPartyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+
 
 
     /**
@@ -27,7 +23,11 @@ class FoodPartyController extends Controller
     public function store(StoreFoodPartyRequest $request, Restaurant $restaurant, Food $food)
     {
         $this->authorize('create',[Food::class, $restaurant]);
-        FoodParty::query()->create($request->validated());
+        try {
+            FoodParty::query()->create($request->validated());
+        }catch (QueryException $e){
+            Log::error('Error Creating new Food Party '.$e->getMessage());
+        }
         return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
         with('success',
             " {$request->post('quantity')} numbers of  $food->name added to Food Party with {$request->post('discount')} % discount! ");
@@ -40,7 +40,11 @@ class FoodPartyController extends Controller
     public function update(UpdateFoodPartyRequest $request, Restaurant $restaurant, Food $food, FoodParty $foodParty)
     {
         $this->authorize('update', [Food::class, $restaurant]);
-        $foodParty->update($request->validated());
+        try {
+            $foodParty->update($request->validated());
+        }catch (QueryException $e){
+            Log::error('Error Updating Food Party '.$e->getMessage());
+        }
         return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
         with('success',
             "  $food->name updated in Food Party with {$request->post('discount')} % discount and numbers of {$request->post('quantity')}  ");
@@ -52,7 +56,11 @@ class FoodPartyController extends Controller
     public function destroy(Restaurant $restaurant, Food $food, FoodParty $foodParty)
     {
         $this->authorize('delete', [Food::class, $restaurant]);
-        $foodParty->delete();
+        try {
+            $foodParty->delete();
+        }catch (QueryException $e){
+            Log::error('Error Deleting Food Party '.$e->getMessage());
+        }
         return redirect()->route('my-restaurant.foods.index', [$restaurant, $food])->
         with('success',
             "  $food->name deleted from Food Party ");

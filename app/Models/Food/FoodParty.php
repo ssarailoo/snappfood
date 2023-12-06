@@ -7,7 +7,9 @@ use App\Models\Restaurant\Restaurant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FoodParty extends Model
 {
@@ -22,14 +24,14 @@ class FoodParty extends Model
 
     public static function setTimes(SetFoodPartyTimesRequest $request)
     {
-        if (DB::table('food_party_times')->first()) {
-            DB::table('food_party_times')->where('id', 1)->update(
+        try {
+            DB::table('food_party_times')->updateOrInsert(
+                ['id' => 1],
                 $request->validated()
             );
-        } else
-            DB::table('food_party_times')->insert(
-                $request->validated()
-            );
+        }catch (QueryException $e){
+            Log::error('Error Inserting new Food Party time'.$e->getMessage());
+        }
     }
 
     public function food(): BelongsTo
