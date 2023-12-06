@@ -25,7 +25,7 @@ class RestaurantController extends Controller
 
         $categoryFilter = $request->get('restaurant_category_id');
         return view('restaurant.index', [
-            'restaurants' => Restaurant::withTrashed()
+            'restaurants' => Restaurant::withTrashed()->with(['image','restaurantCategory','user'])
                 ->when($categoryFilter, function ($query) use ($categoryFilter) {
                     return $query->where('restaurant_category_id', $categoryFilter);
                 })
