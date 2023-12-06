@@ -11,7 +11,8 @@ class DashboardController extends Controller
     public function dashboard(FilterCartByStatusRequest $request)
     {
         if (Auth::user()->hasRole('restaurant-manager')) {
-            $orders = Auth::user()->restaurant->orders()->where('status', '!=', 'delivered');
+            $orders = Auth::user()->restaurant->orders()->with(['user','user.currentAddress','foodsOrder'])
+                ->where('status', '!=', 'delivered');
             $filter = $request->get('filter_status');
             return view('dashboard', [
                 'orders' => $orders->when(!empty($filter), function ($query) use ($filter) {
