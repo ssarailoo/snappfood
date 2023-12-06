@@ -12,7 +12,9 @@ use App\Models\Order;
 use App\Models\Restaurant\Restaurant;
 use App\Notifications\Customer\OrderStatus;
 use App\Notifications\Customer\OrderStatusSMS;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -20,8 +22,8 @@ class OrderController extends Controller
 {
     public function index(Restaurant $restaurant, FilterCartByCreatedAtRequest $request)
     {
-       $this->authorize('viewAny', [Order::class, $restaurant]);
-        $orders = $restaurant->orders()->with(['restaurant','foodsOrder','discount'])->where('status', OrderStauts::DELIVERED->value
+        $this->authorize('viewAny', [Order::class, $restaurant]);
+        $orders = $restaurant->orders()->with(['restaurant', 'foodsOrder', 'discount'])->where('status', OrderStauts::DELIVERED->value
         )->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
             return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) : $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         });
@@ -37,7 +39,7 @@ class OrderController extends Controller
 
     public function allOrders(FilterCartByCreatedAtRequest $request)
     {
-       $orders= Order::query()->where('status', OrderStauts::DELIVERED->value)->with(['restaurant','foodsOrder','discount'])
+        $orders = Order::query()->where('status', OrderStauts::DELIVERED->value)->with(['restaurant', 'foodsOrder', 'discount'])
             ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
                 return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) :
                     $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
@@ -61,14 +63,18 @@ class OrderController extends Controller
 
     }
 
-    public function update(UpdateCartStatusRequest $request,Restaurant $restaurant, Order $order, $newStatus)
+    public function update(UpdateCartStatusRequest $request, Restaurant $restaurant, Order $order, $newStatus)
     {
         $this->authorize('update', [$order, $newStatus]);
-        $order->update([
-            'status' => $newStatus,
-        ]);
-        Notification::send($order->user, new OrderStatus($order, $newStatus));
-        Notification::send($order->user, new OrderStatusSMS($newStatus));
+        try {
+            $order->update([
+                'status' => $newStatus,
+            ]);
+            Notification::send($order->user, new OrderStatus($order, $newStatus));
+            Notification::send($order->user, new OrderStatusSMS($newStatus));
+        } catch (QueryException $e) {
+            Log::error('Error Updating Order Status');
+        }
         $shortHashedId = substr($order->hashed_id, 0, 10);
         return redirect()->route('dashboard')->with('success', "Order with id {$shortHashedId} has been updated to {$newStatus}");
     }
@@ -86,7 +92,7 @@ class OrderController extends Controller
 
     public function allExport(FilterCartByCreatedAtRequest $request)
     {
-        $orders= Order::query()->where('status', OrderStauts::DELIVERED->value)
+        $orders = Order::query()->where('status', OrderStauts::DELIVERED->value)
             ->when(!empty($filter = $request->get('filter_date')), function ($query) use ($filter) {
                 return $filter === 'month' ? $query->whereMonth('created_at', Carbon::now()->month) :
                     $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
