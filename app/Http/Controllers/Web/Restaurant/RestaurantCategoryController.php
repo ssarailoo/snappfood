@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreRestaurantCategoryRequest;
 use App\Http\Requests\Category\UpdateRestaurantCategoryRequest;
 use App\Models\Restaurant\RestaurantCategory;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class RestaurantCategoryController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(RestaurantCategory::class,'restaurantCategory');
+        $this->authorizeResource(RestaurantCategory::class, 'restaurantCategory');
     }
 
     /**
@@ -39,8 +41,11 @@ class RestaurantCategoryController extends Controller
      */
     public function store(StoreRestaurantCategoryRequest $request)
     {
-
-        RestaurantCategory::query()->create($request->validated());
+        try {
+            RestaurantCategory::query()->create($request->validated());
+        } catch (QueryException $e) {
+            Log::error('Error creating RestaurantCategory: ' . $e->getMessage());
+        }
         return redirect()->route('rest-categories.index');
     }
 
@@ -49,8 +54,11 @@ class RestaurantCategoryController extends Controller
      */
     public function update(UpdateRestaurantCategoryRequest $request, RestaurantCategory $restaurantCategory)
     {
-
-        $restaurantCategory->update($request->validated());
+        try {
+            $restaurantCategory->update($request->validated());
+        } catch (QueryException $e) {
+            Log::error('Error creating RestaurantCategory: ' . $e->getMessage());
+        }
         return redirect()->route('rest-categories.index');
     }
 
@@ -59,8 +67,11 @@ class RestaurantCategoryController extends Controller
      */
     public function destroy(RestaurantCategory $restaurantCategory)
     {
-
-        $restaurantCategory->delete();
+        try {
+            $restaurantCategory->delete();
+        } catch (QueryException $e) {
+            Log::error('Error creating RestaurantCategory: ' . $e->getMessage());
+        }
         return redirect()->route('rest-categories.index');
     }
 }
