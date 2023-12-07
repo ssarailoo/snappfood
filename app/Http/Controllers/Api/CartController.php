@@ -70,18 +70,13 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request, CartStoreService $cartStoreService, CartTotalService $cartTotalService)
     {
-
+        $this->authorize('create', Cart::class);
         $response = $cartStoreService->storeCart();
-        if (isset($response['cart'])) {
             $cartTotalService->updateTotal($response['cart']);
             return $response['data']['message'] === "Cart Created successfully" ?
                 response()->json($response['data']
                     , 201) : response()->json($response['data']
                     , 200);
-        }
-        return response()->json([
-            'data' => $response
-        ], 400);
     }
 
     /**

@@ -63,7 +63,7 @@ class AddressController extends Controller
             $address = Address::query()->create($request->validated());
             Auth::user()->addresses()->attach($address);
         } catch (QueryException $e) {
-            Log::error('Error Crating new Address');
+            Log::error('Error Crating new Address'.$e->getMessage());
             return response()->json([
                 'data' => [
                     'message' => 'An unexpected error occurred'
@@ -96,7 +96,7 @@ class AddressController extends Controller
             $this->authorize('myAddress', $address);
             $address->update($request->validated());
         } catch (QueryException $e) {
-            Log::error('Error Updating Address');
+            Log::error('Error Updating Address'.$e->getMessage());
             return response()->json([
                 'data' => [
                     'message' => 'An unexpected error occurred'

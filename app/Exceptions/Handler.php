@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -31,13 +32,15 @@ class Handler extends ExceptionHandler
     }
 
     public function render($request, \Throwable $e)
+
     {
         if ($e instanceof AuthorizationException) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'message' => 'You do not have the required authorization.',
-
-                ], 403);
+                    'data' => [
+                        'error' => $e->getMessage()
+                    ]
+                ], $e->status() ?? 403);
             } else {
                 return response()->view('error.403', ['exception' => $e], 403);
             }
@@ -45,10 +48,12 @@ class Handler extends ExceptionHandler
         if ($e instanceof ModelNotFoundException) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'message' => 'Resource not found.',
-                ], 404);
+                    'data' => [
+                        'error' => 'Resource not found'
+                    ]
+                ], 400);
             } else {
-                return response()->view('error.404', ['exception' => $e,'message'=>'Not Found'], 404);
+                return response()->view('error.404', ['exception' => $e, 'message' => 'Not Found'], 404);
             }
         }
         return parent::render($request, $e);

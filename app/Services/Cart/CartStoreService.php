@@ -15,11 +15,12 @@ class CartStoreService
         $count = request()->food_count;
         if (request()->has('food_party_id')) {
             $foodParty = FoodParty::query()->find(request()->post('food_party_id'));
-            $cart =  Cart::query()->where('is_paid',0)->updateOrCreate([
+            $cart = Cart::query()->updateOrCreate([
+                'is_paid'=> 0,
                 'user_id' => Auth::user()->id,
                 'restaurant_id' => $foodParty->food->restaurant->id,
             ]);
-            $cart->foods()->syncWithoutDetaching([$foodParty->food_id=> [
+            $cart->foods()->syncWithoutDetaching([$foodParty->food_id => [
                 'food_count' => DB::raw('food_count + ' . $count),
                 'in_party' => 1,
                 'discount_percent' => $foodParty->discount,
@@ -51,7 +52,6 @@ class CartStoreService
         ]);
 
         return [
-            'cart' => $cart,
             'data' => [
                 'message' => $cart->wasRecentlyCreated ? 'Cart Created successfully' : "You have an unpaid  cart from this restaurant, the desired food has been added to it, you must use the update method",
                 'cart_id' => $cart->id
