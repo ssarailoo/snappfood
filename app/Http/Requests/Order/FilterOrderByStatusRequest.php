@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests\Order;
 
-use App\Enums\CartStatus;
+
+use App\Enums\OrderStauts;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FilterOrderByStatusRequest extends FormRequest
@@ -22,7 +23,7 @@ class FilterOrderByStatusRequest extends FormRequest
      */
     public function rules(): array
     {
-        $statuses=CartStatus::getValues();
+        $statuses=OrderStauts::getValues();
         $last= array_key_last($statuses);
         unset($statuses[$last]);
         return [
