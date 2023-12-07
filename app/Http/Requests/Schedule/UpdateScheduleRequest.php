@@ -23,8 +23,8 @@ class UpdateScheduleRequest extends FormRequest
     {
         return [
             'day_id' => ['required','numeric','between:1,7'],
-            'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i'],
+            'start_time' => ['required' ],
+            'end_time' => ['required'],
         ];
     }
 }
