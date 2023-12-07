@@ -83,15 +83,24 @@ class CommentController extends Controller
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
         $this->authorize('reconsider', $comment);
-        $comment->update([
-            'score' => $request->input('score'),
-            'content' => $request->input('content'),
-            'reconsidered' => 1
-        ]);
-        event(new CommentReview($comment));
+        try {
+            $comment->update([
+                'score' => $request->input('score'),
+                'content' => $request->input('content'),
+                'reconsidered' => 1
+            ]);
+            event(new CommentReview($comment));
+        } catch (QueryException $e) {
+            Log::error('Error Reconsidering Comment ' . $e->getMessage());
+            return response()->json([
+                'data' => [
+                    'error' => "An unexpected error occurred"
+                ]
+            ]);
+        }
         return response()->json([
             'data' => [
-                'msg' => "your comment has been updated successfully and waiting for Admin confirmation"
+                'message' => "your comment has been updated successfully and waiting for Admin confirmation"
             ]
         ]);
     }
