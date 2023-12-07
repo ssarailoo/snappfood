@@ -72,11 +72,11 @@ class CartController extends Controller
     {
         $this->authorize('create', Cart::class);
         $response = $cartStoreService->storeCart();
-            $cartTotalService->updateTotal($response['cart']);
-            return $response['data']['message'] === "Cart Created successfully" ?
-                response()->json($response['data']
-                    , 201) : response()->json($response['data']
-                    , 200);
+        $cartTotalService->updateTotal($response['cart']);
+        return $response['data']['message'] === "Cart Created successfully" ?
+            response()->json($response['data']
+                , 201) : response()->json($response['data']
+                , 200);
     }
 
     /**
@@ -102,18 +102,12 @@ class CartController extends Controller
      */
     public function update(UpdateCartRequest $request, Cart $cart, CartUpdateService $cartUpdateService, CartTotalService $cartTotalService)
     {
-        $this->authorize('isCartBelongingToUser', $cart);
+        $this->authorize('update', $cart);
         $response = $cartUpdateService->updateService($cart);
-        if (isset($response['success'])) {
-            $cartTotalService->updateTotal($cart);
-            return response()->json([
-                'data' => $response
-            ], 200);
-        }
+        $cartTotalService->updateTotal($cart);
         return response()->json([
             'data' => $response
-        ], 400);
-
+        ]);
     }
 
     /**

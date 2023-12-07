@@ -9,6 +9,7 @@ use App\Models\Food\FoodParty;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartPolicy
 {
@@ -25,6 +26,24 @@ class CartPolicy
             return Food::query()->find(request()->food_id)->restaurant->status === 0 ? Response::deny('Restaurant is closed')->withStatus(400) : Response::allow();
         }
         return FoodParty::query()->find(\request()->food_party_id)->food->restaurant->status === 0 ? Response::deny('Restaurant is closed')->withStatus(400) : Response::allow();
+    }
+
+    public function update(User $user, Cart $cart): Response
+    {
+        $count = request()->post('food_count');
+        $newFood = Food::query()->find(request()->post('food_id'));
+        $newFoodParty = FoodParty::query()->find(request()->post('food_party_id'));
+        if ($cart->is_paid === 1) {
+            return Response::deny('You cannot update a shopping cart that has been paid')->withStatus(400);
+        }
+        if ($newFood and $cart->restaurant->isNot($newFood->restaurant)) {
+            return Response::deny(' you cant order food from 2 different restaurants')->withStatus(400);
+        }
+        if ($newFoodParty and $cart->restaurant->isNot($newFoodParty->food->restaurant)) {
+            return Response::deny(' you cant order food from 2 different restaurants')->withStatus(400);
+        }
+
+        return $user->carts->contains($cart) ? Response::allow() : Response::deny('this cart does not belongs to yoy')->withStatus(400);
     }
 
 
