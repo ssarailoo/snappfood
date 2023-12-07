@@ -23,7 +23,7 @@ class CartResource extends JsonResource
             'foods' => CartFoodResource::collection($this->cartFoods),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'total'=>$this->total
+            'total'=>$this->total." $"
         ];
     }
 }

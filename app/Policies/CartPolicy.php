@@ -9,19 +9,21 @@ use App\Models\Food\FoodParty;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CartPolicy
 {
 
-    public function view(User $user, Cart $cart): bool
+    public function view(User $user, Cart $cart): Response
     {
-        return $user->carts->contains($cart);
+        return $user->carts->contains($cart) ? Response::allow() : Response::deny('this cart does not belongs to you')->withStatus(400);
     }
 
     public function create(): Response
     {
-
+        if (Auth::user()->currentAddress === null)
+            return Response::deny('First add your current Address')->withStatus(400);
         if (request()->has('food_id')) {
             return Food::query()->find(request()->food_id)->restaurant->status === 0 ? Response::deny('Restaurant is closed')->withStatus(400) : Response::allow();
         }
@@ -30,6 +32,9 @@ class CartPolicy
 
     public function update(User $user, Cart $cart): Response
     {
+        if (!$user->carts->contains($cart)) {
+            return Response::deny('this cart does not belongs to you')->withStatus(400);
+        }
         $count = request()->post('food_count');
         $newFood = Food::query()->find(request()->post('food_id'));
         $newFoodParty = FoodParty::query()->find(request()->post('food_party_id'));
@@ -43,8 +48,13 @@ class CartPolicy
             return Response::deny(' you cant order food from 2 different restaurants')->withStatus(400);
         }
 
-        return $user->carts->contains($cart) ? Response::allow() : Response::deny('this cart does not belongs to yoy')->withStatus(400);
+        return Response::allow();
     }
 
+    public function delete(User $user, Cart $cart): Response
+    {
+        return $user->carts->contains($cart) ? Response::allow() : Response::deny('this cart does not belongs to you')->withStatus(400);
+
+    }
 
 }

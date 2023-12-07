@@ -76,7 +76,7 @@ class CartController extends Controller
         return $response['data']['message'] === "Cart Created successfully" ?
             response()->json($response['data']
                 , 201) : response()->json($response['data']
-                , 200);
+                );
     }
 
     /**
@@ -114,19 +114,14 @@ class CartController extends Controller
      * Remove the specified resource from storage.
      * @response 204
      */
-    public function destroy(Cart $cart, CartDestroyService $cartDestroyService)
+    public function destroy(Cart $cart)
     {
-        $this->authorize('isCartBelongingToUser', $cart);
-        $response = $cartDestroyService->destroyCart($cart);
-        if (isset($response['success'])) {
-            $cart->delete();
-            return response()->json([
-                'data' => $response
-            ], 200);
-        }
+        $this->authorize('delete', $cart);
+        $cart->delete();
         return response()->json([
-            'data' => $response
-        ], 400);
+            'data' => ['success' => true, 'msg' => 'Your cart was deleted successfully.']
+        ]);
+
     }
 
     /**

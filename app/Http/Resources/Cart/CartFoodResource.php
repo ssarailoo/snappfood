@@ -17,9 +17,9 @@ class CartFoodResource extends JsonResource
         return [
             'id' => $this->food->id,
             'title' => $this->food->name,
-            'count' => $this->food_count,
-            'price' => $this->food->price,
-            'discount' => $this->discount ?? 0 . "%"
+            'count' =>(int) $this->food_count,
+            'price' => $this->food->price. " $",
+            'discount' => $this->discount ?? 0 . " %"
         ];
     }
 }

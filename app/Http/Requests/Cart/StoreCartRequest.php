@@ -26,7 +26,8 @@ class StoreCartRequest extends FormRequest
     public function rules(): array
     {
 $current=Auth::user()->currentAddress;
-$foods=Restaurant::query()->nearBy($current->latitude,$current->longitude)->get()->map(fn($restaurant)=>$restaurant->foods)->flatMap->pluck('id');
+$foods= $current!==null? Restaurant::query()->nearBy($current->latitude,$current->longitude)->get()->map(fn($restaurant)=>$restaurant->foods)->flatMap->pluck('id'):Food::all()->pluck('id');
+
 
 
             if ($foodParty=FoodParty::query()->find($this->post('food_party_id')))
