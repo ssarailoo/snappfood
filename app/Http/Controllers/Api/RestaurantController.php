@@ -20,7 +20,7 @@ class RestaurantController extends Controller
 
     /** @group Restaurant
      * Display a listing of the Restaurant resource.
-     * @apiResourceCollection App\Http\Resources\RestaurantResource
+     * @apiResourceCollection App\Http\Resources\Restaurant\RestaurantResource
      * @apiResourceModel App\Models\Restaurant\Restaurant
      *
      */
@@ -40,7 +40,7 @@ class RestaurantController extends Controller
     /**
      * Display a specific Restaurant
      * @group Restaurant
-     * @apiResource App\Http\Resources\RestaurantResource
+     * @apiResource App\Http\Resources\Restaurant\RestaurantResource
      * @apiResourceModel App\Models\Restaurant\Restaurant
      * @urlParam name required The name of the restaurant Example:neshat
      *

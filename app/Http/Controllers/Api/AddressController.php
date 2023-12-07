@@ -20,7 +20,7 @@ class AddressController extends Controller
     /**
      * Retrieve a list of addresses for the authenticated user.
      * @apiResourceCollection  App\Http\Resources\AddressResource
-     * @apiResourceModel App\Models\Address
+     * @apiResourceModel App\Models\Address\Address
      */
     public function index()
     {
@@ -33,7 +33,7 @@ class AddressController extends Controller
     /**
      * Display a specific address if the user has the necessary permission (address must belong to the user's addresses).
      * @apiResource App\Http\Resources\AddressResource
-     * @apiResourceModel App\Models\Address
+     * @apiResourceModel App\Models\Address\Address
      */
     public function show(Address $address)
     {
