@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Food;
 
+use App\Models\Restaurant\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,7 +15,7 @@ class FoodCategoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $foods=$this->foods;
+        $foods=$this->foods->filter(fn($food)=> $food->restaurant->name===$request->restaurant->name );
         if ($request->has('sort_by')) {
             $sortMethod = $request->get('sort_by');
             switch ($sortMethod) {
