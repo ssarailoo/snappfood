@@ -2,9 +2,8 @@
 
 namespace App\Policies;
 
-use App\Enums\CartStatus;
+
 use App\Enums\OrderStauts;
-use App\Models\Cart\Cart;
 use App\Models\Order;
 use App\Models\Restaurant\Restaurant;
 use App\Models\User;
