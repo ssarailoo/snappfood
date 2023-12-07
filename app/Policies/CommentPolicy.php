@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\CommentStatus;
+use App\Enums\OrderStauts;
 use App\Models\Cart\Cart;
 use App\Models\Comment;
 use App\Models\Order;
@@ -18,28 +19,40 @@ class CommentPolicy
      */
     public function viewAny(User $user, Restaurant $restaurant): bool
     {
-        return $user->hasRole('admin') or $user->restaurant->is($restaurant)  ;
+        return $user->hasRole('admin') or $user->restaurant->is($restaurant);
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Comment $comment,Restaurant $restaurant): bool
+    public function view(User $user, Comment $comment, Restaurant $restaurant): bool
     {
 
-        return $user->hasRole('admin') or $user->restaurant->is($restaurant) and $restaurant->comments->contains($comment)  ;
+        return $user->hasRole('admin') or $user->restaurant->is($restaurant) and $restaurant->comments->contains($comment);
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Comment $comment=null): bool
+    public function create(User $user, Comment $comment = null)
     {
-        if ($comment!==null and $comment->parent_id)
+        //Api
+        if ($comment === null) {
+            $order = Order::query()->find(\request()->post('order_id'));
+            if (!$user->orders->contains($order))
+                return Response::deny('This order does not belong to you')->withStatus(403);
+            if (($order->comments()->withTrashed()->first() !== null))
+                return Response::deny('You already have registered your opinion')->withStatus(403);
+            if (($order->status !== OrderStauts::DELIVERED->value))
+                return Response::deny('Your order has not been delivered yet')->withStatus(403);
+            return Response::allow();
+        }
+        //Web
+        if ($comment->parent_id)
             return false;
 
-        return $user->hasRole('admin') or $user->orders->contains(Order::query()->find(\request()->post('order_id'))) or
-            $user->restaurant->comments->contains($comment) ;
+        return $user->hasRole('admin') or
+            $user->restaurant->comments->contains($comment);
     }
 
     /**
@@ -50,20 +63,20 @@ class CommentPolicy
         $currentStatus = $comment->status;
         $allowedTransitions = [
             CommentStatus::PENDING->value => [CommentStatus::Accepted->value, CommentStatus::REVIEWING_BY_ADMIN->value],
-            CommentStatus::REVIEWING_BY_ADMIN->value =>[ CommentStatus::Accepted->value,CommentStatus::RECONSIDERING_BY_CUSTOMER->value],
-            CommentStatus::RECONSIDERING_BY_CUSTOMER->value=>[CommentStatus::Accepted->value]
+            CommentStatus::REVIEWING_BY_ADMIN->value => [CommentStatus::Accepted->value, CommentStatus::RECONSIDERING_BY_CUSTOMER->value],
+            CommentStatus::RECONSIDERING_BY_CUSTOMER->value => [CommentStatus::Accepted->value]
         ];
         if (!in_array($newStatus, $allowedTransitions[$currentStatus])) {
             return false;
         }
-        return  $user->hasRole('admin') or $user->restaurant->comments->contains($comment) ;
+        return $user->hasRole('admin') or $user->restaurant->comments->contains($comment);
     }
 
-    public function reconsider(User $user,Comment $comment)
+    public function reconsider(User $user, Comment $comment)
     {
-        return $user->orders->map(fn($order)=>$order->comments->first())->contains($comment) and
-            $comment->status===CommentStatus::RECONSIDERING_BY_CUSTOMER->value and
-            $comment->reconsidered===0;
+        return $user->orders->map(fn($order) => $order->comments->first())->contains($comment) and
+            $comment->status === CommentStatus::RECONSIDERING_BY_CUSTOMER->value and
+            $comment->reconsidered === 0;
     }
 
     /**
@@ -71,7 +84,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-        return $user->hasRole('admin') and $comment->status===CommentStatus::RECONSIDERING_BY_CUSTOMER->value and $comment->reconsidered===1 ;
+        return $user->hasRole('admin') and $comment->status === CommentStatus::RECONSIDERING_BY_CUSTOMER->value and $comment->reconsidered === 1;
     }
 
 

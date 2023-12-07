@@ -39,9 +39,14 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{restaurant}', 'show')->name('show');
         });
+
+    //endregion
+
+    //region Food
     Route::get('/restaurants/{restaurant}/foods', [FoodController::class, 'index'])->name('foods.index');
     Route::get('/food/party', [FoodController::class, 'foodParty'])->name('food.party');
     //endregion
+
 
     // region Cart
     Route::apiResource('/carts', CartController::class);

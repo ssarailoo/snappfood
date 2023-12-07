@@ -12,7 +12,9 @@ use App\Http\Resources\Comment\DeniedCommentResource;
 use App\Models\Comment;
 use App\Services\Comment\CommentBearerService;
 use App\Services\Comment\CommentStoreService;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 /*
  * @group comment
@@ -43,18 +45,28 @@ class CommentController extends Controller
      * Store a newly created resource in storage.
      *
      */
-    public function store(StoreCommentRequest $request, CommentStoreService $commentStoreService)
+    public function store(StoreCommentRequest $request)
     {
 
         $this->authorize('create', Comment::class);
-        $response = $commentStoreService->storeComment($request, $request->post('order_id'));
-        if (isset($response['success']))
+        try {
+            Comment::query()->create($request->validated());
+        } catch (QueryException $e) {
+            Log::error('Error Creating new Comment ' . $e->getMessage());
             return response()->json([
-                'data' => $response
-            ], 201);
+                'data' => [
+                    'error' => 'An unexpected error occurred'
+                ]
+            ]);
+        }
         return response()->json([
-            'data' => $response
-        ], 400);
+            'data' => [
+                'success' => true,
+                'message' => "comment created successfully."
+            ]
+        ]);
+
+
     }
 
     public function showDeniedComments()
