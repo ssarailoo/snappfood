@@ -72,11 +72,14 @@ class CommentPolicy
         return $user->hasRole('admin') or $user->restaurant->comments->contains($comment);
     }
 
-    public function reconsider(User $user, Comment $comment)
+    public function reconsider(User $user, Comment $comment): Response
     {
-        return $user->orders->map(fn($order) => $order->comments->first())->contains($comment) and
-            $comment->status === CommentStatus::RECONSIDERING_BY_CUSTOMER->value and
-            $comment->reconsidered === 0;
+        if (!($comment->status === CommentStatus::RECONSIDERING_BY_CUSTOMER->value and $comment->reconsidered === 0))
+            return Response::deny('You can not reconsider this comment')->withStatus(403);
+        if (!$user->orders->map(fn($order) => $order->comments->first())->contains($comment))
+            return Response::deny('this Comment does not belong to you.')->withStatus(403);
+
+        return Response::allow();
     }
 
     /**
