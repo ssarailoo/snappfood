@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Cart\CartFood;
 use App\Models\Food\Food;
+use App\Models\Food\FoodOrder;
 use App\Models\Restaurant\Restaurant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

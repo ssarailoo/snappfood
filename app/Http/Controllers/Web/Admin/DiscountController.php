@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Discount\StoreDiscountRequest;
@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Notifications\Discount\DiscountEmailNotification;
 use App\Notifications\Discount\DiscountSMSNotification;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 

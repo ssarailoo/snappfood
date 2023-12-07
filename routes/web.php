@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\Web\BannerController;
+use App\Http\Controllers\Web\Admin\BannerController;
+use App\Http\Controllers\Web\Admin\DiscountController;
 use App\Http\Controllers\Web\CommentController;
 use App\Http\Controllers\Web\DashboardController;
-use App\Http\Controllers\Web\DiscountController;
 use App\Http\Controllers\Web\FactorController;
 use App\Http\Controllers\Web\Food\FoodCategoryController;
 use App\Http\Controllers\Web\Food\FoodController;
 use App\Http\Controllers\Web\Food\FoodPartyController;
-use App\Http\Controllers\Web\MaterialController;
+use App\Http\Controllers\Web\Food\MaterialController;
 use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\Restaurant\RestaurantCategoryController;

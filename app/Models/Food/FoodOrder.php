@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Food;
 
-use App\Models\Cart\Cart;
-use App\Models\Food\Food;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
