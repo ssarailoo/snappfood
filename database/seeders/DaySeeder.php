@@ -12,7 +12,7 @@ class DaySeeder extends Seeder
      */
     public function run(): void
     {
-        $days = ["saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday"];
+        $days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         foreach ($days as $day) {
             Day::query()->create([
                 'name' => $day

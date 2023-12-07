@@ -96,14 +96,15 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call([
             MaterialSeeder::class,
-            FoodSeeder::class
+            FoodSeeder::class,
+            ScheduleSeeder::class
         ]);
         $banner = Banner::query()->create([
             'title' => 'Summer Sale',
             'content' => 'Buy 1 Pizza get 2 !',
             'color' => Color::PINK->value
         ]);
-        $banner->image()->create(['url'=> 'images/banner2.jpeg']);
+        $banner->image()->create(['url' => 'images/banner2.jpeg']);
         $address = Address::query()->create([
             'title' => 'home',
             'address' => 'tehran sattar khan',
