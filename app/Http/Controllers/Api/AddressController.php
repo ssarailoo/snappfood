@@ -63,15 +63,17 @@ class AddressController extends Controller
             $address = Address::query()->create($request->validated());
             Auth::user()->addresses()->attach($address);
         } catch (QueryException $e) {
-            Log::error('Error Crating new Address'.$e->getMessage());
+            Log::error('Error Crating new Address' . $e->getMessage());
             return response()->json([
                 'data' => [
                     'message' => 'An unexpected error occurred'
                 ]
-            ],500);
+            ], 500);
         }
         return response()->json([
-            'message' => 'Address added successfully'
+            'data' => [
+                'message' => 'Address added successfully'
+            ]
         ], 201);
 
     }
@@ -96,16 +98,18 @@ class AddressController extends Controller
             $this->authorize('myAddress', $address);
             $address->update($request->validated());
         } catch (QueryException $e) {
-            Log::error('Error Updating Address'.$e->getMessage());
+            Log::error('Error Updating Address' . $e->getMessage());
             return response()->json([
                 'data' => [
                     'message' => 'An unexpected error occurred'
                 ]
-            ],500);
+            ], 500);
         }
 
         return response()->json([
-            'message' => $address->title . "has been updated"
+            'data' => [
+                'message' => $address->title . " has been updated"
+            ]
         ], 200);
     }
 
@@ -123,6 +127,8 @@ class AddressController extends Controller
     {
         $this->authorize('myAddress', $address);
         try {
+            if (Auth::user()->currentAddress?->is($address))
+                Auth::user()->update(['current_address' => null]);
 
             $address->delete();
         } catch (QueryException $e) {
@@ -131,11 +137,13 @@ class AddressController extends Controller
                 'data' => [
                     'message' => 'An unexpected error occurred'
                 ]
-            ],500);
+            ], 500);
         }
         return response()->json([
-            'message' => $address->title . "has been deleted"
-        ], 204);
+            'data' => [
+                'message' => $address->title . " has been deleted"
+            ]
+        ], 200);
     }
 
     /**
@@ -164,10 +172,12 @@ class AddressController extends Controller
                 'data' => [
                     'message' => 'An unexpected error occurred'
                 ]
-            ],500);
+            ], 500);
         }
         return response()->json([
-            'message' => 'current address updated successfully'
+            'data' => [
+                'message' => 'current address updated successfully'
+            ]
         ], 200);
     }
 }
