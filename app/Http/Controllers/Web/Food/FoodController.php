@@ -43,7 +43,7 @@ class FoodController extends Controller
         $foodCategoryId = $request->get('food_category_id');
         $id = $request->get('restaurant_id');
         $restaurant = Restaurant::query()->find($id);
-        $filteredFoods = Food::query()->foodsOf($id)->filterBy('food_category_id', $foodCategoryId);
+        $filteredFoods = Food::query()->foodsOf($id)->when($foodCategoryId, fn($query) => $query->filterBy('food_category_id', $foodCategoryId));
         return view('food.filtered', [
             'restaurant' => $restaurant,
             'foods' => $filteredFoods->get(),
@@ -78,7 +78,7 @@ class FoodController extends Controller
             ]);
         } catch (QueryException $e) {
             Log::error('Error creating new food: ' . $e->getMessage());
-            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
+            return view('error.500', ['route' => route("my-restaurant.foods.index", $restaurant)]);
         }
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', 'New Food added successfully');
 
@@ -125,7 +125,7 @@ class FoodController extends Controller
                 ]);
         } catch (QueryException $e) {
             Log::error('Error Updating  food: ' . $e->getMessage());
-            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
+            return view('error.500', ['route' => route("my-restaurant.foods.index", $restaurant)]);
         }
 
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name updated successfully ");
@@ -141,7 +141,7 @@ class FoodController extends Controller
             $food->delete();
         } catch (QueryException $e) {
             Log::error('Error Deleting  food: ' . $e->getMessage());
-            return view('error.500', ['route' => route("my-restaurant.foods.index",$restaurant)]);
+            return view('error.500', ['route' => route("my-restaurant.foods.index", $restaurant)]);
         }
         return redirect()->route('my-restaurant.foods.index', $restaurant)->with('success', "$food->name deleted successfully ");
     }
