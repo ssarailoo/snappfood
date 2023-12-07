@@ -8,8 +8,8 @@
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../docs/css/theme-default.style.css" media="screen">
-    <link rel="stylesheet" href="../docs/css/theme-default.print.css" media="print">
+    <link rel="stylesheet" href="{{ asset("/vendor/scribe/css/theme-default.style.css") }}" media="screen">
+    <link rel="stylesheet" href="{{ asset("/vendor/scribe/css/theme-default.print.css") }}" media="print">
 
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
 
@@ -30,9 +30,9 @@
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
-    <script src="../docs/js/tryitout-4.26.0.js"></script>
+    <script src="{{ asset("/vendor/scribe/js/tryitout-4.26.0.js") }}"></script>
 
-    <script src="../docs/js/theme-default-4.26.0.js"></script>
+    <script src="{{ asset("/vendor/scribe/js/theme-default-4.26.0.js") }}"></script>
 
 </head>
 
@@ -41,7 +41,7 @@
 <a href="#" id="nav-button">
     <span>
         MENU
-        <img src="../docs/images/navbar.png" alt="navbar-image"/>
+        <img src="{{ asset("/vendor/scribe/images/navbar.png") }}" alt="navbar-image"/>
     </span>
 </a>
 <div class="tocify-wrapper">
@@ -178,8 +178,8 @@
             </div>
 
     <ul class="toc-footer" id="toc-footer">
-                    <li style="padding-bottom: 5px;"><a href="../docs/collection.json">View Postman collection</a></li>
-                            <li style="padding-bottom: 5px;"><a href="../docs/openapi.yaml">View OpenAPI spec</a></li>
+                    <li style="padding-bottom: 5px;"><a href="{{ route("scribe.postman") }}">View Postman collection</a></li>
+                            <li style="padding-bottom: 5px;"><a href="{{ route("scribe.openapi") }}">View OpenAPI spec</a></li>
                 <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
     </ul>
 
@@ -222,20 +222,20 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:8000/api/v1/carts/14" \
+    "http://localhost:8000/api/v1/carts/20" \
     --header "Authorization: Bearer token" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"food_id\": \"2\",
-    \"food_count\": 17.47633557
+    \"food_id\": \"5\",
+    \"food_count\": 843.98707
 }"
 </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/v1/carts/14"
+    "http://localhost:8000/api/v1/carts/20"
 );
 
 const headers = {
@@ -245,8 +245,8 @@ const headers = {
 };
 
 let body = {
-    "food_id": "2",
-    "food_count": 17.47633557
+    "food_id": "5",
+    "food_count": 843.98707
 };
 
 fetch(url, {
@@ -359,10 +359,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="id"                data-endpoint="PUTapi-v1-carts--id-"
-               value="14"
+               value="20"
                data-component="url">
     <br>
-<p>The ID of the cart. Example: <code>14</code></p>
+<p>The ID of the cart. Example: <code>20</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -371,10 +371,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="food_id"                data-endpoint="PUTapi-v1-carts--id-"
-               value="2"
+               value="5"
                data-component="body">
     <br>
-<p>This field is required when <code>food_party_id</code> is not present. Example: <code>2</code></p>
+<p>This field is required when <code>food_party_id</code> is not present. Example: <code>5</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>4</code></li> <li><code>5</code></li> <li><code>1</code></li> <li><code>2</code></li> <li><code>3</code></li></ul>
         </div>
@@ -384,10 +384,10 @@ Must be one of:
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="food_count"                data-endpoint="PUTapi-v1-carts--id-"
-               value="17.47633557"
+               value="843.98707"
                data-component="body">
     <br>
-<p>Example: <code>17.47633557</code></p>
+<p>Example: <code>843.98707</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>food_party_id</code></b>&nbsp;&nbsp;
@@ -418,7 +418,7 @@ Must be one of:
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8000/api/v1/carts/14" \
+    "http://localhost:8000/api/v1/carts/3" \
     --header "Authorization: Bearer token" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -426,7 +426,7 @@ Must be one of:
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/v1/carts/14"
+    "http://localhost:8000/api/v1/carts/3"
 );
 
 const headers = {
@@ -537,10 +537,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="id"                data-endpoint="DELETEapi-v1-carts--id-"
-               value="14"
+               value="3"
                data-component="url">
     <br>
-<p>The ID of the cart. Example: <code>14</code></p>
+<p>The ID of the cart. Example: <code>3</code></p>
             </div>
                     </form>
 
@@ -558,7 +558,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost:8000/api/v1/carts/13/pay" \
+    "http://localhost:8000/api/v1/carts/1/pay" \
     --header "Authorization: Bearer token" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -567,7 +567,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/v1/carts/13/pay"
+    "http://localhost:8000/api/v1/carts/1/pay"
 );
 
 const headers = {
@@ -699,10 +699,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="cart_id"                data-endpoint="PATCHapi-v1-carts--cart_id--pay"
-               value="13"
+               value="1"
                data-component="url">
     <br>
-<p>The ID of the cart. Example: <code>13</code></p>
+<p>The ID of the cart. Example: <code>1</code></p>
             </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -736,13 +736,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/v1/comments?restaurant_id=14" \
+    --get "http://localhost:8000/api/v1/comments?restaurant_id=9" \
     --header "Authorization: Bearer token" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"restaurant_id\": \"1\",
-    \"food_id\": \"2\"
+    \"restaurant_id\": \"2\",
+    \"food_id\": \"1\"
 }"
 </code></pre></div>
 
@@ -753,7 +753,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const params = {
-    "restaurant_id": "14",
+    "restaurant_id": "9",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -765,8 +765,8 @@ const headers = {
 };
 
 let body = {
-    "restaurant_id": "1",
-    "food_id": "2"
+    "restaurant_id": "2",
+    "food_id": "1"
 };
 
 fetch(url, {
@@ -882,10 +882,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="restaurant_id"                data-endpoint="GETapi-v1-comments"
-               value="14"
+               value="9"
                data-component="query">
     <br>
-<p>Example: <code>14</code></p>
+<p>Example: <code>9</code></p>
             </div>
                         <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -894,10 +894,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="restaurant_id"                data-endpoint="GETapi-v1-comments"
-               value="1"
+               value="2"
                data-component="body">
     <br>
-<p>Example: <code>1</code></p>
+<p>Example: <code>2</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>1</code></li> <li><code>2</code></li> <li><code>3</code></li></ul>
         </div>
@@ -907,10 +907,10 @@ Must be one of:
 <i>optional</i> &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="food_id"                data-endpoint="GETapi-v1-comments"
-               value="2"
+               value="1"
                data-component="body">
     <br>
-<p>Example: <code>2</code></p>
+<p>Example: <code>1</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>4</code></li> <li><code>5</code></li> <li><code>1</code></li> <li><code>2</code></li> <li><code>3</code></li></ul>
         </div>
@@ -950,9 +950,9 @@ Must be one of:
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"xphdqlfsnfbdwedsfmbobuwj\",
+    \"name\": \"yxmlisrrdyhsbznrlqrcjspph\",
     \"phone_number\": \"09122222222\",
-    \"password\": \"eligendi\"
+    \"password\": \"totam\"
 }"
 </code></pre></div>
 
@@ -969,9 +969,9 @@ const headers = {
 };
 
 let body = {
-    "name": "xphdqlfsnfbdwedsfmbobuwj",
+    "name": "yxmlisrrdyhsbznrlqrcjspph",
     "phone_number": "09122222222",
-    "password": "eligendi"
+    "password": "totam"
 };
 
 fetch(url, {
@@ -1071,10 +1071,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="PUTapi-v1-personal-update"
-               value="xphdqlfsnfbdwedsfmbobuwj"
+               value="yxmlisrrdyhsbznrlqrcjspph"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>xphdqlfsnfbdwedsfmbobuwj</code></p>
+<p>Must not be greater than 255 characters. Example: <code>yxmlisrrdyhsbznrlqrcjspph</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone_number</code></b>&nbsp;&nbsp;
@@ -1093,10 +1093,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="PUTapi-v1-personal-update"
-               value="eligendi"
+               value="totam"
                data-component="body">
     <br>
-<p>Example: <code>eligendi</code></p>
+<p>Example: <code>totam</code></p>
         </div>
         </form>
 
@@ -1395,8 +1395,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"content\": \"ovybaokuugnmsvblgjbtyeccy\",
-    \"score\": 1
+    \"content\": \"jvlcjgpopcxslibshzkhzvmte\",
+    \"score\": 2
 }"
 </code></pre></div>
 
@@ -1413,8 +1413,8 @@ const headers = {
 };
 
 let body = {
-    "content": "ovybaokuugnmsvblgjbtyeccy",
-    "score": 1
+    "content": "jvlcjgpopcxslibshzkhzvmte",
+    "score": 2
 };
 
 fetch(url, {
@@ -1526,10 +1526,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="content"                data-endpoint="PUTapi-v1-comments--comment_id-"
-               value="ovybaokuugnmsvblgjbtyeccy"
+               value="jvlcjgpopcxslibshzkhzvmte"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>ovybaokuugnmsvblgjbtyeccy</code></p>
+<p>Must not be greater than 255 characters. Example: <code>jvlcjgpopcxslibshzkhzvmte</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>score</code></b>&nbsp;&nbsp;
@@ -1537,10 +1537,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="score"                data-endpoint="PUTapi-v1-comments--comment_id-"
-               value="1"
+               value="2"
                data-component="body">
     <br>
-<p>Must be between 1 and 5. Example: <code>1</code></p>
+<p>Must be between 1 and 5. Example: <code>2</code></p>
         </div>
         </form>
 
@@ -1567,7 +1567,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"sort_by\": \"price_desc\"
+    \"sort_by\": \"price_asc\"
 }"
 </code></pre></div>
 
@@ -1584,7 +1584,7 @@ const headers = {
 };
 
 let body = {
-    "sort_by": "price_desc"
+    "sort_by": "price_asc"
 };
 
 fetch(url, {
@@ -1718,10 +1718,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="sort_by"                data-endpoint="GETapi-v1-restaurants--restaurant_name--foods"
-               value="price_desc"
+               value="price_asc"
                data-component="body">
     <br>
-<p>Example: <code>price_desc</code></p>
+<p>Example: <code>price_asc</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>name_asc</code></li> <li><code>name_desc</code></li> <li><code>price_asc</code></li> <li><code>price_desc</code></li></ul>
         </div>
@@ -1753,7 +1753,7 @@ Must be one of:
     \"type\": \"Fast Food\",
     \"is_open\": false,
     \"sort\": \"score\",
-    \"restaurant_category_id\": \"3\"
+    \"restaurant_category_id\": \"1\"
 }"
 </code></pre></div>
 
@@ -1773,7 +1773,7 @@ let body = {
     "type": "Fast Food",
     "is_open": false,
     "sort": "score",
-    "restaurant_category_id": "3"
+    "restaurant_category_id": "1"
 };
 
 fetch(url, {
@@ -1958,10 +1958,10 @@ Must be one of:
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="restaurant_category_id"                data-endpoint="GETapi-v1-restaurants"
-               value="3"
+               value="1"
                data-component="body">
     <br>
-<p>Example: <code>3</code></p>
+<p>Example: <code>1</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>1</code></li> <li><code>2</code></li> <li><code>3</code></li> <li><code>4</code></li> <li><code>5</code></li> <li><code>6</code></li> <li><code>7</code></li> <li><code>8</code></li></ul>
         </div>
