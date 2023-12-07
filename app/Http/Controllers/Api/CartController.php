@@ -89,7 +89,7 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        $this->authorize('isCartBelongingToUser', $cart);
+        $this->authorize('view', $cart);
         return response()->json(new CartResource($cart), 200);
     }
 

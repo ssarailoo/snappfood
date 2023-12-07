@@ -52,6 +52,7 @@ class CartStoreService
         ]);
 
         return [
+            'cart' => $cart,
             'data' => [
                 'message' => $cart->wasRecentlyCreated ? 'Cart Created successfully' : "You have an unpaid  cart from this restaurant, the desired food has been added to it, you must use the update method",
                 'cart_id' => $cart->id

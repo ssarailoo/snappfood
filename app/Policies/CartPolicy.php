@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class CartPolicy
 {
 
-    public function isCartBelongingToUser(User $user, Cart $cart): bool
+    public function view(User $user, Cart $cart): bool
     {
         return $user->carts->contains($cart);
     }
