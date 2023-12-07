@@ -4,8 +4,10 @@ namespace App\Policies;
 
 
 use App\Models\Cart\Cart;
+use App\Models\Discount;
 use App\Models\Food\Food;
 use App\Models\Food\FoodParty;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
@@ -57,4 +59,16 @@ class CartPolicy
 
     }
 
+    public function pay(User $user, Cart $cart)
+    {
+        if (!$user->carts->contains($cart)) {
+            return Response::deny('this cart does not belongs to you')->withStatus(400);
+        }
+        $discount = Discount::query()->where('code', request()->input('code'))->first();
+        if ($discount and $user->orders->contains(Order::query()->where('discount_id', $discount->id)->first())) {
+            return Response::deny('you can use this code only once')->withStatus(400);
+        }
+        return  Response::allow();
+
+    }
 }

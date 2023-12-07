@@ -76,7 +76,7 @@ class CartController extends Controller
         return $response['data']['message'] === "Cart Created successfully" ?
             response()->json($response['data']
                 , 201) : response()->json($response['data']
-                );
+            );
     }
 
     /**
@@ -143,22 +143,15 @@ class CartController extends Controller
      */
     public function pay(CheckDiscountCodeRequest $request, Cart $cart, CartPayService $cartPayService)
     {
-        $this->authorize('isCartBelongingToUser', $cart);
+        $this->authorize('pay', $cart);
         $response = $cartPayService->payCart($cart, Auth::user());
+        Notification::send($cart->user, new OrderRegistration($cart));
+        Notification::send($cart->user, new OrderRegistrationSMS());
+        Notification::send($cart->restaurant->user, new RestaurantOrderRegistration($cart));
+        $cart->delete();
+        return response()->json([
+            'data' => $response
+        ], 201);
 
-        if (isset($response['success'])) {
-            Notification::send($cart->user, new OrderRegistration($cart));
-            Notification::send($cart->user, new OrderRegistrationSMS());
-            Notification::send($cart->restaurant->user, new RestaurantOrderRegistration($cart));
-            $cart->delete();
-            return response()->json([
-                'data' => $response
-            ], 201);
-        } else {
-            return response()->json([
-                    'data' => $response
-                ]
-                , 400);
-        }
     }
 }

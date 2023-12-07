@@ -15,50 +15,42 @@ class CartPayService
 {
     public function payCart(Cart $cart, User $user)
     {
-        if ($user->current_address === null) {
-            return ['msg' => 'Bad Request: First choose your current address'];
-        } elseif ($cart->is_paid === 1) {
-            return ['msg' => 'Bad Request: Already paid'];
-        } else {
 
-            $discount = Discount::query()->where('code', request()->input('code'))->first();
-            if ($discount) {
-                if (Auth::user()->carts->contains(Cart::query()->where('discount_id', $discount->id)->first())) {
-                    return ['msg' => "Bad Request: you can use this code only once"];
-                }
-                $cart->update([
-                    'discount_id' => $discount->id
-                ]);
-                $payment = $cart->total * (100 - $discount->percent) / 100;
-                $cart->update(['is_paid' => 1]);
-                $order = Order::query()->create([
-                    'user_id' => $cart->user_id,
-                    'restaurant_id' => $cart->restaurant_id,
-                    'total' => $cart->total,
-                    'discount_id'=>$cart->discount_id,
-                    'status' => OrderStauts::CHECKING->value,
-                    'hashed_id'=>$cart->hashed_id
-                ]);
-                $order->foods()->sync(
-                    $cart->getCartFoodsSyncData()
-                );
-                return ['success' => true, 'msg' => "Your order has been registered.{$discount->percent} percent discount was applied. total payment {$payment} dollars"];
-            }
+
+        $discount = Discount::query()->where('code', request()->input('code'))->first();
+        if ($discount) {
+            $cart->update([
+                'discount_id' => $discount->id
+            ]);
+            $payment = $cart->total * (100 - $discount->percent) / 100;
             $cart->update(['is_paid' => 1]);
-
             $order = Order::query()->create([
                 'user_id' => $cart->user_id,
                 'restaurant_id' => $cart->restaurant_id,
                 'total' => $cart->total,
+                'discount_id' => $cart->discount_id,
                 'status' => OrderStauts::CHECKING->value,
-                'hashed_id'=>$cart->hashed_id
+                'hashed_id' => $cart->hashed_id
             ]);
             $order->foods()->sync(
                 $cart->getCartFoodsSyncData()
             );
-
-            return ['success' => true, 'msg' => 'Your order has been registered'];
+            return ['success' => true, 'message' => "Your order has been registered.{$discount->percent} percent discount was applied. total payment {$payment} dollars"];
         }
+        $cart->update(['is_paid' => 1]);
+
+        $order = Order::query()->create([
+            'user_id' => $cart->user_id,
+            'restaurant_id' => $cart->restaurant_id,
+            'total' => $cart->total,
+            'status' => OrderStauts::CHECKING->value,
+            'hashed_id' => $cart->hashed_id
+        ]);
+        $order->foods()->sync(
+            $cart->getCartFoodsSyncData()
+        );
+
+        return ['success' => true, 'message' => 'Your order has been registered'];
     }
 
 
