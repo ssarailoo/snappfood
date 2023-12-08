@@ -6,29 +6,29 @@
             <div class="w-full bg-gray-100 rounded overflow-hidden shadow-lg">
                 <div style="display: flex; justify-content: center; align-items: center; height: 300px;">
                     <img style="max-width: 100%; max-height: 100%; object-fit: contain;"
-                         src="{{ asset('storage/' . $cart->restaurant->image->url) }}"
-                         alt="{{ $cart->restaurant->name }}">
+                         src="{{ asset('storage/' . $order->restaurant->image->url) }}"
+                         alt="{{ $order->restaurant->name }}">
                 </div>
                 <div  class="px-6 py-4">
                     <p class="text-gray-700 text-base">
-                        Status: {{$cart->status}}
+                        Status: {{$order->status}}
                     </p>
                 </div>
                 <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2">{{$cart->restaurant->name }}</div>
+                    <div class="font-bold text-xl mb-2">{{$order->restaurant->name }}</div>
                     Foods:
-                    @foreach($cart->foods->unique('id') as $food)
+                    @foreach($order->foodsOrder as $foodOrder)
                         <p class="text-gray-700 text-base">
-                            {{$food->name}}           {{$food->price}}
-                            * {{(int)$cart->cartFoods->where('food_id', $food->id)->sum('food_count')}}
+                            {{$foodOrder->food->name}}           {{$foodOrder->food->price}}
+                            * {{(int)$foodOrder->food_count}}
                         </p>
 
                     @endforeach
                     <p class="text-gray-700 text-base">
-                        Cost of sending Order: {{$cart->restaurant->cost_of_sending_order}}
+                        Cost of sending Order: {{$order->restaurant->cost_of_sending_order}} $
                     </p>
                     <p class="text-gray-700 text-base">
-                        Total: {{$cart->total + $cart->restaurant->cost_of_sending_order}}
+                        Total: {{$order->total + $order->restaurant->cost_of_sending_order}} $
                     </p>
                 </div>
             </div>
