@@ -39,7 +39,10 @@ class CartUpdateService
         }
         $cart->cartFoods->map(function ($cartFood) {
             if ($cartFood->food_count <= 0)
-                $cartFood->delete();
+                $cartFood->update([
+                    'food_count' => 0
+                ]);
+
         });
 
         return [
