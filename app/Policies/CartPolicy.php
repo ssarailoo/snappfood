@@ -73,6 +73,8 @@ class CartPolicy
         if (!$user->carts->contains($cart)) {
             return Response::deny('this cart does not belongs to you')->withStatus(400);
         }
+        if ($cart->cartFoods->isEmpty())
+            return Response::deny('your cart is empty')->withStatus(400);
         $discount = Discount::query()->where('code', request()->input('code'))->first();
         if ($discount and $user->orders->contains(Order::query()->where('discount_id', $discount->id)->first())) {
             return Response::deny('you can use this code only once')->withStatus(400);
