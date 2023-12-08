@@ -112,7 +112,7 @@
                                         @if($order->status === OrderStauts::CHECKING->value)
                                             <td class="px-6 py-4">
                                                 <form id="cancelForm"
-                                                      action="{{ route('my-restaurant.orders.update', ['restaurant'=>$restaurant,'order' => $order, 'newStatus' => CartStatus::CANCELED->value]) }}"
+                                                      action="{{ route('my-restaurant.orders.update', ['restaurant'=>$restaurant,'order' => $order, 'newStatus' => OrderStauts::CANCELED->value]) }}"
                                                       method="post">
                                                     @method("PATCH")
                                                     @csrf
@@ -146,7 +146,7 @@
                                             <td class="px-6 py-4">
 
                                                 <form
-                                                    action="{{route('my-restaurant.orders.update',['restaurant'=>$restaurant,'order' => $order, 'newStatus' => CartStatus::SHIPPING->value])}}"
+                                                    action="{{route('my-restaurant.orders.update',['restaurant'=>$restaurant,'order' => $order, 'newStatus' => OrderStauts::SHIPPING->value])}}"
                                                     method="post">
                                                     @method("PATCH")
                                                     @csrf
