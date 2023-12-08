@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
 
         $admin->assignRole(Role::findByName('admin'));
         $restaurant = Restaurant::query()->create([
-            'name' => 'Shandiz',
+            'name' => 'shandiz',
             'address' => 'Tehran , Ferdos ',
             'telephone' => '12345673',
             'bank_account_number' => '1234567891231',
@@ -71,6 +71,7 @@ class DatabaseSeeder extends Seeder
             'longitude' => 51.318961609131,
             'user_id' => $user3->id
         ]);
+
 
         Image::query()->create([
             'url' => 'images/default-restaurant.png',
@@ -89,6 +90,7 @@ class DatabaseSeeder extends Seeder
             'longitude' => 51.375545782461,
             'user_id' => $user->id
         ]);
+           $user3->assignRole(Role::findByName('restaurant-manager'));
         Image::query()->create([
             'url' => 'images/default-restaurant.png',
             'imageable_id' => $secondRestaurant->id,
